@@ -20,7 +20,7 @@ eventFunction = function(data){
 		
 		let paramsAList = [];
 		let params = {};
-		let url = "/admin/system/system04UpdateAttCodeResource.do";
+		let url = "/admin/system/codeAttUpdate.do";
 		
 		$("#sysCodeArea > tr").each(function(){		
 			let codeId = "";
@@ -79,7 +79,7 @@ eventFunction = function(data){
 
 setGridFn = function(data){
 	rootCodeId = data.codeGrpId;
-	let url = "/admin/system/system04GetUnderCodeList.do",
+	let url = "/admin/system/underCodeList.do",
 		params = {"codeGrpId" : data.codeGrpId};	
 	utils.ajax(url, params, function(res){
 		 gridFn(res.result.list);

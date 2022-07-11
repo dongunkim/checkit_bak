@@ -29,9 +29,9 @@ eventFunction = function(){
 
 	$("#saveBtn").unbind().on("click", function(){
 		params = {};
-		params = $("#system0402Form").serializeObject();
+		params = $("#codeGrpForm").serializeObject();
 		params.cmd = cmd;
-		url = "/admin/system/system04Process.do";
+		url = "/admin/system/codeGrpProcess.do";
 
 		let valiChk = true;
 

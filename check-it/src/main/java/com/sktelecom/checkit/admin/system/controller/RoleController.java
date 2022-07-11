@@ -31,93 +31,57 @@ public class RoleController{
 	private RoleService roleService;
 
 	/**
-	 * 공통코드관리 화면
-	 * @param modelAndView
-	 * @param req
-	 * @param res
-	 * @param param
-	 * @return
-	 * @throws Exception
+	 * 
 	 */
-	@RequestMapping({"/sysm0301List.do"})
-	public ModelAndView sysm0401List(ModelAndView modelAndView, HttpServletRequest req, HttpServletResponse res, @RequestParam HashMap<String, Object> param, Session session) throws Exception {
+	@RequestMapping({"/roleList.do"})
+	public ModelAndView roleList(ModelAndView modelAndView, HttpServletRequest req, HttpServletResponse res, @RequestParam HashMap<String, Object> param, Session session) throws Exception {
 		return modelAndView;
 	}
 
 	/**
-	 * 공통코드관리 화면
-	 * @param modelAndView
-	 * @param req
-	 * @param res
-	 * @param param
-	 * @return
-	 * @throws Exception
+	 * 
 	 */
 	@Paging(value=false)
-	@RequestMapping({"/sysm03GetSysRoleList.do"})
-	public ModelAndView sysm03GetSysRoleList(ModelAndView modelAndView, HttpServletRequest req, HttpServletResponse res, @RequestParam HashMap<String, Object> param, Session session) throws Exception {
+	@RequestMapping({"/ajaxRoleList.do"})
+	public ModelAndView ajaxRoleList(ModelAndView modelAndView, HttpServletRequest req, HttpServletResponse res, @RequestParam HashMap<String, Object> param, Session session) throws Exception {
 		modelAndView.addObject("result", roleService.roleList(param));
 		return modelAndView;
 	}
 
 	/**
-	 * 공통코드관리 화면
-	 * @param modelAndView
-	 * @param req
-	 * @param res
-	 * @param param
-	 * @return
-	 * @throws Exception
+	 * 
 	 */
 	@Paging(value=false)
-	@RequestMapping({"/sysm03SysRoleTree.do"})
-	public ModelAndView sysm03SysRoleTree(ModelAndView modelAndView, HttpServletRequest req, HttpServletResponse res, @RequestParam HashMap<String, Object> param, Session session) throws Exception {
+	@RequestMapping({"/roleTreeList.do"})
+	public ModelAndView roleTreeList(ModelAndView modelAndView, HttpServletRequest req, HttpServletResponse res, @RequestParam HashMap<String, Object> param, Session session) throws Exception {
 		modelAndView.addObject("result", roleService.roleTreeList(param));
 		return modelAndView;
 	}
 
 	/**
-	 * 공통코드관리 화면
-	 * @param modelAndView
-	 * @param req
-	 * @param res
-	 * @param param
-	 * @return
-	 * @throws Exception
+	 * 
 	 */
-	@RequestMapping({"/sysm0302Pop.do"})
-	public ModelAndView sysm03Popup(ModelAndView modelAndView, HttpServletRequest req, HttpServletResponse res, @RequestParam HashMap<String, Object> param, Session session) throws Exception {
+	@RequestMapping({"/roleRegPop.do"})
+	public ModelAndView roleRegPopup(ModelAndView modelAndView, HttpServletRequest req, HttpServletResponse res, @RequestParam HashMap<String, Object> param, Session session) throws Exception {
 		modelAndView.addObject("result", param);
 		return modelAndView;
 	}
 
 	/**
-	 * 공통코드관리 화면
-	 * @param modelAndView
-	 * @param req
-	 * @param res
-	 * @param param
-	 * @return
-	 * @throws Exception
+	 * 
 	 */
-	@RequestMapping({"/sysm03SysRoleProcess.do"})
-	public ModelAndView sysm03SysRoleProcess(ModelAndView modelAndView, HttpServletRequest req, HttpServletResponse res, @RequestParam HashMap<String, Object> param, Session session) throws Exception {
+	@RequestMapping({"/roleInsert.do"})
+	public ModelAndView roleInsert(ModelAndView modelAndView, HttpServletRequest req, HttpServletResponse res, @RequestParam HashMap<String, Object> param, Session session) throws Exception {
 		param.put("userId", session.getUserId());
 		modelAndView.addObject("result", roleService.roleInsert(param));
 		return modelAndView;
 	}
 
 	/**
-	 * 공통코드관리 화면
-	 * @param modelAndView
-	 * @param req
-	 * @param res
-	 * @param param
-	 * @return
-	 * @throws Exception
+	 * 
 	 */
-	@RequestMapping({"/sysm03InsertSysRolePgm.do"})
-	public ModelAndView sysm03InsertSysRolePgm(ModelAndView modelAndView, HttpServletRequest req, HttpServletResponse res, @RequestParam HashMap<String, Object> param, Session session) throws Exception {
+	@RequestMapping({"/rolePgmInsert.do"})
+	public ModelAndView rolePgmInsert(ModelAndView modelAndView, HttpServletRequest req, HttpServletResponse res, @RequestParam HashMap<String, Object> param, Session session) throws Exception {
 		param.put("userId", session.getUserId());
 		modelAndView.addObject("result", roleService.rolePgmInsert(param));
 		return modelAndView;

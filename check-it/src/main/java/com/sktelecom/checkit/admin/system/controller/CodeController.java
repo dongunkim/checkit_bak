@@ -40,7 +40,7 @@ public class CodeController{
 	 * @throws CommException
 	 */
 	@RequestMapping({"/codeGrpList.do"})
-	public ModelAndView codeList(ModelAndView modelAndView, HttpServletRequest req, HttpServletResponse res, @RequestParam HashMap<String, Object> param, Session session) throws Exception {
+	public ModelAndView codeGrpList(ModelAndView modelAndView, HttpServletRequest req, HttpServletResponse res, @RequestParam HashMap<String, Object> param, Session session) throws Exception {
 		return modelAndView;
 	}
 
@@ -69,11 +69,9 @@ public class CodeController{
 	 * @throws CommException
 	 */
 	@Paging(value=false)
-	@RequestMapping({"/system04GetCodeList.do"})
-	public ModelAndView system04GetCodeList(ModelAndView modelAndView, HttpServletRequest req, HttpServletResponse res, @RequestParam HashMap<String, Object> param, Session session) throws Exception {
-		HashMap<String, Object> rtn = new HashMap<>();
-		rtn = codeService.sysm04GetCodeList(param);
-		modelAndView.addObject("result", rtn);
+	@RequestMapping({"/ajaxCodeGrpList.do"})
+	public ModelAndView ajaxCodeGrpList(ModelAndView modelAndView, HttpServletRequest req, HttpServletResponse res, @RequestParam HashMap<String, Object> param, Session session) throws Exception {
+		modelAndView.addObject("result", codeService.codeGrpList(param));
 		return modelAndView;
 	}
 
@@ -87,11 +85,9 @@ public class CodeController{
 	 * @throws CommException
 	 */
 	@Paging(value=false)
-	@RequestMapping({"/system04GetUnderCodeList.do"})
-	public ModelAndView system04GetUnderCodeList(ModelAndView modelAndView, HttpServletRequest req, HttpServletResponse res, @RequestParam HashMap<String, Object> param, Session session) throws Exception {
-		HashMap<String, Object> rtn = new HashMap<>();
-		rtn = codeService.sysm04GetUnderCodeList(param);
-		modelAndView.addObject("result", rtn);
+	@RequestMapping({"/underCodeList.do"})
+	public ModelAndView underCodeList(ModelAndView modelAndView, HttpServletRequest req, HttpServletResponse res, @RequestParam HashMap<String, Object> param, Session session) throws Exception {
+		modelAndView.addObject("result", codeService.underCodeList(param));
 		return modelAndView;
 	}
 
@@ -104,11 +100,9 @@ public class CodeController{
 	 * @return
 	 * @throws CommException
 	 */
-	@RequestMapping({"/system04GetDepthCodeList.do"})
-	public ModelAndView system04GetDepthCodeList(ModelAndView modelAndView, HttpServletRequest req, HttpServletResponse res, @RequestParam HashMap<String, Object> param, Session session) throws Exception {
-		HashMap<String, Object> rtn = new HashMap<>();
-		rtn = codeService.sysm04GetDepthCodeList(param);
-		modelAndView.addObject("result", rtn);
+	@RequestMapping({"/depthCodeList.do"})
+	public ModelAndView depthCodeList(ModelAndView modelAndView, HttpServletRequest req, HttpServletResponse res, @RequestParam HashMap<String, Object> param, Session session) throws Exception {
+		modelAndView.addObject("result", codeService.depthCodeList(param));
 		return modelAndView;
 	}
 
@@ -121,11 +115,9 @@ public class CodeController{
 	 * @return
 	 * @throws CommException
 	 */
-	@RequestMapping({"/system04CheckDuplicate.do"})
-	public ModelAndView system04CheckDuplicate(ModelAndView modelAndView, HttpServletRequest req, HttpServletResponse res, @RequestParam HashMap<String, Object> param, Session session) throws Exception {
-		HashMap<String, Object> rtn = new HashMap<>();
-		rtn = codeService.sysm04CheckDuplicate(param);
-		modelAndView.addObject("result", rtn);
+	@RequestMapping({"/checkDuplicate.do"})
+	public ModelAndView checkDuplicate(ModelAndView modelAndView, HttpServletRequest req, HttpServletResponse res, @RequestParam HashMap<String, Object> param, Session session) throws Exception {
+		modelAndView.addObject("result", codeService.checkDuplicate(param));
 		return modelAndView;
 	}
 
@@ -138,19 +130,10 @@ public class CodeController{
 	 * @return
 	 * @throws CommException
 	 */
-	@RequestMapping({"/system04Process.do"})
-	public ModelAndView system04Process(ModelAndView modelAndView, HttpServletRequest req, HttpServletResponse res, @RequestParam HashMap<String, Object> param, Session session) throws Exception {
-		HashMap<String, Object> rtn = new HashMap<>();
-		try {
-			log.debug("system04Process::::"+param);
-			param.put("userId", session.getUserId());
-			rtn = codeService.sysm04Process(param);
-		}catch(Exception e) {
-			//rtn.put("errorCode", e.getCode());
-			//rtn.put("errorMessage", e.getMessage());
-			log.error(e.getMessage());
-		}
-		modelAndView.addObject("result", rtn);
+	@RequestMapping({"/codeGrpProcess.do"})
+	public ModelAndView codeGrpProcess(ModelAndView modelAndView, HttpServletRequest req, HttpServletResponse res, @RequestParam HashMap<String, Object> param, Session session) throws Exception {
+		param.put("userId", session.getUserId());
+		modelAndView.addObject("result", codeService.codeGrpProcess(param));
 		return modelAndView;
 	}
 
@@ -163,24 +146,13 @@ public class CodeController{
 	 * @return
 	 * @throws CommException
 	 */
-	@RequestMapping({"/system04ResourceProcess.do"})
-	public ModelAndView system04ResourceProcess(ModelAndView modelAndView, HttpServletRequest req, HttpServletResponse res, @RequestParam HashMap<String, Object> param, Session session) throws Exception {
-		HashMap<String, Object> rtn = new HashMap<>();
-		try {
-			param.put("userId", session.getUserId());
-			rtn = codeService.sysm04ResourceProcess(param);
-		}catch(Exception e) {
-			//rtn.put("errorCode", e.getCode());
-			//rtn.put("errorMessage", e.getMessage());
-			log.error(e.getMessage());
-		}
-		modelAndView.addObject("result", rtn);
+	@RequestMapping({"/codeProcess.do"})
+	public ModelAndView codeProcess(ModelAndView modelAndView, HttpServletRequest req, HttpServletResponse res, @RequestParam HashMap<String, Object> param, Session session) throws Exception {
+		param.put("userId", session.getUserId());
+		modelAndView.addObject("result", codeService.codeProcess(param));
 		return modelAndView;
 	}
 	
-	
-	
-
 	/**
 	 * 공통속성 수정
 	 * @param modelAndView
@@ -190,18 +162,10 @@ public class CodeController{
 	 * @return
 	 * @throws CommException
 	 */
-	@RequestMapping({"/system04UpdateAttCodeResource.do"})
-	public ModelAndView updatesystem0403(ModelAndView modelAndView, HttpServletRequest req, HttpServletResponse res, @RequestParam HashMap<String, Object> param, Session session) throws Exception {
-		HashMap<String, Object> rtn = new HashMap<String, Object>();
-		try{
-			param.put("updId", session.getUserId());
-			rtn = codeService.sysm04UpdateAttCodeResource(param);
-		}catch(Exception e){
-			//rtn.put("errorCode", e.getCode());
-			//rtn.put("errorMessage", e.getMessage());
-			log.error(e.getMessage());
-		}
-		modelAndView.addObject("result", rtn);
+	@RequestMapping({"/codeAttUpdate.do"})
+	public ModelAndView codeAttUpdate(ModelAndView modelAndView, HttpServletRequest req, HttpServletResponse res, @RequestParam HashMap<String, Object> param, Session session) throws Exception {
+		param.put("updId", session.getUserId());
+		modelAndView.addObject("result", codeService.codeAttUpdate(param));
 		return modelAndView;
 	}
 

@@ -39,7 +39,7 @@
 				
 				<div class="border_box">
 					<div class="border_list" style="overflow:auto; overflow-x:hidden; height:600px">
-						<table id="system0401ListTable">
+						<table id="codeGrpListTable">
 							<colgroup>
 							<col width="10%">
 							<col width="">

@@ -25,7 +25,7 @@ eventFunction = function(data){
 		params = {};
 		params.flag = "I";
 		params.sysType = data.sysType;
-		sysm0302PopFn(params);
+		roleRegPopFn(params);
 	});
 
 	$("#method_W").unbind().on("click", function(){
@@ -55,7 +55,7 @@ eventFunction = function(data){
 		let paramsAList = [];
 		let paramsBList = [];
 		let params = {};
-		let url = "/admin/system/sysm03InsertSysRolePgm.do";
+		let url = "/admin/system/rolePgmInsert.do";
 
 		$("#sysRoleArea > tr").each(function(){
 			paramsA = {};
@@ -100,7 +100,7 @@ eventFunction = function(data){
 								 } else {
 									 params.startCd = "0002";
 								 }
-								let url = "/admin/system/sysm03SysRoleTree.do";
+								let url = "/admin/system/roleTreeList.do";
 								utils.ajax(url, params, function(res){
 									 gridFn(res.result.list);
 								});
@@ -137,7 +137,7 @@ setGridFn = function(data){
 
 	let param = {};
 	param.sysType = data.sysType;
-	url = "/admin/system/sysm03GetSysRoleList.do",
+	url = "/admin/system/ajaxRoleList.do",
 	option = {};
 	option.ajax = true;
 	option.url  = url;
@@ -153,7 +153,7 @@ setGridFn = function(data){
 				 data.startCd = "0002";
 			 }
 
-			 let url = "/admin/system/sysm03SysRoleTree.do";
+			 let url = "/admin/system/roleTreeList.do";
 			 utils.ajax(url, data, function(res){
 				 gridFn(res.result.list);
 			 });
@@ -172,7 +172,7 @@ setGridFn = function(data){
 					params.flag = "U";
 					params.sysType = data.sysType;
 
-					sysm0302PopFn(params);
+					roleRegPopFn(params);
 					return false;
 				}
 				let str = [];
@@ -182,17 +182,17 @@ setGridFn = function(data){
 		}
 	];
 
-	$("#sysm0301ListTable").list(option);
+	$("#roleListTable").list(option);
 }
 
 
-sysm0302PopFn = function(data){
+roleRegPopFn = function(data){
 	$(this).popup({
 		 title : "권한 등록"
 		,width : "50%"
 		,height: "50%"
 		,scrolling: "auto"
-		,url : "/admin/system/sysm0302Pop.do"
+		,url : "/admin/system/roleRegPop.do"
 		,params : data
 		,callBackFn : function(res){
 			params = {};

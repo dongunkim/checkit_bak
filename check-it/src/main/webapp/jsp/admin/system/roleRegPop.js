@@ -19,7 +19,7 @@ eventFunction = function(){
 
 	$("#saveBtn").unbind().on("click", function(){
 		let flag = true,
-			url = "/admin/system/sysm03SysRoleProcess.do",
+			url = "/admin/system/roleInsert.do",
 			params = {};
 			params.rid = result.rid;
 			params.rname = $("#rname").val();

@@ -25,10 +25,8 @@ public class CodeDAO extends AbstractMapper {
 	 * @throws CommException
 	 */
 	@SuppressWarnings("unchecked")
-	public HashMap<String, Object> sysm04GetCodeList(HashMap<String, Object> param) throws Exception{
-		HashMap<String, Object> rtn = new HashMap<String, Object>();
-		rtn = (HashMap<String, Object>)super.selectList("admin.system.dao.sysm04GetCodeList", param);
-		return rtn;
+	public HashMap<String, Object> codeGrpList(HashMap<String, Object> param) throws Exception{
+		return (HashMap<String, Object>)super.selectList("admin.system.dao.codeGrpList", param);
 	}
 
 	/**
@@ -38,10 +36,8 @@ public class CodeDAO extends AbstractMapper {
 	 * @throws CommException
 	 */
 	@SuppressWarnings("unchecked")
-	public HashMap<String, Object> sysm04GetUnderCodeList(HashMap<String, Object> param) throws Exception{
-		HashMap<String, Object> rtn = new HashMap<String, Object>();
-		rtn = (HashMap<String, Object>)super.selectList("admin.system.dao.sysm04GetUnderCodeList", param);
-		return rtn;
+	public HashMap<String, Object> underCodeList(HashMap<String, Object> param) throws Exception{
+		return (HashMap<String, Object>)super.selectList("admin.system.dao.underCodeList", param);
 	}
 
 	/**
@@ -51,10 +47,8 @@ public class CodeDAO extends AbstractMapper {
 	 * @throws CommException
 	 */
 	@SuppressWarnings("unchecked")
-	public HashMap<String, Object> sysm04GetDepthCodeList(HashMap<String, Object> param) throws Exception{
-		HashMap<String, Object> rtn = new HashMap<String, Object>();
-		rtn = (HashMap<String, Object>)super.selectList("admin.system.dao.sysm04GetDepthCodeList", param);
-		return rtn;
+	public HashMap<String, Object> depthCodeList(HashMap<String, Object> param) throws Exception{
+		return (HashMap<String, Object>)super.selectList("admin.system.dao.depthCodeList", param);
 	}
 
 	/**
@@ -64,10 +58,8 @@ public class CodeDAO extends AbstractMapper {
 	 * @throws CommException
 	 */
 	@SuppressWarnings("unchecked")
-	public HashMap<String, Object> sysm04CheckDuplicate(HashMap<String, Object> param) throws Exception{
-		HashMap<String, Object> rtn = new HashMap<String, Object>();
-		rtn = (HashMap<String, Object>)super.selectOne("admin.system.dao.sysm04CheckDuplicate", param);
-		return rtn;
+	public HashMap<String, Object> checkDuplicate(HashMap<String, Object> param) throws Exception{
+		return (HashMap<String, Object>)super.selectOne("admin.system.dao.checkDuplicate", param);
 	}
 
 	/**
@@ -77,10 +69,8 @@ public class CodeDAO extends AbstractMapper {
 	 * @throws CommException
 	 */
 	@SuppressWarnings("unchecked")
-	public HashMap<String, Object> sysm04CheckCodeId(HashMap<String, Object> param) throws Exception{
-		HashMap<String, Object> rtn = new HashMap<String, Object>();
-		rtn = (HashMap<String, Object>)super.selectOne("admin.system.dao.sysm04CheckCodeId", param);
-		return rtn;
+	public HashMap<String, Object> checkCodeGrpId(HashMap<String, Object> param) throws Exception{
+		return (HashMap<String, Object>)super.selectOne("admin.system.dao.checkCodeGrpId", param);
 	}
 
 	/**
@@ -89,10 +79,8 @@ public class CodeDAO extends AbstractMapper {
 	 * @return
 	 * @throws CommException
 	 */
-	public int sysm04InsertCodeManager(HashMap<String, Object> param) throws Exception{
-		int rtn = 1;
-		rtn *= super.insert("admin.system.dao.sysm04InsertCodeManager", param);
-		return rtn;
+	public int codeGrpInsert(HashMap<String, Object> param) throws Exception{
+		return super.insert("admin.system.dao.codeGrpInsert", param);
 	}
 
 	/**
@@ -101,10 +89,8 @@ public class CodeDAO extends AbstractMapper {
 	 * @return
 	 * @throws CommException
 	 */
-	public int sysm04InsertCodeResource(HashMap<String, Object> param) throws Exception{
-		int rtn = 1;
-		rtn *= super.insert("admin.system.dao.sysm04InsertCodeResource", param);
-		return rtn;
+	public int codeInsert(HashMap<String, Object> param) throws Exception{
+		return super.insert("admin.system.dao.codeInsert", param);
 	}
 
 	/**
@@ -113,10 +99,8 @@ public class CodeDAO extends AbstractMapper {
 	 * @return
 	 * @throws CommException
 	 */
-	public int sysm04UpdateCodeManager(HashMap<String, Object> param) throws Exception{
-		int rtn = 1;
-		rtn *= super.update("admin.system.dao.sysm04UpdateCodeManager", param);
-		return rtn;
+	public int codeGrpUpdate(HashMap<String, Object> param) throws Exception{
+		return super.update("admin.system.dao.codeGrpUpdate", param);
 	}
 
 	/**
@@ -125,10 +109,8 @@ public class CodeDAO extends AbstractMapper {
 	 * @return
 	 * @throws CommException
 	 */
-	public int sysm04UpdateCodeResource(HashMap<String, Object> param) throws Exception{
-		int rtn = 1;
-		rtn *= super.update("admin.system.dao.sysm04UpdateCodeResource", param);
-		return rtn;
+	public int codeUpdate(HashMap<String, Object> param) throws Exception{
+		return super.update("admin.system.dao.codeUpdate", param);
 	}
 
 	/**
@@ -137,9 +119,8 @@ public class CodeDAO extends AbstractMapper {
 	 * @return
 	 * @throws CommException
 	 */
-	public int sysm04DeleteCodeManager(HashMap<String, Object> param) throws Exception{
-		int rtn = super.delete("admin.system.dao.sysm04DeleteCodeManager", param);
-		return rtn;
+	public int codeGrpDelete(HashMap<String, Object> param) throws Exception{
+		return super.delete("admin.system.dao.codeGrpDelete", param);
 	}
 
 	/**
@@ -148,9 +129,8 @@ public class CodeDAO extends AbstractMapper {
 	 * @return
 	 * @throws CommException
 	 */
-	public int sysm04DeleteCodeResource(HashMap<String, Object> param) throws Exception{
-		int rtn = super.delete("admin.system.dao.sysm04DeleteCodeResource", param);
-		return rtn;
+	public int codeDelete(HashMap<String, Object> param) throws Exception{
+		return super.delete("admin.system.dao.codeDelete", param);
 	}
 
 	/**
@@ -159,10 +139,8 @@ public class CodeDAO extends AbstractMapper {
 	 * @return
 	 * @throws CommException
 	 */
-	public int sysm04DeleteUnderCodeResource(HashMap<String, Object> param) throws Exception{
-		int rtn = 1;
-		rtn *= super.delete("admin.system.dao.sysm04DeleteUnderCodeResource", param);
-		return rtn;
+	public int underCodeDelete(HashMap<String, Object> param) throws Exception{
+		return super.delete("admin.system.dao.underCodeDelete", param);
 	}
 
 	
@@ -172,9 +150,8 @@ public class CodeDAO extends AbstractMapper {
 	 * @return
 	 * @throws CommException
 	 */
-	public int sysm04UpdateAttCleanCodeResource(HashMap<String, Object> param) throws Exception{
-		int rtn = super.insert("admin.system.dao.sysm04UpdateAttCleanCodeResource", param);
-		return rtn;
+	public int codeAttCleanUpdate(HashMap<String, Object> param) throws Exception{
+		return super.insert("admin.system.dao.codeAttCleanUpdate", param);
 	}
 	
 	/**
@@ -183,8 +160,7 @@ public class CodeDAO extends AbstractMapper {
 	 * @return
 	 * @throws CommException
 	 */
-	public int sysm04UpdateAttCodeResource(HashMap<String, Object> param) throws Exception{
-		int rtn = super.insert("admin.system.dao.sysm04UpdateAttCodeResource", param);
-		return rtn;
+	public int codeAttUpdate(HashMap<String, Object> param) throws Exception{
+		return super.insert("admin.system.dao.codeAttUpdate", param);
 	}
 }

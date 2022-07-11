@@ -52,6 +52,9 @@ public class MenuController{
 	 */
 	@RequestMapping({"/menuTreeList.do"})
 	public ModelAndView menTreeList(ModelAndView modelAndView, HttpServletRequest req, HttpServletResponse res, @RequestParam HashMap<String, Object> param, Session session) throws Exception {
+		log.error("***************");
+		log.error(param);
+		log.error("***************");
 		modelAndView.addObject("result", menuService.menuTreeList(param));
 		return modelAndView;
 	}

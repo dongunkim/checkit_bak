@@ -23,7 +23,7 @@
 			    </div>
 				<div class="border_box">
 					<div class="border_list" style="overflow:auto; overflow-x:hidden; height:800px">
-						<table id="sysm0301ListTable">
+						<table id="roleListTable">
 							<colgroup>
 							<col width="10%">
 							<col width="">

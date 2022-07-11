@@ -22,7 +22,7 @@ eventFunction = function(data){
 		if($("#codeId").val() == ""){
 			DIALOG.alert("코드 ID를 입력해 주세요.");
 		} else {
-			let url = "/admin/system/system04CheckDuplicate.do";
+			let url = "/admin/system/checkDuplicate.do";
 			params = {};
 			params.codeId = $("#codeGrpId").text() + $("#codeId").val();
 			let firstCheck = true;

@@ -40,7 +40,11 @@ public class RoleService {
 	 */
 	public HashMap<String, Object> roleList(HashMap<String, Object> param) throws Exception{
 		HashMap<String, Object> rtn = new HashMap<String, Object>();
-		rtn = roleDAO.roleList(param);
+		try {
+			rtn = roleDAO.roleList(param);
+		} catch(Exception e) {
+			log.error(e.getMessage());
+		}
 		return rtn;
 	}
 
@@ -52,7 +56,11 @@ public class RoleService {
 	 */
 	public HashMap<String, Object> roleTreeList(HashMap<String, Object> param) throws Exception{
 		HashMap<String, Object> rtn = new HashMap<String, Object>();
-		rtn = roleDAO.roleTreeList(param);
+		try {
+			rtn = roleDAO.roleTreeList(param);
+		} catch(Exception e) {
+			log.error(e.getMessage());
+		}
 		return rtn;
 	}
 
@@ -125,7 +133,6 @@ public class RoleService {
 			String rid = StringUtils.defaultString(param.get("rid"));
 			String userId = StringUtils.defaultString(param.get("userId"));
 	
-			int chkCnt = 0;
 			paramMap.clear();
 			paramMap.put("rid", rid);
 			roleDAO.rolePgmDelete(paramMap);
@@ -160,10 +167,6 @@ public class RoleService {
 						paramMap.put("rid", rid);
 						paramMap.put("pid", map.get("pid"));
 						roleDAO.rolePgmInsert(paramMap);
-						if(chkCnt == 0) {
-							//throw new Exception("등록 중 오류가 발생하였습니다. ", "ERR_Sysm_sysm03InsertSysRolePgm_01");
-							throw new Exception("등록 중 오류가 발생하였습니다. ");
-						}
 					}
 				}
 			}

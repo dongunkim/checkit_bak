@@ -1,6 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
 <div class="popup_contens">
-	<form class="info_area popup_area" id="system0402Form">
+	<form class="info_area popup_area" id="codeGrpForm">
         <ul>
             <li>
             	<div>

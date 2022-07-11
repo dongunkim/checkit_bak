@@ -146,7 +146,7 @@ eventFunction = function(){
 			msg : "저장 하시겠습니까?"
 		}, function(){
 			if(this.key == "ok"){
-				let url = "/admin/system/system04ResourceProcess.do";
+				let url = "/admin/system/codeProcess.do";
 				let params = {};
 				params.addCodeArray = JSON.stringify(addCodeArray),
 				params.delCodeArray = JSON.stringify(delCodeArray),
@@ -189,7 +189,7 @@ setGridFn = function(data){
 	let param = {};
 	param = data;
 
-	url = "/admin/system/system04GetCodeList.do",
+	url = "/admin/system/ajaxCodeGrpList.do",
 	option = {};
 	option.ajax = true;
 	option.url  = url;
@@ -203,7 +203,7 @@ setGridFn = function(data){
 			updCodeArray = [];
 
 			utils.inputData(data);
-			url = "/admin/system/system04GetDepthCodeList.do",
+			url = "/admin/system/depthCodeList.do",
 			params = {};
 			//전역변수 설정
 			root = data.codeGrpId;
@@ -263,7 +263,7 @@ setGridFn = function(data){
 							params = {};
 							params.codeGrpId = codeGrpId;
 							params.cmd = "D";
-							url = "/admin/system/system04Process.do";
+							url = "/admin/system/codeGrpProcess.do";
 							utils.ajax(url, params, function(rtn){
 								if(rtn.result.errorCode == "00"){
 									DIALOG.alert({
@@ -293,7 +293,7 @@ setGridFn = function(data){
 		}
 	];
 
-	$("#system0401ListTable").list(option);
+	$("#codeGrpListTable").list(option);
 }
 //---------------------------------------------
 // 뎁스
