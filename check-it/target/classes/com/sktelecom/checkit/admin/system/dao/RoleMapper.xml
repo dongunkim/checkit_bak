@@ -1,0 +1,262 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="admin.system.dao">
+
+	<select id="roleList" parameterType="paramMap" resultType="commMap">
+		SELECT /* admin.sysm.mapper.Sysm04Mapper.XML sysm04GetCodeList */                        
+			COUNT(*) OVER () AS RNUM_CNT
+			,T_ROLE.RID           
+			,T_ROLE.RNAME        
+			,T_ROLE.DESCRIPTION  
+			,T_ROLE.USED_YN      
+			,T_ROLE.SYS_TYPE     
+		FROM T_ROLE               
+		WHERE T_ROLE.SYS_TYPE = #{sysType}
+		ORDER BY T_ROLE.RID  
+	</select>
+	
+	<select id="roleTreeList" parameterType="paramMap" resultType="commMap">
+		WITH RECURSIVE CTE AS 
+		(
+		SELECT /* admin.sysm.mapper.Sysm04Mapper.XML sysm03SysRoleTree */
+			AA.MENU_ID
+			,AA.UP_MENU_ID
+			,AA.MENU_NAME
+			,AA.SYS_TYPE
+			,AA.MENU_TYPE
+			,AA.SORT_SEQ
+			,AA.RID_R
+			,AA.PID_R
+			,AA.RID_W
+			,AA.PID_W
+			,AA.METHOD_R
+			,AA.METHOD_W
+			,1 AS LVL
+		FROM (
+			SELECT
+				 SM.MENU_ID
+				,SM.UP_MENU_ID
+				,SM.MENU_NAME
+				,SM.SYS_TYPE
+				,SM.MENU_TYPE
+				,SM.SORT_SEQ
+				,VIEW1.RID_R
+				,VIEW1.PID_R
+				,VIEW2.RID_W
+				,VIEW2.PID_W
+				,VIEW1.METHOD_R
+				,VIEW2.METHOD_W
+			FROM T_MENU AS SM
+			LEFT OUTER JOIN
+				(
+				SELECT
+		 			 T_MENU.MENU_ID
+					,T_ROLE_PGM.RID AS RID_R
+					,T_PGM.PID AS PID_R
+					,T_PGM.METHOD_TYPE    AS METHOD_R
+					,''                     AS METHOD_W
+				FROM T_MENU
+				INNER JOIN T_PGM ON T_MENU.MENU_ID  = T_PGM.MID
+				INNER JOIN T_ROLE_PGM ON  T_PGM.PID = T_ROLE_PGM.PID
+				WHERE T_ROLE_PGM.RID    = #{rid}
+				AND   T_PGM.METHOD_TYPE = 'R' 
+				) AS VIEW1 
+			ON SM.MENU_ID = VIEW1.MENU_ID
+			LEFT OUTER JOIN
+				(
+				SELECT
+		 			 T_MENU.MENU_ID
+					,T_ROLE_PGM.RID AS RID_W
+					,T_PGM.PID AS PID_W
+					,''                     AS METHOD_R
+					,T_PGM.METHOD_TYPE    AS METHOD_W
+				FROM T_MENU
+				INNER JOIN T_PGM ON T_MENU.MENU_ID = T_PGM.MID
+				INNER JOIN T_ROLE_PGM ON T_PGM.PID = T_ROLE_PGM.PID
+				WHERE T_ROLE_PGM.RID  = #{rid}
+				AND T_PGM.METHOD_TYPE = 'W'
+				) AS VIEW2 
+			ON SM.MENU_ID = VIEW2.MENU_ID
+		WHERE 1=1
+		AND SM.SYS_TYPE = #{sysType}
+		AND SM.UP_MENU_ID = '0'
+		GROUP BY SM.MENU_ID, SM.MENU_NAME, SM.MENU_URL, SM.MENU_TYPE
+		) AS AA
+		
+		UNION ALL
+		
+		SELECT
+			 BB.MENU_ID
+			,BB.UP_MENU_ID
+			,BB.MENU_NAME
+			,BB.SYS_TYPE
+			,BB.MENU_TYPE
+			,BB.SORT_SEQ
+			,BB.RID_R
+			,BB.PID_R
+			,BB.RID_W
+			,BB.PID_W
+			,BB.METHOD_R
+			,BB.METHOD_W
+			,B.LVL + 1 AS LVL
+		FROM (
+			SELECT
+				 SM.MENU_ID
+				,SM.UP_MENU_ID
+				,SM.MENU_NAME
+				,SM.SYS_TYPE
+				,SM.MENU_TYPE
+				,SM.SORT_SEQ
+				,VIEW1.RID_R
+				,VIEW1.PID_R
+				,VIEW2.RID_W
+				,VIEW2.PID_W
+				,VIEW1.METHOD_R
+				,VIEW2.METHOD_W
+			FROM T_MENU AS SM
+			LEFT OUTER JOIN
+				(
+				SELECT
+		 			 T_MENU.MENU_ID
+					,T_ROLE_PGM.RID AS RID_R
+					,T_PGM.PID AS PID_R
+					,T_PGM.METHOD_TYPE	AS METHOD_R
+					,''						AS METHOD_W
+				FROM T_MENU
+				INNER JOIN T_PGM ON T_MENU.MENU_ID  = T_PGM.MID
+				INNER JOIN T_ROLE_PGM ON  T_PGM.PID = T_ROLE_PGM.PID
+				WHERE T_ROLE_PGM.RID = #{rid}
+				AND   T_PGM.METHOD_TYPE = 'R' 
+				) AS VIEW1
+			ON SM.MENU_ID = VIEW1.MENU_ID
+			LEFT OUTER JOIN
+				(
+				SELECT
+		 			 T_MENU.MENU_ID
+					,T_ROLE_PGM.RID AS RID_W
+					,T_PGM.PID AS PID_W
+					,''                     AS METHOD_R
+					,T_PGM.METHOD_TYPE    AS METHOD_W
+				FROM T_MENU
+				INNER JOIN T_PGM ON T_MENU.MENU_ID = T_PGM.MID
+				INNER JOIN T_ROLE_PGM ON T_PGM.PID = T_ROLE_PGM.PID
+				WHERE T_ROLE_PGM.RID  = #{rid}
+				AND T_PGM.METHOD_TYPE = 'W'
+				) AS VIEW2
+			ON SM.MENU_ID = VIEW2.MENU_ID
+			WHERE 1=1
+			AND SM.SYS_TYPE = #{sysType}
+			GROUP BY SM.MENU_ID, SM.MENU_NAME, SM.MENU_URL, SM.MENU_TYPE
+			) AS BB
+		INNER JOIN CTE AS B ON BB.UP_MENU_ID = B.MENU_ID
+		)
+		SELECT
+			 IF(LVL =1, '0001', 
+			 	IF(LVL = 2, CONCAT(LPAD(UP_MENU_ID, 4, '0'), LPAD(MENU_ID, 4, '0')), 
+			 		IF(LVL = 3 ,CONCAT('0001' ,LPAD(UP_MENU_ID, 4, '0'), LPAD(MENU_ID, 4, '0')), 
+			 		CONCAT('0001', (SELECT LPAD(UP_MENU_ID, 4, '0') AS MENU_ID FROM T_MENU AS C WHERE C.MENU_ID = A.UP_MENU_ID), LPAD(UP_MENU_ID, 4,'0'), LPAD(MENU_ID, 4,'0'))))
+			 ) AS MENU_SEQ
+			,MENU_ID
+			,UP_MENU_ID
+			,MENU_NAME
+			,SYS_TYPE
+			,MENU_TYPE
+			,SORT_SEQ
+			,RID_R
+			,PID_R
+			,RID_W
+			,PID_W
+			,METHOD_R
+			,METHOD_W
+			,LVL
+		FROM CTE AS A
+		ORDER BY MENU_SEQ
+	</select>
+	
+	<select id="pgmPidList" parameterType="paramMap" resultType="commMap">
+		SELECT
+		        T_PGM.PID
+		FROM    T_PGM
+		WHERE   1=1
+		<if test=" menuList != '' and menuList != null ">
+			AND T_PGM.MID IN 
+			<foreach collection="menuList" item="item" index="index" separator="," open="(" close=")">
+				#{item}
+			</foreach>
+		</if>
+		AND     T_PGM.METHOD_TYPE = #{methodType}
+	</select>
+	
+	<insert id="roleInsert" parameterType="paramMap">
+		INSERT INTO T_ROLE ( 
+			 RID
+		<if test=" rname != '' and rname != null ">
+			,RNAME
+		</if>
+		<if test=" description != null ">
+			,DESCRIPTION
+		</if>
+			,USED_YN
+			,SYS_TYPE
+			,REG_DT
+			,REG_ID
+			,UPD_DT
+			,UPD_ID 
+		) VALUES ( 
+			(SELECT IFNULL(MAX(RID), 0) + 1 FROM T_ROLE AS SR)
+		<if test=" rname != '' and rname != null ">
+			,#{rname}
+		</if>
+		<if test=" description != null ">
+			,#{description}
+		</if>
+			,#{usedYn}
+			,#{sysType}
+			,DATE_FORMAT(NOW(), '%Y%m%d%h%m%s')
+			,#{userId}
+			,DATE_FORMAT(NOW(), '%Y%m%d%h%m%s')
+			,#{userId}
+		) 
+	</insert>
+	
+	<update id="roleUpdate" parameterType="paramMap">
+		UPDATE T_ROLE 
+		SET 
+		<if test=" rname != '' and rname != null ">
+			 RNAME = #{rname}
+		</if>
+		<if test=" description != '' and description != null ">
+			,DESCRIPTION = #{description}
+		</if>
+		<if test=" usedYn != '' and usedYn != null ">
+			,USED_YN = #{usedYn}
+		</if>
+			,UPD_DT = DATE_FORMAT(NOW(), '%Y%m%d%h%m%s')
+			,UPD_ID = #{userId}
+		WHERE RID = #{rid}  	
+	</update>
+	
+	<insert id="rolePgmInsert" parameterType="paramMap">
+		INSERT INTO T_ROLE_PGM 
+		( 
+		     RID
+			,PID
+			,REG_DT
+			,REG_ID
+			,UPD_DT
+			,UPD_ID 
+		) VALUES ( 
+		     #{rid}
+			,#{pid}
+			,DATE_FORMAT(NOW(), '%Y%m%d%h%m%s')
+			,#{userId}
+			,DATE_FORMAT(NOW(), '%Y%m%d%h%m%s')
+			,#{userId}
+		) 
+	</insert>
+	
+	<delete id="rolePgmDelete" parameterType="paramMap">
+		DELETE FROM T_ROLE_PGM
+		WHERE T_ROLE_PGM.RID = #{rid}
+	</delete>
+</mapper>

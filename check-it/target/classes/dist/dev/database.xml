@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+						http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+						http://www.springframework.org/schema/context
+						http://www.springframework.org/schema/context/spring-context-4.2.xsd">
+
+	<!-- MariaDB -->
+	<bean id="commDataSourceSpied" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="org.mariadb.jdbc.Driver"/>
+		<property name="url" value="jdbc:mariadb://1.234.33.210:13306/IDCBIZ_DEV?autoReconnect=true" />
+ 		<property name="username" value="root" />
+ 		<property name="password" value="arkruz=+" />
+ 		<!-- <property name="url" value="jdbc:mariadb://211.215.17.181:43306/IDCBIZ_DEV?autoReconnect=true" />
+ 		<property name="username" value="idcbizweb" />
+ 		<property name="password" value="dkdlelTL20!" /> -->
+		<property name="validationQuery" value="select 1" />
+	</bean>
+
+	<bean id="commDataSource" class="net.sf.log4jdbc.Log4jdbcProxyDataSource">
+		<constructor-arg ref="commDataSourceSpied" />
+		<property name="logFormatter">
+			<bean class="net.sf.log4jdbc.tools.Log4JdbcCustomFormatter">
+				<property name="loggingType" value="MULTI_LINE" />
+				<property name="sqlPrefix" value="#### SQL ####&#xD;&#xA;"/>
+			</bean>
+		</property>
+	</bean>
+	
+	<!-- nms Oracle -->
+	<bean id="nmsDataSourceSpied" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
+		<property name="url" value="jdbc:oracle:thin:@172.20.20.19:1521:NMS" />
+		<property name="username" value="IDCNMS" />
+		<property name="password" value="IDCNMS25"/>
+	</bean>
+
+	<bean id="nmsDataSource" class="net.sf.log4jdbc.Log4jdbcProxyDataSource">
+		<constructor-arg ref="nmsDataSourceSpied" />
+		<property name="logFormatter">
+			<bean class="net.sf.log4jdbc.tools.Log4JdbcCustomFormatter">
+				<property name="loggingType" value="MULTI_LINE" />
+				<property name="sqlPrefix" value="#### SQL ####&#xD;&#xA;"/>
+			</bean>
+		</property>
+	</bean>
+	
+	<!-- Data To View MariaDB -->
+	<bean id="dataToViewDataSourceSpied" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="org.mariadb.jdbc.Driver"/>
+		<property name="url" value="jdbc:mariadb://1.234.33.210:13306/IDCBIZ_DEV?autoReconnect=true" />
+ 		<property name="username" value="root" />
+ 		<property name="password" value="arkruz=+" />
+		<property name="validationQuery" value="select 1" />
+	</bean>
+
+	<bean id="dataToViewDataSource" class="net.sf.log4jdbc.Log4jdbcProxyDataSource">
+		<constructor-arg ref="dataToViewDataSourceSpied" />
+		<property name="logFormatter">
+			<bean class="net.sf.log4jdbc.tools.Log4JdbcCustomFormatter">
+				<property name="loggingType" value="MULTI_LINE" />
+				<property name="sqlPrefix" value="#### SQL ####&#xD;&#xA;"/>
+			</bean>
+		</property>
+	</bean>
+	
+	<!-- Data To View Oracle -->
+	<bean id="dataToViewNmsDataSourceSpied" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="oracle.jdbc.driver.OracleDriver"/>
+		<property name="url" value="jdbc:oracle:thin:@172.20.20.19:1521:NMS" />
+		<property name="username" value="IDCNMS" />
+		<property name="password" value="IDCNMS25"/>
+	</bean>
+
+	<bean id="dataToViewNmsDataSource" class="net.sf.log4jdbc.Log4jdbcProxyDataSource">
+		<constructor-arg ref="dataToViewNmsDataSourceSpied" />
+		<property name="logFormatter">
+			<bean class="net.sf.log4jdbc.tools.Log4JdbcCustomFormatter">
+				<property name="loggingType" value="MULTI_LINE" />
+				<property name="sqlPrefix" value="#### SQL ####&#xD;&#xA;"/>
+			</bean>
+		</property>
+	</bean>
+	
+		<!-- NmsPlus MariaDB -->
+	<bean id="nmsPlusDataSourceSpied" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="org.mariadb.jdbc.Driver"/>
+ 		<property name="url" value="jdbc:mariadb://222.239.252.114:13306/skbnmsplus?autoReconnect=true" />
+ 		<property name="username" value="skbnmsplus" />
+ 		<property name="password" value="nmsplus12#$" />
+		<property name="validationQuery" value="select 1" />
+	</bean>
+
+	<bean id="nmsPlusDataSource" class="net.sf.log4jdbc.Log4jdbcProxyDataSource">
+		<constructor-arg ref="nmsPlusDataSourceSpied" />
+		<property name="logFormatter">
+			<bean class="net.sf.log4jdbc.tools.Log4JdbcCustomFormatter">
+				<property name="loggingType" value="MULTI_LINE" />
+				<property name="sqlPrefix" value="#### SQL ####&#xD;&#xA;"/>
+			</bean>
+		</property>
+	</bean>
+</beans>

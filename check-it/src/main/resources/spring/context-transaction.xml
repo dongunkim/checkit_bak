@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans" 
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xmlns:aop="http://www.springframework.org/schema/aop"
+	   xmlns:tx="http://www.springframework.org/schema/tx"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+						   http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+						   http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop.xsd
+						   http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
+	<context:component-scan base-package="com.sktelecom.checkit"/>
+	
+	<bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="dataSource"/>
+	</bean>
+	
+	<aop:config proxy-target-class="true">
+		<aop:pointcut id="serviceOperation" expression="execution(* net..*Impl.*(..))" />
+		<aop:advisor id="transactionAdvisor" pointcut-ref="serviceOperation" advice-ref="txAdvice"/>
+	</aop:config>
+		
+	<tx:advice id="txAdvice" transaction-manager="txManager">
+		<tx:attributes>
+			<tx:method name="tx*" rollback-for="Exception"/>
+			<tx:method name="save*" rollback-for="Exception"/>
+			<tx:method name="*Save" rollback-for="Exception"/>
+			<tx:method name="insert*" rollback-for="Exception"/>
+			<tx:method name="*Insert" rollback-for="Exception"/>
+			<tx:method name="update*" rollback-for="Exception"/>
+			<tx:method name="*Update" rollback-for="Exception"/>
+			<tx:method name="delete*" rollback-for="Exception"/>
+			<tx:method name="*Delete" rollback-for="Exception"/>
+			<tx:method name="*Reg" rollback-for="Exception"/>
+			<tx:method name="*Process" rollback-for="Exception"/>
+			<tx:method name="*Uplod" rollback-for="Exception"/>
+		</tx:attributes>
+	</tx:advice>
+	
+	<tx:annotation-driven proxy-target-class="true"/>
+	
+</beans>

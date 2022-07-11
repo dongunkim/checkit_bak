@@ -1,0 +1,29 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>net.skidc</groupId>
+		<artifactId>skidc-master</artifactId>
+		<version>0.0.1</version>
+	</parent>
+	<artifactId>skidc-admin</artifactId>
+	<description>skidc 업무지원시스템</description>
+	<dependencies>
+		<dependency>
+			<groupId>net.skidc</groupId>
+			<artifactId>skidc-core</artifactId>
+			<version>0.0.1</version>
+		</dependency>
+		<dependency>
+            <groupId>webt50</groupId>
+            <artifactId>webt50</artifactId>
+            <version>1.0</version>
+            <scope>system</scope>
+            <systemPath>${basedir}/src/main/webapp/WEB-INF/lib/webt50.jar</systemPath>
+        </dependency>
+	</dependencies>
+	<packaging>war</packaging>
+	<name>skidc-admin</name>
+	<build>
+		<finalName>SKIDC-ADMIN</finalName>
+	</build>
+</project>

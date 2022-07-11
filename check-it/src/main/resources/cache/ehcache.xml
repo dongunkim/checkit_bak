@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd"
+		 updateCheck="false"> <defaultCache eternal="false"
+		 maxElementsInMemory="10000"
+		 overflowToDisk="false"
+		 diskPersistent="false"
+		 timeToIdleSeconds="0"
+		 timeToLiveSeconds="3"
+		 memoryStoreEvictionPolicy="LRU" />
+
+	<cache name="commonCode"
+		   eternal="false"
+		   maxElementsInMemory="5000"
+		   overflowToDisk="false"
+		   diskPersistent="false"
+		   timeToIdleSeconds="300"
+		   timeToLiveSeconds="600"
+		   memoryStoreEvictionPolicy="LRU" />
+		   
+   	<cache name="commonCsvCode"
+		   eternal="false"
+		   maxElementsInMemory="5000"
+		   overflowToDisk="false"
+		   diskPersistent="false"
+		   timeToIdleSeconds="300"
+		   timeToLiveSeconds="600"
+		   memoryStoreEvictionPolicy="LRU" />
+		   
+	<cache name="menuList"
+		   eternal="false"
+		   maxElementsInMemory="300"
+		   overflowToDisk="false"
+		   diskPersistent="false"
+		   timeToIdleSeconds="300"
+		   timeToLiveSeconds="600"
+		   memoryStoreEvictionPolicy="LRU" />
+		   
+</ehcache>

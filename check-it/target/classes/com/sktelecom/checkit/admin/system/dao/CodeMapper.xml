@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="admin.system.dao">
+
+	<select id="sysm04GetCodeList" parameterType="paramMap" resultType="commMap">
+		/* admin.system.dao.CodeMapper.XML sysm04GetCodeList */
+		SELECT
+			COUNT(*) OVER () AS RNUM_CNT
+			,CODE_GRP_ID
+			,CODE_GRP_NAME 
+			,CODE_GRP_DESC
+			,USE_YN
+			,LPAD(CODE_GRP_ID,4,'0') as CODE_GRP_SEQ
+		FROM T_CODE_GRP
+		WHERE CODE_GRP_ID <![CDATA[ > ]]> 0
+		<if test="searchKeyword != null and searchKeyword != ''">
+		  AND CODE_DESC LIKE CONCAT('%', #{searchKeyword}, '%') 
+		</if>
+		ORDER BY CODE_GRP_SEQ
+	</select>
+	
+	<select id="sysm04GetUnderCodeList" parameterType="paramMap" resultType="commMap">
+		/* admin.system.dao.Sysm04Mapper.XML sysm04GetUnderCodeList */
+		SELECT
+			 CODE_ID
+			,CODE_NAME
+			,DEPTH
+			,SEARCH_YN
+		    ,CODE_DESC
+		FROM T_CODE 
+		WHERE CODE_GRP_ID = #{codeGrpId} 
+		ORDER BY CODE_ID
+	</select>
+	
+	<select id="sysm04GetDepthCodeList" parameterType="paramMap" resultType="commMap">
+		/* admin.system.dao.Sysm04Mapper.XML sysm04GetDepthCodeList */
+		SELECT                              
+			 CODE_ID          
+			,CODE_NAME       
+			,DEPTH         
+			,UP_CODE_ID       
+			,CODE_GRP_ID
+			,CODE_DESC     
+			,SORT_SEQ      
+ 		FROM T_CODE                
+	 	WHERE CODE_GRP_ID = #{codeGrpId}      
+	 	  AND UP_CODE_ID = #{upCodeId}
+ 		ORDER BY CODE_GRP_ID ASC,DEPTH ASC,UP_CODE_ID ASC,CODE_ID ASC,SORT_SEQ ASC  
+	</select>
+	
+	<select id="sysm04CheckCodeId" parameterType="paramMap" resultType="commMap">
+		/* admin.system.dao.Sysm04Mapper.XML sysm04CheckCodeId */
+		SELECT
+			 CODE_GRP_ID
+			,CODE_GRP_NAME
+			,CODE_GRP_DESC
+			,USE_YN
+			,REG_DT
+			,REG_ID
+			,UPD_DT
+			,UPD_ID 
+		FROM T_CODE_GRP 
+		WHERE CODE_GRP_ID=#{codeGrpId}
+	</select>
+	
+	<select id="sysm04CheckDuplicate" parameterType="paramMap" resultType="commMap">
+		/* admin.system.dao.Sysm04Mapper.XML sysm04CheckDuplicate */
+		SELECT
+			COUNT(*) AS EXIST_CNT
+		FROM T_CODE 
+		WHERE CODE_ID = #{codeId}
+	</select>
+	
+	
+	<insert id="sysm04InsertCodeManager" parameterType="paramMap">
+		/* admin.system.dao.CodeMapper.XML sysm04CodeManagerInsert */
+		INSERT INTO T_CODE_GRP 
+		( 
+			CODE_GRP_ID
+			,CODE_GRP_NAME
+			,CODE_GRP_DESC
+			,USE_YN
+			,REG_ID
+			,REG_DT
+			,UPD_ID 
+			,UPD_DT
+		) VALUES ( 
+			 #{codeGrpId}
+			,#{codeGrpName}
+			,#{codeGrpDesc}
+			,#{useYn}
+			,#{userId}
+			,DATE_FORMAT(NOW(), '%Y%m%d%h%m%s')
+			,#{userId}
+			,DATE_FORMAT(NOW(), '%Y%m%d%h%m%s')
+		) 
+	</insert>
+	
+	<insert id="sysm04InsertCodeResource" parameterType="paramMap">
+		/* admin.system.dao.Sysm04Mapper.XML sysm04InsertCodeResource */
+		INSERT INTO T_CODE 
+		(
+			 CODE_GRP_ID
+			,CODE_ID
+			,CODE_NAME
+			,UP_CODE_ID
+			,DEPTH
+			,CODE_DESC
+			,SORT_SEQ
+			,SEARCH_YN
+			,REG_ID
+			,REG_DT
+			,UPD_ID
+			,UPD_DT
+		) VALUES ( 
+			 #{codeGrpId}
+			,#{codeId}
+			,#{codeName}
+			,#{upCodeId}
+			,#{depth}
+			,#{codeDesc}
+			,(SELECT IFNULL(MAX(SORT_SEQ), 0) + 1 FROM T_CODE AS A)
+			,#{searchYn}
+			,#{userId}
+			,DATE_FORMAT(NOW(), '%Y%m%d%h%m%s')
+			,#{userId}
+			,DATE_FORMAT(NOW(), '%Y%m%d%h%m%s')
+		) 
+	</insert>
+	
+	
+	<update id="sysm04UpdateCodeManager" parameterType="paramMap">
+		/* admin.system.dao.Sysm04Mapper.XML sysm04UpdateCodeManager */
+		UPDATE T_CODE_GRP 
+		SET  
+			 UPD_DT = DATE_FORMAT(NOW(), '%Y%m%d%h%m%s')
+		<if test=" codeGrpId !=null and codeGrpId != '' ">
+			,CODE_GRP_ID = #{codeGrpId}
+		</if>
+		<if test=" codeGrpName !=null and codeGrpName != '' ">
+			,CODE_GRP_NAME = #{codeGrpName}
+		</if>
+			,CODE_GRP_DESC = #{codeGrpDesc}
+			,USE_YN = #{useYn}
+			,UPD_ID = #{userId}
+		WHERE  CODE_GRP_ID = #{codeGrpId}
+	</update>
+	
+	<update id="sysm04UpdateCodeResource" parameterType="paramMap">
+		/* admin.system.dao.Sysm04Mapper.XML sysm04UpdateCodeResource */
+		UPDATE T_CODE 
+	 	SET
+			 CODE_NAME= #{codeName}
+			,UPD_ID= #{userId}
+			,UPD_DT = DATE_FORMAT(NOW(), '%Y%m%d%h%m%s')
+		WHERE CODE_ID=#{codeId} 
+		AND CODE_GRP_ID=#{codeGrpId}  
+	</update>
+	
+	<update id="sysm04UpdateAttCleanCodeResource" parameterType="paramMap">
+		/* admin.system.dao.Sysm04Mapper.XML sysm04UpdateAttCleanCodeResource */
+		UPDATE T_CODE 
+	 	SET
+			 SEARCH_YN = 'N'
+			,UPD_ID= #{updId}
+			,UPD_DT = DATE_FORMAT(NOW(), '%Y%m%d%h%m%s')
+		WHERE CODE_GRP_ID=#{codeGrpId}
+	</update>
+	
+	<update id="sysm04UpdateAttCodeResource" parameterType="paramMap">
+		/* admin.system.dao.Sysm04Mapper.XML sysm04UpdateAttCodeResource */
+		UPDATE T_CODE 
+	 	SET
+	 	     UPD_DT = DATE_FORMAT(NOW(), '%Y%m%d%h%m%s')
+			,UPD_ID= #{updId}
+			<if test=" searchYn != null and searchYn != '' ">
+			  ,SEARCH_YN = #{searchYn} 
+			</if>
+		WHERE CODE_GRP_ID=#{codeGrpId} 
+		  AND CODE_ID IN 
+			<foreach collection="codeList" item="item" index="index" separator="," open="(" close=")">
+				#{item}
+			</foreach>
+	</update>
+	
+	<delete id="sysm04DeleteCodeManager" parameterType="paramMap">
+		/* admin.system.dao.Sysm04Mapper.XML sysm04DeleteCodeManager */
+		DELETE FROM T_CODE_GRP 
+		WHERE CODE_GRP_ID=#{codeGrpId}
+	</delete>
+	
+	<delete id="sysm04DeleteCodeResource" parameterType="paramMap">
+		/* admin.system.dao.Sysm04Mapper.XML sysm04DeleteCodeResource */
+		DELETE FROM T_CODE 
+		WHERE CODE_ID = #{codeId} 
+		  AND CODE_GRP_ID = #{codeGrpId}
+	</delete>
+	
+	<delete id="sysm04DeleteUnderCodeResource" parameterType="paramMap">
+		/* admin.system.dao.Sysm04Mapper.XML sysm04DeleteUnderCodeResource */
+		DELETE FROM T_CODE 
+		WHERE UP_CODE_ID = #{upCodeId} 
+		  AND CODE_GRP_ID = #{codeGrpId}
+	</delete>
+	
+</mapper>

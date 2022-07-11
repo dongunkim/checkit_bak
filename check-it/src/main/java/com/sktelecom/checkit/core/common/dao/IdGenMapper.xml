@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 공통 Mapper -->
+<mapper namespace="common.mapper">
+
+	<select id="selectSeqInfo" parameterType="String" resultType="commMap">
+		SELECT	/* IdGenMapper.selectSeqInfo */
+				TABLE_NAME,
+				SEQ_TYPE,
+				PREFIX,
+				CURR_YEAR,
+				CURR_MONTH,
+				CURR_DAY,
+				CURR_NO AS SEQ,
+				CIPERS,
+				FILL_CHAR
+		FROM	ID_GEN
+		WHERE	TABLE_NAME = #{seqGb}
+	</select>
+		
+	<update id="updateNextSeq" parameterType="String">
+		UPDATE	/* IdGenMapper.updateNextSeq */
+				ID_GEN
+		SET		CURR_NO = IFNULL(CURR_NO, 0) + 1
+		WHERE	TABLE_NAME = #{tableName}			
+	</update>
+	
+	<update id="updateSeqCycle" parameterType="commMap">
+		UPDATE	/* IdGenMapper.updateSeqCycle */
+				ID_GEN
+		SET		CURR_YEAR = #{vo.currYear},
+				CURR_MONTH = #{vo.currMonth},
+				CURR_DAY = #{vo.currDay}, 
+				CURR_NO = #{vo.currNo}
+		WHERE	TABLE_NAME = #{vo.tableName}			
+	</update>	
+</mapper>

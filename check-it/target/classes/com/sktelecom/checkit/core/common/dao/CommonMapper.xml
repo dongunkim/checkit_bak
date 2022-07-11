@@ -1,0 +1,401 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 공통 Mapper -->
+<mapper namespace="common.mapper">
+	<!-- 최종 Last Insert ID 조회 -->
+	<select id="lastIndex" resultType="int">
+		<![CDATA[
+			SELECT LAST_INSERT_ID()
+		]]>
+	</select>
+
+	<!-- 메뉴조회 정보 -->
+	<select id="getAdMenuList" parameterType="paramMap" resultType="commMap">
+		WITH RECURSIVE CTE AS 
+			(
+			SELECT /* common.dao.mapper.CommonMapper.xml getAdMenuList */
+				 AA.MENU_ID
+				,AA.UP_MENU_ID
+				,AA.MENU_NAME
+				,AA.MENU_URL
+				,AA.SYS_TYPE
+				,AA.MENU_TYPE
+				,AA.USE_YN
+				,AA.SORT_SEQ
+				,AA.METHOD_R
+				,AA.METHOD_W
+				,'Y' AS IS_DOWN
+				,1 AS LV
+			FROM (
+				SELECT
+					 SM.MENU_ID
+					,SM.UP_MENU_ID
+					,SM.MENU_NAME
+					,SM.MENU_URL
+					,SM.SYS_TYPE
+					,SM.MENU_TYPE
+					,SM.USE_YN
+					,SM.SORT_SEQ
+					,VIEW1.METHOD_R
+					,VIEW2.METHOD_W
+				FROM T_MENU AS SM
+				LEFT OUTER JOIN
+					(
+					SELECT
+			 			 T_MENU.MENU_ID
+						,T_ROLE_PGM.RID AS RID_R
+						,T_PGM.PID AS PID_R
+						,T_PGM.METHOD_TYPE    AS METHOD_R
+						,''                     AS METHOD_W
+					FROM T_MENU
+					INNER JOIN T_PGM ON T_MENU.MENU_ID  = T_PGM.MID
+					INNER JOIN T_ROLE_PGM ON  T_PGM.PID = T_ROLE_PGM.PID
+					WHERE T_ROLE_PGM.RID    = #{rid}
+					AND   T_PGM.METHOD_TYPE = 'R' 
+					) AS VIEW1 
+				ON SM.MENU_ID = VIEW1.MENU_ID
+				LEFT OUTER JOIN
+					(
+					SELECT
+			 			 T_MENU.MENU_ID
+						,T_ROLE_PGM.RID AS RID_W
+						,T_PGM.PID AS PID_W
+						,''                     AS METHOD_R
+						,T_PGM.METHOD_TYPE    AS METHOD_W
+					FROM T_MENU
+					INNER JOIN T_PGM ON T_MENU.MENU_ID = T_PGM.MID
+					INNER JOIN T_ROLE_PGM ON T_PGM.PID = T_ROLE_PGM.PID
+					WHERE T_ROLE_PGM.RID  = #{rid}
+					AND T_PGM.METHOD_TYPE = 'W'
+					) AS VIEW2 
+				ON SM.MENU_ID = VIEW2.MENU_ID
+			WHERE 1=1
+			AND SM.SYS_TYPE = '1'
+			AND SM.UP_MENU_ID = '0'
+			GROUP BY SM.MENU_ID, SM.MENU_NAME, SM.MENU_URL, SM.MENU_TYPE
+			) AS AA
+			UNION ALL
+			SELECT
+				 BB.MENU_ID
+				,BB.UP_MENU_ID
+				,BB.MENU_NAME
+				,BB.MENU_URL
+				,BB.SYS_TYPE
+				,BB.MENU_TYPE
+				,BB.USE_YN
+				,BB.SORT_SEQ
+				,BB.METHOD_R
+				,BB.METHOD_W
+				,(SELECT IF(COUNT(1) > 0, 'Y', 'N') FROM 
+													(
+													SELECT
+													 SM.MENU_ID
+													,SM.UP_MENU_ID
+													,SM.MENU_NAME
+													,SM.MENU_URL
+													,SM.SYS_TYPE
+													,SM.MENU_TYPE
+													,SM.SORT_SEQ
+													,VIEW1.RID_R
+													,VIEW1.PID_R
+													,VIEW2.RID_W
+													,VIEW2.PID_W
+													,VIEW1.METHOD_R
+													,VIEW2.METHOD_W
+												FROM T_MENU AS SM
+												LEFT OUTER JOIN
+													(
+													SELECT
+											 			 T_MENU.MENU_ID
+											 			,T_MENU.MENU_URL
+														,T_ROLE_PGM.RID AS RID_R
+														,T_PGM.PID AS PID_R
+														,T_PGM.METHOD_TYPE	AS METHOD_R
+														,''						AS METHOD_W
+													FROM T_MENU
+													INNER JOIN T_PGM ON T_MENU.MENU_ID  = T_PGM.MID
+													INNER JOIN T_ROLE_PGM ON  T_PGM.PID = T_ROLE_PGM.PID
+													WHERE T_ROLE_PGM.RID = #{rid}
+													AND   T_PGM.METHOD_TYPE = 'R' 
+													) AS VIEW1
+												ON SM.MENU_ID = VIEW1.MENU_ID
+												LEFT OUTER JOIN
+													(
+													SELECT
+											 			 T_MENU.MENU_ID
+														,T_ROLE_PGM.RID AS RID_W
+														,T_PGM.PID AS PID_W
+														,''                     AS METHOD_R
+														,T_PGM.METHOD_TYPE    AS METHOD_W
+													FROM T_MENU
+													INNER JOIN T_PGM ON T_MENU.MENU_ID = T_PGM.MID
+													INNER JOIN T_ROLE_PGM ON T_PGM.PID = T_ROLE_PGM.PID
+													WHERE T_ROLE_PGM.RID  = #{rid}
+													AND T_PGM.METHOD_TYPE = 'W'
+													) AS VIEW2
+												ON SM.MENU_ID = VIEW2.MENU_ID
+												WHERE SM.USE_YN   = 'Y'
+												AND   SM.SYS_TYPE = '1'
+												GROUP BY SM.MENU_ID, SM.MENU_NAME, SM.MENU_URL, SM.MENU_TYPE
+												) AS CC
+												WHERE BB.MENU_ID = CC.UP_MENU_ID
+												AND (IFNULL(CC.METHOD_R, 'N') != 'N' OR IFNULL(CC.METHOD_W, 'N') != 'N')
+				) AS IS_DOWN
+				,B.LV + 1 AS LV
+			FROM (
+				SELECT
+					 SM.MENU_ID
+					,SM.UP_MENU_ID
+					,SM.MENU_NAME
+					,SM.MENU_URL
+					,SM.SYS_TYPE
+					,SM.MENU_TYPE
+					,SM.USE_YN
+					,SM.SORT_SEQ
+					,VIEW1.METHOD_R
+					,VIEW2.METHOD_W
+				FROM T_MENU AS SM
+				LEFT OUTER JOIN
+					(
+					SELECT
+			 			 T_MENU.MENU_ID
+						,T_ROLE_PGM.RID AS RID_R
+						,T_PGM.PID AS PID_R
+						,T_PGM.METHOD_TYPE	AS METHOD_R
+						,''						AS METHOD_W
+					FROM T_MENU
+					INNER JOIN T_PGM ON T_MENU.MENU_ID  = T_PGM.MID
+					INNER JOIN T_ROLE_PGM ON  T_PGM.PID = T_ROLE_PGM.PID
+					WHERE T_ROLE_PGM.RID = #{rid}
+					AND   T_PGM.METHOD_TYPE = 'R' 
+					) AS VIEW1
+				ON SM.MENU_ID = VIEW1.MENU_ID
+				LEFT OUTER JOIN
+					(
+					SELECT
+			 			 T_MENU.MENU_ID
+						,T_ROLE_PGM.RID AS RID_W
+						,T_PGM.PID AS PID_W
+						,''                     AS METHOD_R
+						,T_PGM.METHOD_TYPE    AS METHOD_W
+					FROM T_MENU
+					INNER JOIN T_PGM ON T_MENU.MENU_ID = T_PGM.MID
+					INNER JOIN T_ROLE_PGM ON T_PGM.PID = T_ROLE_PGM.PID
+					WHERE T_ROLE_PGM.RID  = #{rid}
+					AND T_PGM.METHOD_TYPE = 'W'
+					) AS VIEW2
+				ON SM.MENU_ID = VIEW2.MENU_ID
+				WHERE 1=1
+				AND SM.SYS_TYPE = '1'
+				GROUP BY SM.MENU_ID, SM.MENU_NAME, SM.MENU_URL, SM.MENU_TYPE
+				) AS BB
+			INNER JOIN CTE AS B ON BB.UP_MENU_ID = B.MENU_ID
+			)
+			SELECT
+				 MENU_NAME
+				,MENU_URL
+				,MENU_ID
+				,UP_MENU_ID
+				,MENU_NAME
+				,SYS_TYPE
+				,MENU_TYPE
+				,USE_YN
+				,SORT_SEQ
+				,METHOD_R
+				,METHOD_W
+				,IS_DOWN
+				,LV
+			FROM CTE AS A
+			ORDER BY UP_MENU_ID, SORT_SEQ
+	</select>
+
+	<!-- 메뉴조회 정보 -->
+	<select id="getMenuList" parameterType="paramMap" resultType="commMap">
+		/* common.dao.mapper.CommonMapper.xml getMenuList */
+		WITH RECURSIVE CTE AS
+		(
+			SELECT
+				 MENU_NAME
+				,MENU_URL
+				,MENU_ID
+				,UP_MENU_ID
+				,SORT_SEQ
+				, 1 AS LV
+			FROM T_MENU
+			WHERE UP_MENU_ID = '0'
+			AND   SYS_TYPE = #{sysType}
+			AND   USE_YN = 'Y'
+			UNION ALL
+			SELECT
+				 A.MENU_NAME
+				,A.MENU_URL
+				,A.MENU_ID
+				,A.UP_MENU_ID
+				,A.SORT_SEQ
+				,B.LV + 1 AS LV
+			FROM T_MENU A
+			INNER JOIN CTE B ON A.SYS_TYPE = #{sysType}
+			AND A.USE_YN = 'Y'
+			AND A.UP_MENU_ID = B.MENU_ID
+		)
+		SELECT
+			 MENU_NAME
+			,MENU_URL
+			,MENU_ID
+			,UP_MENU_ID
+			,LV
+		FROM CTE
+		ORDER BY UP_MENU_ID, SORT_SEQ
+	</select>
+
+	<insert id="commonFileUplodInsert" parameterType="paramMap">
+		INSERT INTO T_ATTACH_FILE /* common.dao.mapper.CommonMapper.xml commonFileUplod */
+		(
+			 ATTACH_SEQ
+		<if test="attachId != null and attachId != ''">
+			,ATTACH_ID
+		</if>
+			,FILE_ORIGIN_NAME
+			,FILE_NAME
+			,FILE_SIZE
+			,FILE_PATH
+			,FILE_CONTENT_TYPE
+			,REG_ID
+			,REG_DT
+			,UPD_ID
+			,UPD_DT
+		)
+		SELECT NVL((MAX(ATTACH_SEQ) + 1), 1)
+		<if test="attachId != null and attachId != ''">
+			,#{attachId}
+		</if>
+			,#{fileName}
+			,#{fileChangeName}
+			,#{fileSize}
+			,#{filePath}
+			,#{fileContentType}
+			,#{userId}
+			,DATE_FORMAT(NOW(), '%Y%m%d%H%i%s')
+			,#{userId}
+			,DATE_FORMAT(NOW(), '%Y%m%d%H%i%s')
+		FROM T_ATTACH_FILE
+		WHERE ATTACH_ID = #{attachId}
+	</insert>
+
+	<!-- 파일 정보 삭제 -->
+	<delete id="commonFileUplodDelete" parameterType="paramMap">
+		DELETE /* common.dao.mapper.CommonMapper.xml commonFileUplodDelete */
+		FROM T_ATTACH_FILE
+		WHERE ATTACH_ID = #{attachId}
+		AND   ATTACH_SEQ = #{attachSeq}
+	</delete>
+
+	<!-- 공통코드 정보 -->
+	<select id="getCommonCode" parameterType="String"
+		resultType="commMap">
+		<![CDATA[
+			SELECT /* common.dao.mapper.CommonMapper.xml getCommonCode */
+				 B.CODE_ID
+				,B.CODE_NAME
+			FROM T_CODE_GRP A, T_CODE B 
+			WHERE A.CODE_GRP_ID = B.CODE_GRP_ID
+			AND A.USE_YN = 'Y'
+			AND B.SEARCH_YN = 'Y'
+			AND B.UP_CODE_ID = #{code}
+			ORDER BY B.SORT_SEQ
+		]]>
+	</select>
+
+	<!-- 공통코드 정보 -->
+	<select id="getCommonCodeRoot" parameterType="String"
+		resultType="commMap">
+		<![CDATA[
+			SELECT /* common.dao.mapper.CommonMapper.xml getCommonCodeRoot */
+				 B.CODE
+				,B.CNAME
+			FROM T_CODE_GRP A, T_CODE B 
+			WHERE A.CODE_ID = B.ROOT
+			AND A.USED_YN = 'Y'
+			AND B.SEARCH_YN = 'Y'
+			AND B.ROOT   = #{code}
+			AND B.DEPTH != 0
+		]]>
+	</select>
+
+	<!-- 공통코드 정보 -->
+	<select id="getCommonCodeSubDepth" parameterType="paramMap"
+		resultType="commMap">
+		<![CDATA[
+		/* common.dao.mapper.CommonMapper.xml getCommonCodeSubDepth */
+            SELECT A.code
+            	 , CONCAT('[', B.cname, '] ', A.cname) cname
+              FROM (
+                    SELECT *
+                      FROM T_CODE
+                     WHERE 1=1
+                       AND root = #{code}
+                       AND heigher != #{code}
+        ]]>
+					<if test="higher != null and higher != ''">
+					   AND heigher = #{higher}
+					</if>
+		<![CDATA[
+                    ) A
+                    , (
+                        SELECT B.*
+                          FROM T_CODE_GRP A
+                             , T_CODE B
+                         WHERE A.CODE_ID = B.ROOT
+                           AND A.USED_YN = 'Y'
+                           AND B.SEARCH_YN = 'Y'
+                           AND root = #{code}
+                           AND depth = 
+        ]]>
+						<if test="higher != null and higher != ''">
+                           (
+							SELECT MIN(CAST(depth AS UNSIGNED)-1) 
+							  FROM T_CODE
+							 WHERE heigher = #{higher}
+                           )
+						</if>
+						<if test="higher == null or higher == ''">
+                           (
+							'0'
+                           )
+						</if>
+                    ) B
+             WHERE A.heigher = B.code
+	</select>
+	
+	<!-- CVS용 공통코드 정보 -->
+	<select id="getCommonCsvCode" parameterType="String"
+		resultType="String">
+		<![CDATA[
+			SELECT /* common.dao.mapper.CommonMapper.xml getCommonCsvCode */
+				CNAME
+			FROM T_CODE
+			WHERE CODE = #{code}
+		]]>
+	</select>
+
+	<!-- 파일 리스트조회 -->
+	<select id="commFileList" parameterType="paramMap" resultType="commMap">
+			SELECT /* common.dao.mapper.CommonMapper.xml commFileList */
+				A.*
+			FROM T_ATTACH_FILE A
+			WHERE A.ATTACH_ID       = #{attachId}
+	</select>
+
+	<!-- 파일 조회 -->
+	<select id="commFileInfo" parameterType="paramMap"
+		resultType="commMap">
+		<![CDATA[
+			SELECT /* common.dao.mapper.CommonMapper.xml commFileInfo */
+				 *
+			FROM T_ATTACH_FILE
+			WHERE ATTACH_ID = #{attachId}
+			AND   ATTACH_SEQ   = #{attachSeq}
+		]]>
+	</select>
+
+</mapper>

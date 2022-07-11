@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+	<property name="LOG_PATH" value="${LOG_DIR}"/>
+	
+	<appender name="console" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder class="ch.qos.logback.classic.encoder.PatternLayoutEncoder">
+			<pattern>%X{client_req_info} [%d{yyyy-MM-dd HH:mm:ss}:%-3relative] %-5level %logger{36} - %msg%n</pattern>
+		</encoder>
+	</appender>
+	
+	<appender name="logfile" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${LOG_PATH}/checkit.log</file>
+	    <encoder>
+	        <pattern>%X{client_req_info} [%d{yyyy-MM-dd HH:mm:ss}:%-3relative] %-5level %logger{36} - %msg%n</pattern>
+	    </encoder>
+	    <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+	        <fileNamePattern>${LOG_PATH}/checkit.%d{yyyy-MM-dd}.%i.log.gz</fileNamePattern>
+	        <timeBasedFileNamingAndTriggeringPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedFNATP">
+	            <maxFileSize>100MB</maxFileSize>
+	        </timeBasedFileNamingAndTriggeringPolicy>
+	        <maxHistory>1</maxHistory>
+	    </rollingPolicy>
+	 </appender>
+
+	<!-- Application Loggers -->		
+	<logger name="jdbc" level="OFF" />
+	<logger name="jdbc.sqlonly" level="INFO" />	
+	<logger name="jdbc.sqltiming" level="OFF" />
+	<logger name="jdbc.audit" level="OFF" />
+	<logger name="jdbc.resultset" level="OFF" />
+	<logger name="jdbc.resultsettable" level="INFO" />
+	<logger name="jdbc.connection" level="OFF" />
+
+	<!-- Root Logger -->
+	<root level="INFO">
+		<appender-ref ref="logfile" />
+		<appender-ref ref="console" />
+	</root>
+</configuration>

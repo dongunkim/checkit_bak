@@ -1,0 +1,147 @@
+/***************************************************************고객 업무 공용 css*/
+
+/*로딩바*/
+.progressbar{width:300px; height:220px; border:1px solid #ececec; border-radius:10px; padding:20px 0; -webkit-box-shadow: 2px 2px 7px 0px rgba(219,219,219,1);
+-moz-box-shadow: 2px 2px 7px 0px rgba(219,219,219,1); box-shadow: 2px 2px 7px 0px rgba(219,219,219,1);}
+.progressbar .skblogo{width:100%; height:50px; background:url('../images/logo/skb_logo_prog.png') no-repeat center; }
+.progressbar .text{text-align:center; font-size:18px; font-weight:bold; color:#535353;}
+.progressbar .center{display:table; margin:0 auto; margin-top:20px;}
+.progressbar .loading_bar{display: inline-block; width: 80px; height: 80px; border: 5px solid rgba(253,122,35,.3); border-radius: 50%; border-top-color: #fd7a23; animation: spin 1s ease-in-out infinite; -webkit-animation: spin 1s ease-in-out infinite;}
+@keyframes spin {
+  to { -webkit-transform: rotate(360deg); }
+}
+@-webkit-keyframes spin {
+  to { -webkit-transform: rotate(360deg); }
+}
+/*로딩바*/
+
+
+/*404 에러*/
+.myadmin_warning_count{position:absolute; top:50%; left:50%; margin-top:-270px; margin-left:-364px;}
+.myadmin_warning_count > .skb_logo{width:140px; height:46px; background:url('../images/logo/skb_logo_prog.png') no-repeat;}
+.myadmin_warning_count > .big_title{color:#767070; font-size:70px; font-weight:bold;}
+.myadmin_warning_count > .big_title > b{color:#fd7a23;}
+.myadmin_warning_count > .small_title{font-size:35px; color:#767070; font-weight:400;}
+.myadmin_warning_count > .word{font-size:25px; color:#767070;}
+.myadmin_warning_count > .button_back{width:170px; height:40px; background-color:#fd7a23; margin-top:20px; border-top-right-radius:10px;}
+.myadmin_warning_count > .button_back > span{color:#fff; font-size:15px; }
+/**404 에러*/
+
+
+/**사이트맵*/
+.sitemap_contents{position:fixed; top:0; left:0; width:100%; margin:0; background-color:#fff; z-index:999; display:none; overflow-y:hidden; border-bottom:1px solid #ccc; -webkit-box-shadow: 2px 2px 7px 0px rgba(219,219,219,1); -moz-box-shadow: 2px 2px 7px 0px rgba(219,219,219,1); box-shadow: 2px 2px 7px 0px rgba(219,219,219,1);}
+.sitemap_contents .title_sitemap_nav{position:relative; width:100%; height:auto; padding:0 30px;}
+.sitemap_area{border-top:1px solid #ccc; padding:40px 30px; min-width:1350px; overflow:hidden;}
+#sitemap_close{position:absolute; top:3px; right:30px; width:28px; height:28px; background:url('../images/icon/popclose_icon_1.png') no-repeat; cursor:pointer;}
+#depth_1{float:left; width:180px;}
+#depth_1 > .depth_1_link{font-size:18px; font-weight:bold; color:#222;}
+#depth_1 > .depth_2_wrap{margin-top:10px; padding-left:20px;}
+#depth_1 > .depth_2_wrap > li{font-size:14px; color:#666; word-break:keep-all; line-height:26px;}
+#depth_1 > .depth_2_wrap > li > a.rightarrow::after{content:''; display:inline-block; float:right; margin-top:7px; width:11px; height:11px; background:url('../images/icon/arrow_icon_2.png')no-repeat;}
+#depth_1 > .depth_2_wrap > li > ul{position:static; top:-1px; left:100%; width:160px; height:auto; background:#f9f9f9; z-index:999; border:1px solid #ccc; font-size: 12px; font-weight:300;}
+
+#depth_1 > a::before{content:''; display:inline-block; color:#ff5a20; font-size:25px; line-height:25px; margin-right:7px; }
+#depth_1 > .number_1::before{content:'1';}
+#depth_1 > .number_2::before{content:'2';}
+#depth_1 > .number_3::before{content:'3';}
+#depth_1 > .number_4::before{content:'4';}
+#depth_1 > .number_5::before{content:'5';}
+#depth_1 > .number_6::before{content:'6';}
+#depth_1 > .number_7::before{content:'7';}
+/**사이트맵*/
+
+
+/* 회선연결정보 배선관리 수정 : 2021-09-16*/
+.wrap-gui { overflow: hidden; display: table-cell; vertical-align: middle; font-size: 0; margin: 0; padding: 0; line-height: 190px; }
+.wrap-gui .gui-btn,.wrap-gui span { /*float: left;*/ display: inline-block; vertical-align: middle; }
+.wrap-gui .gui-btn { width: 130px; height: 130px; line-height: 1; background-position: center; background-repeat: no-repeat; padding: 5px 10px; font-size: 10px; font-weight: bold; cursor: pointer; border: none; background-color: transparent; word-break: break-all; }
+.wrap-gui .gui-btn span { color: black; } 
+.wrap-gui .gui-btn:hover { color: #eb2b20; }
+.wrap-gui .icon_FDF {background-image: url('../images/wire/icon_FDF.png'); }
+.wrap-gui .icon_CS { background-image: url('../images/wire/icon_CS.png'); }
+.wrap-gui .icon_TS {background-image: url('../images/wire/icon_TS.png'); }
+.wrap-gui .icon_NET { background-image: url('../images/wire/icon_NET.png'); }
+
+.wrap-gui .line01, .wrap-gui .line02 { width: 30px; height: 6px; margin-left: -8px; margin-right: -8px; }
+.wrap-gui .line01 { background: url('../images/wire/line01.png') repeat-x center; }
+.wrap-gui .line02 { background: url('../images/wire/line02.png') repeat-x center; }
+/* 회선연결정보 배선관리 수정 : 2021-09-16*/
+
+
+/* 필수 표시 */
+.required:after {
+  content:" *";
+  color: red;
+}
+
+/* gui-btn color red */
+.wrap-gui .gui-btn.on {
+	color: #eb2b20;
+}
+
+/* 배선 장비구성도 퍼블리싱 추가 : 2021-09-23*/
+/* 장비구성도 퍼블리싱 */
+.wrap-boxes { box-sizing: border-box; height: 600px; background: #f1f1f1; padding: 10px; font-size: 0px; display: table-cell; vertical-align: middle; text-align: center; }
+.box { display: inline-block; box-sizing: border-box; width: 60px; margin: 4px; background: #fff; /*border: 1px solid #d8d8d8;*/ border-radius: 8px; padding: 4px; box-shadow: 0 0 3px #dadada; }
+.box-div { padding: 8px 3px; text-align: center; background: #d7d7d8; font-size: 11px; line-height: 1.5; }
+.box .box-div:first-child { border-bottom: 2px solid #fff; border-radius: 6px 6px 0 0; }
+.box .box-div:last-child { border-radius: 0 0 6px 6px; }
+/* 컬러 설정 */
+/* default로 회색 지정했습니다. 컬러 변경 시 class="box"에 아래 class 추가해주세요. */
+.bg-green .box-div { background: #7bca72; }
+.bg-red .box-div { background: #e64848; color: #fff; }
+.bg-yellow .box-div { background: #f9c958; }
+.bg-orange .box-div { background: #ff8000; }
+.bg-blue .box-div { background: #78bee8; }
+.bg-white .box-div { background: #ffffff; }
+.bg-mauve .box-div { background: #cd45d8; }
+
+/* 하단 정보 퍼블리싱 */
+.info-core { font-style: italic; font-size: 14px; font-weight: bold; line-height: 30px; padding-top: 10px; }
+.info-box { overflow: hidden; }
+.info-front, .info-rear { box-sizing: border-box; margin: 0; padding: 0; float: left; width: 49.5%; min-height: 100px;border: 1px solid #808080; padding: 10px; }
+.info-front { margin-right: 1%; }
+
+/* 범례 */
+.info-legend{width:100%; height:20px; margin-bottom:5px; padding:0 133px;}
+.info-legend > dd{float:left; width:110px; margin-right:5px;}
+.info-legend > dd > span{float:left;}
+.info-legend > dd > span > i{line-height:18px; font-weight:bold;}
+.info-legend > dd > .box_icon{width:18px; height:18px; margin-right:8px; border: 1px solid; }
+.info-legend > dd > .box_text{font-size:13px; color:#000; line-height:18px;}
+.bg-green-legend { background: #7bca72; }
+.bg-red-legend { background: #e64848; color: #fff; }
+.bg-yellow-legend { background: #f9c958; }
+.bg-orange-legend { background: #ff8000; }
+.bg-blue-legend { background: #78bee8; }
+.bg-white-legend { background: #ffffff; }
+.bg-mauve-legend { background: #cd45d8; }
+.bg-gray-legend { background: #d7d7d8; }
+
+
+.unit-config-wrapper {
+  display: grid;
+  margin: 10px;
+  background: #f1f1f1;
+}
+  
+
+/* 배선 장비구성도 퍼블리싱 추가 : 2021-09-23*/
+
+/***************************************************************고객 업무 공용 css*/ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

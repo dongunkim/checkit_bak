@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<errors>
+	<!-- [참고사항] -->
+	<!--
+		1. 9000~9999 : 공통 에러메세지 코드정의
+		2. 1000~1999 : 공통기능 에러메세지 코드정의
+		3. 2000~8899 : [메인패키지][업무기능] 에러메세지 코드정의
+		4. 8900~8999 : [템플릿패키지][샘플기능] 에러메세지 코드정의
+
+	-->
+
+	<!--
+	##############################
+	 1. 공통 에러메세지 코드정의
+	##############################
+	- 9000~9999
+	- 트랜잭션처리 등등
+	-->
+	<error	id="9000"	code="COMMON.ERROR.CODE.9000"	httpStatus="500"	message="500 Internal Server Error"	desc="500 Internal Server Error" />
+	<error	id="9100"	code="COMMON.ERROR.CODE.9100"	httpStatus="500" 	message=""	desc=""/>
+	<error	id="9200"	code="COMMON.ERROR.CODE.9200"	httpStatus="500" 	message=""	desc=""/>
+	<error	id="9300"	code="COMMON.ERROR.CODE.9300"	httpStatus="500" 	message=""	desc=""/>
+	<error	id="9400"	code="COMMON.ERROR.CODE.9400"	httpStatus="500" 	message=""	desc=""/>
+	<error	id="9500"	code="COMMON.ERROR.CODE.9500"	httpStatus="500" 	message=""	desc=""/>
+	<error	id="9600"	code="COMMON.ERROR.CODE.9600"	httpStatus="500" 	message=""	desc=""/>
+	<error	id="9700"	code="COMMON.ERROR.CODE.9700"	httpStatus="500" 	message=""	desc=""/>
+	<error	id="9800"	code="COMMON.ERROR.CODE.9800"	httpStatus="500" 	message=""	desc=""/>
+	<error	id="9900"	code="COMMON.ERROR.CODE.9900"	httpStatus="500" 	message=""	desc=""/>
+
+	<!--
+	#################################
+	 2. 공통기능 에러메세지 코드정의
+	#################################
+	- 1000~1999
+	- 권한, 로그인 등등
+	-->
+	<!-- [JAXRS 호출 API] -->
+	<!-- 등록되지 않은 서비스ID -->
+	<error	id="1000"	code="COMMON.FUNC.ERROR.CODE.1000"	httpStatus="400"	message="Unregistered service ID information"	desc="Unregistered service ID information." />
+	<!-- [Validation] -->
+	<error	id="1001"	code="COMMON.FUNC.ERROR.CODE.1001"	httpStatus="400"	message="필수 파라메타 정보 누락"	desc="필수 파라메타 정보 누락" />
+	<!-- [로그인인증] -->
+	<error	id="1002"	code="COMMON.FUNC.ERROR.CODE.1002"	httpStatus="400"	message="로그인 인증 하지 않음"	desc="로그인 인증 하지 않음" />
+	<!-- [공통채번] -->
+	<error	id="1010"	code="COMMON.FUNC.ERROR.CODE.1010"	httpStatus="400"	message="Failed to select a common chaebeon information."	desc="Failed to select a common chaebeon information." />
+	<error	id="1011"	code="COMMON.FUNC.ERROR.CODE.1011"	httpStatus="400"	message="Failed to update a common chaebeon information."	desc="Failed to update a common chaebeon information." />
+	<error	id="1012"	code="COMMON.FUNC.ERROR.CODE.1012"	httpStatus="400"	message="The id is less than 0"	desc="The id is less than 0" />
+	<error	id="1013"	code="COMMON.FUNC.ERROR.CODE.1013"	httpStatus="400"	message="The TallocateLongIdBlock is error"	desc="The TallocateLongIdBlock is error" />
+	<error	id="1014"	code="COMMON.FUNC.ERROR.CODE.1014"	httpStatus="400"	message="다음 ID가 입력받은 MaxId보다 큽니다."	desc="다음 ID가 입력받은 MaxId보다 큽니다." />
+	<!-- [첨부파일] -->
+	<error	id="1020"	code="COMMON.FUNC.ERROR.CODE.1020"	httpStatus="400"	message="첨부파일 삭제 실패"	desc="첨부파일 삭제 실패" />
+	<error	id="1021"	code="COMMON.FUNC.ERROR.CODE.1021"	httpStatus="400"	message="해당 첨부파일 또는 저장경로가 없습니다."	desc="해당 첨부파일 또는 저장경로가 없습니다." />
+	<error	id="1022"	code="COMMON.FUNC.ERROR.CODE.1022"	httpStatus="400"	message="첨부파일 삭제 권한 Error"	desc="첨부파일 삭제 권한 Error" />
+	<error	id="1023"	code="COMMON.FUNC.ERROR.CODE.1023"	httpStatus="400"	message="첨부파일 사이즈(3145728 byte) 초과된 파일이 있습니다."	desc="첨부파일 사이즈(104857600 byte) 초과된 파일이 있습니다." />
+	<error	id="1024"	code="COMMON.FUNC.ERROR.CODE.1024"	httpStatus="400"	message="첨부파일 확장자(XLS|XLSX|PPT|PPTX|HWP|DOC|DOCX|ZIP|TAR|TXT|JPG|GIF|PNG) 만 업로드 가능합니다."	desc="첨부파일 확장자(XLS|XLSX|PPT|PPTX|HWP|DOC|DOCX|ZIP|TAR|TXT|JPG|GIF|PNG) 만 업로드 가능합니다" />
+	<error	id="1025"	code="COMMON.FUNC.ERROR.CODE.1025"	httpStatus="400"	message="시퀀스 가져오는데 에러 발생"	desc="시퀀스 가져오는데 에러 발생" />
+	<error	id="1026"	code="COMMON.FUNC.ERROR.CODE.1026"	httpStatus="400"	message="첨부파일 중에 길이(100자)를 초과하는 파일이 있습니다."	desc="첨부파일 중에 길이(100자)를 초과하는 파일이 있습니다." />
+	<error	id="1027"	code="COMMON.FUNC.ERROR.CODE.1027"	httpStatus="400"	message="첨부파일물리저장 에러발생 하였습니다."	desc="첨부파일물리저장 에러발생 하였습니다." />
+	<error	id="1028"	code="COMMON.FUNC.ERROR.CODE.1028"	httpStatus="400"	message="첨부파일 업로드 대상이 없습니다."	desc="첨부파일 업로드 대상이 없습니다." />
+	<error	id="1029"	code="COMMON.FUNC.ERROR.CODE.1029"	httpStatus="400"	message="첨부파일 DB 저장 에러발생"	desc="첨부파일 DB 저장 에러발생" />
+	<error	id="1030"	code="COMMON.FUNC.ERROR.CODE.1030"	httpStatus="400"	message="첨부파일 업로드 폴더가 존재하지 않습니다."	desc="첨부파일 업로드 폴더가 존재하지 않습니다." />
+	<error	id="1031"	code="COMMON.FUNC.ERROR.CODE.1031"	httpStatus="400"	message="첨부파일 업로드 (신규)등록 페이지 호출 COMMAND 값은 add or mod 값만 허용합니다."	desc="첨부파일 업로드 (신규)등록 페이지 호출 COMMAND 값은 add or mod 값만 허용합니다." />
+	<error	id="1032"	code="COMMON.FUNC.ERROR.CODE.1032"	httpStatus="400"	message="첨부파일 업로드 페이지 호출 파일등록번호 값이 없습니다."	desc="첨부파일 업로드 페이지 호출 파일등록번호 값이 없습니다." />
+	<error	id="1033"	code="COMMON.FUNC.ERROR.CODE.1033"	httpStatus="400"	message="첨부파일 등록번호 파일등록번호는 0보다 큰 number형만 가능합니다."	desc="첨부파일 등록번호 파일등록번호는 0보다 큰 number형만 가능합니다." />
+
+	<error	id="1100"	code="COMMON.FUNC.ERROR.CODE.1100"	httpStatus="400"	message=""	desc="" />
+	<error	id="1200"	code="COMMON.FUNC.ERROR.CODE.1200"	httpStatus="400"	message=""	desc="" />
+	<error	id="1300"	code="COMMON.FUNC.ERROR.CODE.1300"	httpStatus="400"	message=""	desc="" />
+	<error	id="1400"	code="COMMON.FUNC.ERROR.CODE.1400"	httpStatus="400"	message=""	desc="" />
+	<error	id="1500"	code="COMMON.FUNC.ERROR.CODE.1500"	httpStatus="400"	message=""	desc="" />
+	<error	id="1600"	code="COMMON.FUNC.ERROR.CODE.1600"	httpStatus="400"	message=""	desc="" />
+	<error	id="1700"	code="COMMON.FUNC.ERROR.CODE.1700"	httpStatus="400"	message=""	desc="" />
+	<error	id="1800"	code="COMMON.FUNC.ERROR.CODE.1800"	httpStatus="400"	message=""	desc="" />
+	<error	id="1900"	code="COMMON.FUNC.ERROR.CODE.1900"	httpStatus="400"	message=""	desc="" />
+
+	<!--
+	#################################################
+	 3. [메인패키지][업무기능] 에러메세지 코드정의
+	#################################################
+	- 2000~8899
+	-->
+
+	<!--
+	#################################################
+	 4. [템플릿패키지][샘플기능] 에러메세지 코드정의
+	#################################################
+	- 8900~8999
+	-->
+	<!-- [템플릿][Sample] 업무기능 에러메세지 코드정의 -->
+	<error	id="8900"	code="TEMPLATE.SAMPLE.FUNC.ERROR.CODE.8900"	httpStatus="400"	message="Id length exceeds"	desc="Id length exceeds" />
+
+
+
+
+</errors>

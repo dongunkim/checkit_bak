@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	   xmlns:security="http://www.springframework.org/schema/security"
+	   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans
+			 					 http://www.springframework.org/schema/beans/spring-beans.xsd
+								 http://www.springframework.org/schema/security
+								 http://www.springframework.org/schema/security/spring-security.xsd">
+	
+	<security:http pattern="/resources/**" security="none"></security:http>
+	
+	<security:http auto-config="true" use-expressions="true">
+		<security:headers>
+			<security:frame-options disabled="true"></security:frame-options>
+		</security:headers>
+		<security:access-denied-handler error-page="/common/accessDenied.do"/>
+
+		<security:form-login login-page="/admin/login/login0101Page.do"
+							 authentication-failure-url="/admin/login/login0101Page.do?error=1"
+							 username-parameter="userId"
+							 password-parameter="passwd"
+							 authentication-success-handler-ref="commLoginSuccessHandler"
+							 authentication-failure-handler-ref="commLoginFailHandler"
+							 default-target-url="/admin/login/login0101Page.do"
+							 always-use-default-target="true"/>
+		<security:intercept-url pattern="/admin/login/login0101Page.do" access="permitAll"/>
+							 
+		<security:session-management>
+			<security:concurrency-control max-sessions="1" expired-url="/admin/login/login0101Page.do"/>
+		</security:session-management>
+		<security:session-management session-fixation-protection="none" />
+
+		<security:logout invalidate-session="true" logout-success-url="/admin/login/login0101Page.do" logout-url="/admin/login/logout.do"/>
+
+	</security:http>
+	
+	<bean id="commLoginSuccessHandler" class="com.sktelecom.checkit.core.security.handler.CommLoginSuccessHandler"/>
+	<bean id="commLoginFailHandler" class="com.sktelecom.checkit.core.security.handler.CommLoginFailHandler"/>
+	
+	<bean class="org.springframework.security.web.access.expression.DefaultWebSecurityExpressionHandler"/>
+ 	
+	<security:authentication-manager>
+	    <security:authentication-provider ref="loginProvider"/>
+	</security:authentication-manager>	
+    
+    <bean id="loginProvider" class="com.sktelecom.checkit.core.security.CommLoginProvider"/>
+
+</beans>

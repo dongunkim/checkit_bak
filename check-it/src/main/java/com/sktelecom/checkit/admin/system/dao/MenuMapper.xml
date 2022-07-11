@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="admin.system.dao">
+	
+	<select id="menuTreeList" parameterType="paramMap" resultType="commMap">
+		WITH RECURSIVE CTE AS 
+		(
+			SELECT
+				 SM.UP_MENU_ID
+				,SM.MENU_ID
+				,SM.MENU_URL
+				,SM.MENU_NAME
+				,SM.SYS_TYPE
+				,SM.USE_YN
+				,SM.SORT_SEQ
+				,(SELECT IF(COUNT(1) > 0, 'Y', 'N') FROM T_MENU AS A WHERE A.UP_MENU_ID = SM.MENU_ID) AS IS_DOWN
+				,1 AS LVL
+			FROM T_MENU AS SM
+			WHERE SM.UP_MENU_ID = 0
+			UNION ALL
+			SELECT
+				 SM2.UP_MENU_ID
+				,SM2.MENU_ID
+				,SM2.MENU_URL
+				,SM2.MENU_NAME
+				,SM2.SYS_TYPE
+				,SM2.USE_YN
+				,SM2.SORT_SEQ
+				,(SELECT IF(COUNT(1) > 0, 'Y', 'N') FROM T_MENU AS A WHERE A.UP_MENU_ID = SM2.MENU_ID) AS IS_DOWN
+				,B.LVL+1 AS LVL
+			FROM T_MENU AS SM2
+			INNER JOIN CTE AS B ON SM2.UP_MENU_ID = B.MENU_ID
+		)
+		SELECT 
+			 A.MENU_NAME AS CODE_NAME
+			,A.IS_DOWN
+			,A.UP_MENU_ID
+			,A.MENU_ID
+			,A.MENU_URL
+			,A.MENU_NAME
+			,A.SYS_TYPE
+			,A.USE_YN
+			,A.SORT_SEQ
+			,A.lvl
+			,#{sysType} AS SYS_TYPE
+		FROM CTE A
+		WHERE A.SYS_TYPE = #{sysType}
+		  AND IFNULL(A.UP_MENU_ID, 0) = #{menuId}
+		ORDER BY A.UP_MENU_ID, A.MENU_ID, A.SORT_SEQ
+	</select>
+	
+	<select id="menuPgmList" parameterType="paramMap" resultType="commMap">
+		SELECT                             
+			COUNT(*) OVER () AS RNUM_CNT
+			,T_PGM.PID               
+			,T_PGM.PNAME             
+			,T_PGM.SERVLET_PATH      
+			,T_PGM.ACTION_CMD        
+			,T_PGM.SYS_TYPE          
+			,T_PGM.METHOD_TYPE       
+			,T_PGM.LOGIN_YN          
+			,T_PGM.MID               
+		FROM    T_PGM                    
+		WHERE   T_PGM.MID = #{menuId}            
+		ORDER BY T_PGM.SERVLET_PATH ASC  
+		        ,T_PGM.PNAME ASC
+	</select>
+	
+	<insert id="menuInsert" parameterType="paramMap">
+	INSERT INTO T_MENU 
+	( 
+	     MENU_ID
+		,UP_MENU_ID
+		,MENU_NAME
+		,SYS_TYPE
+		,MENU_URL
+		,USE_YN
+		,SORT_SEQ
+		,REG_DT
+		,REG_ID
+		,UPD_DT
+		,UPD_ID 
+	) VALUES ( 
+		 (SELECT NVL(MAX(A.MENU_ID), 0) + 1 FROM T_MENU AS A)
+		,#{upMenuId}
+		,#{menuName}
+		,#{sysType}
+		,#{menuUrl}
+		,#{useYn}
+		,(SELECT IFNULL(MAX(A.SORT_SEQ), 0) + 1 FROM T_MENU AS A WHERE UP_MENU_ID = #{upMenuId})
+		,DATE_FORMAT(NOW(), '%Y%m%d%H%i%s')
+		,#{userId}
+		,DATE_FORMAT(NOW(), '%Y%m%d%H%i%s')
+		,#{userId}
+	) 
+	
+	</insert>
+	
+	<update id="menuUpdate" parameterType="paramMap">
+		UPDATE T_MENU
+		SET
+			 UPD_DT = DATE_FORMAT(NOW(), '%Y%m%d%H%i%s')
+			,UPD_ID = #{userId} 
+			<if test="menuName != '' and menuName != null ">
+			,MENU_NAME = #{menuName}
+			</if>
+			<if test="menuUrl != null ">
+			,MENU_URL = #{menuUrl}
+			</if>
+			<if test=" useYn != '' and useYn != null ">
+			,USE_YN = #{useYn}
+			</if>
+			<if test=" sortSeq != '' and sortSeq != null ">
+			,SORT_SEQ = #{sortSeq}
+			</if>
+		WHERE MENU_ID = #{menuId}
+	</update>
+	
+
+	<insert id="menuPgmInsert" parameterType="paramMap">
+	INSERT INTO T_PGM 
+	( 
+		PID
+        ,PNAME
+	    ,SERVLET_PATH
+        ,ACTION_CMD
+        ,SYS_TYPE
+        ,METHOD_TYPE
+        ,LOGIN_YN
+        ,MID
+		,REG_DT
+		,REG_ID
+		,UPD_DT
+		,UPD_ID 
+	) VALUES ( 
+		(SELECT NVL(MAX(A.PID), 0) + 1 FROM T_PGM AS A)
+		,#{pname}
+		,#{servletPath}
+		,#{actionCmd}
+		,#{sysType}
+		,#{readWriteWR}
+		,#{loginYn}
+        ,#{menuId}
+		,DATE_FORMAT(NOW(), '%Y%m%d%H%i%s')
+		,#{userId}
+		,DATE_FORMAT(NOW(), '%Y%m%d%H%i%s')
+		,#{userId}
+	)
+	</insert>
+	
+	<update id="menuPgmUpdate" parameterType="paramMap">
+		UPDATE T_PGM
+		SET
+			 UPD_DT = DATE_FORMAT(NOW(), '%Y%m%d%H%i%s')
+			,UPD_ID = #{userId} 
+			<if test="pname != '' and pname != null ">
+			,PNAME = #{pname}
+			</if>
+			<if test="servletPath != null ">
+			,SERVLET_PATH = #{servletPath}
+			</if>
+			<if test="readWriteWR != null ">
+			,METHOD_TYPE = #{readWriteWR}
+			</if>
+		WHERE PID = #{pid}
+	</update>
+
+	
+	<delete id="downMenuDelete" parameterType="paramMap">
+		DELETE FROM T_MENU
+		WHERE UP_MENU_ID = #{menuId}
+	</delete>
+	
+	<delete id="menuDelete" parameterType="paramMap">
+		DELETE FROM T_MENU
+		WHERE MENU_ID = #{menuId}
+	</delete>
+	
+	<delete id="menuPgmDelete" parameterType="paramMap">
+		DELETE FROM T_PGM
+		WHERE PID = #{pid}
+	</delete>
+	
+	
+</mapper>

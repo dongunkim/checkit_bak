@@ -1,0 +1,65 @@
+
+
+
+/***************************************************************고객 업무 공용 css*/
+
+/*로딩바*/
+.progressbar{width:300px; height:220px; border:1px solid #ececec; border-radius:10px; padding:20px 0; -webkit-box-shadow: 2px 2px 7px 0px rgba(219,219,219,1);
+-moz-box-shadow: 2px 2px 7px 0px rgba(219,219,219,1); box-shadow: 2px 2px 7px 0px rgba(219,219,219,1);}
+.progressbar .skblogo{width:100%; height:50px; background:url('../images/logo/skb_logo_prog.png') no-repeat center; }
+.progressbar .text{text-align:center; font-size:18px; font-weight:bold; color:#535353;}
+.progressbar .center{display:table; margin:0 auto; margin-top:20px;}
+.progressbar .loading_bar{display: inline-block; width: 80px; height: 80px; border: 5px solid rgba(253,122,35,.3); border-radius: 50%; border-top-color: #fd7a23; animation: spin 1s ease-in-out infinite; -webkit-animation: spin 1s ease-in-out infinite;}
+@keyframes spin {
+  to { -webkit-transform: rotate(360deg); }
+}
+@-webkit-keyframes spin {
+  to { -webkit-transform: rotate(360deg); }
+}
+/*로딩바*/
+
+
+/*404 에러*/
+.myadmin_warning_count{position:absolute; top:50%; left:50%; margin-top:-270px; margin-left:-364px;}
+.myadmin_warning_count > .skb_logo{width:140px; height:46px; background:url('../images/logo/skb_logo_prog.png') no-repeat;}
+.myadmin_warning_count > .big_title{color:#767070; font-size:70px; font-weight:bold;}
+.myadmin_warning_count > .big_title > b{color:#fd7a23;}
+.myadmin_warning_count > .small_title{font-size:35px; color:#767070; font-weight:400;}
+.myadmin_warning_count > .word{font-size:25px; color:#767070;}
+/**404 에러*/
+
+
+
+/* 회선연결정보 배선관리 수정 : 2021-09-16*/
+.wrap-gui { overflow: hidden; display: table-cell; vertical-align: middle; font-size: 0; margin: 0; padding: 0; line-height: 190px; }
+.wrap-gui .gui-btn,.wrap-gui span { /*float: left;*/ display: inline-block; vertical-align: middle; }
+.wrap-gui .gui-btn { width: 130px; height: 130px; line-height: 1; background-position: center; background-repeat: no-repeat; padding: 5px 10px; font-size: 10px; font-weight: bold; cursor: pointer; border: none; background-color: transparent; word-break: break-all; }
+.wrap-gui .gui-btn span { color: black; } 
+.wrap-gui .gui-btn:hover { color: #eb2b20; }
+.wrap-gui .icon_FDF {background-image: url('../images/wire/icon_FDF.png'); }
+.wrap-gui .icon_CS { background-image: url('../images/wire/icon_CS.png'); }
+.wrap-gui .icon_TS {background-image: url('../images/wire/icon_TS.png'); }
+.wrap-gui .icon_NET { background-image: url('../images/wire/icon_NET.png'); }
+
+.wrap-gui .line01, .wrap-gui .line02 { width: 30px; height: 6px; margin-left: -8px; margin-right: -8px; }
+.wrap-gui .line01 { background: url('../images/wire/line01.png') repeat-x center; }
+.wrap-gui .line02 { background: url('../images/wire/line02.png') repeat-x center; }
+/* 회선연결정보 배선관리 수정 : 2021-09-16*/
+
+/***************************************************************고객 업무 공용 css*/
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

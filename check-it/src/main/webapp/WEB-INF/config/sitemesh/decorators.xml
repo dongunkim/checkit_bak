@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<decorators defaultdir="/jsp/template">
+	
+	<!-- 업무지원시스템 메인 템플릿 -->
+	<decorator name="adminMain" title="업무지원시스템 대시보드" page="admin/mainTemplate.jsp">
+		<pattern>/admin/main/*</pattern>
+	</decorator>
+	
+	<!-- 업무지원시스템 로그인 템플릿 -->
+	<decorator name="adminLogin" title="업무지원시스템 로그인" page="admin/loginTemplate.jsp">
+		<pattern>/admin/login/*</pattern>
+	</decorator>
+
+	<!-- 업무지원시스템 기본 템플릿 -->
+	<decorator name="adminDefalut" title="업무지원시스템" page="admin/defaultTemplate.jsp">
+		<pattern>/admin/*</pattern>
+		<pattern>/demo/admin/*</pattern>
+		<pattern>/demo/common/*</pattern>
+		<pattern>/demo/pop/popupDemo.do</pattern>
+		<pattern>/admin/main/main0109List.do</pattern>
+	</decorator>
+
+	<!-- 업무지원시스템 기본 템플릿 -->
+	<decorator name="portalDefalut" title="업무지원시스템" page="admin/defaultTemplate.jsp">
+		<pattern>/portal/*</pattern>
+	</decorator>
+	
+	<!-- 업무지원시스템 include -->
+	<decorator name="adminHeaderTemplate"  page="admin/include/headerTemplate.jsp"/>
+	<decorator name="adminLeftTemplate"    page="admin/include/leftTemplate.jsp"/>
+	<decorator name="adminFooterTemplate"  page="admin/include/footerTemplate.jsp"/>
+	<decorator name="adminSiteMapTemplate" page="admin/include/siteMap.jsp"/>
+	<decorator name="adminLoadingTemplate" page="admin/include/loading.jsp"/>
+	<!-- <decorator name="adminPushTemplate"	   page="admin/include/push.jsp"/> -->
+	
+	<!-- 팝업기본 템플릿 -->
+	<decorator name="popupDefalut" title="팝업" page="popupTemplate.jsp">
+		<pattern>/demo/pop/*</pattern>
+		<pattern>/common/*Pop.do</pattern>
+		<pattern>/admin/*Pop.do</pattern>
+		<pattern>/admin/sale/sale01QuoteKey.do</pattern>
+		<pattern>/admin/sale/sale01CustInfo.do</pattern>
+		<pattern>/admin/sale/sale01Mrtg.do</pattern>
+		<pattern>/admin/wkmn/wkmn0302Pop.do</pattern>
+		<pattern>/admin/wkmn/wkmn0302PopEdit.do</pattern>
+		<pattern>/admin/wire/wire0102Detail.do</pattern>
+		<pattern>/admin/wire/wire0111Detail.do</pattern>
+		<pattern>/admin/wire/wire0202PopRemove.do</pattern>
+	</decorator>
+
+	<!-- DATA AND VIEW 기본 템플릿 -->
+	<decorator name="datvDefalut" title="DATA AND VIEW" page="datv/defaultTemplate.jsp">
+		<pattern>/datv/*</pattern>
+	</decorator>
+
+	<!-- sitemesh를 사용하지 않을 패턴을 지정 -->
+	<excludes>
+		<pattern>/error/*</pattern>
+		<pattern>/common/sendUrl/*</pattern>
+		<pattern>/admin/ermn/ermn0105Down.do</pattern>
+		<pattern>/admin/ermn/ermn0106Down.do</pattern>
+		<pattern>/admin/stat/stat0501Page.do</pattern>
+	</excludes>
+</decorators>
+

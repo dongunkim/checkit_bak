@@ -1,0 +1,98 @@
+.rack_area{
+	/* padding:14px; */
+	margin:0 auto;
+}
+
+.rack_area > table, tr, td{
+	border-bottom: 2px solid #0000003d;
+}
+
+.rack_area > table{
+	border-collapse: collapse;
+    margin: 0 auto;
+	text-align: center;
+	table-layout: fixed;
+}
+
+.rack_area > table tr{
+	height: 19px;
+}
+
+.rack_area > table td{
+	width: 220px;
+	position: relative;
+}
+
+.rack_area > table td.line_text{
+	font-size: 14px;
+}
+
+.rack_over_board{
+	border: 3px dotted red;
+}
+
+.rack_div{
+	width: 220px;
+	color: #ffffff;
+	font-size: 11px;
+	cursor:pointer;
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	z-index:99;
+	border:2px solid #000000;
+}
+
+#rightMenu {
+	z-index: 10001;
+	position: absolute;
+	left: 5px;
+	border: 1px solid #444;
+	background-color: #F5F5F5;
+	display: none;
+	box-shadow: 0 0 10px rgba( 0, 0, 0, .4 );
+	font-size: 12px;
+	font-family: sans-serif;
+	font-weight: bold;
+}
+
+#rightMenu ul {
+	list-style: none;
+	top: 0;
+	left: 0;
+	margin: 0;
+	padding: 0;
+}
+
+#rightMenu li a {
+	position: relative;
+	min-width: 60px;
+	color: #444;
+	display: inline-block;
+	padding: 6px;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+#rightMenu li:hover {
+	background: #CEDFF2;
+	color: #EEE;
+}
+
+#rightMenu li ul li {
+	display: none;
+}
+
+#rightMenu li ul li a {
+	position: relative;
+	min-width: 60px;
+	padding: 6px;
+	text-decoration: none;
+	cursor: pointer;
+}
+
+#rightMenu li:hover ul li {
+	display: block;
+	margin-left: 0px;
+	margin-top: 0px;
+}

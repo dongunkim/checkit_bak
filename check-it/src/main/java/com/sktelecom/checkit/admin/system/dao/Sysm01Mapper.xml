@@ -1,0 +1,263 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="admin.sysm.mapper">
+
+	<!-- 사용자관리 목록 -->
+	<select id="sysm0101List" parameterType="paramMap" resultType="commMap">
+		SELECT /* admin.sysm.mapper.Sysm01Mapper.XML sysm0101List */
+			 VIEW1.*
+			,(SELECT
+				FORMATION_INFO.FORMATION_NM
+			  FROM FORMATION_INFO
+			  WHERE FORMATION_INFO.FORMATION_CD = VIEW1.MANAGE_CID ) AS MANAGE_CNM
+			,(SELECT
+				FORMATION_INFO.FORMATION_NM
+			  FROM FORMATION_INFO
+			  WHERE FORMATION_INFO.FORMATION_CD = VIEW1.FORMATION_CD ) AS FORMATION_NM
+		FROM (
+				SELECT
+					 DISTINCT(USER_INFO.USER_ID) AS USER_ID
+					,USER_INFO.USER_NM
+					,USER_IDC.MANAGE_CID
+					,USER_IDC.FORMATION_CD
+					,USER_INFO.TEL_NO
+					,USER_INFO.HP_NO
+					,USER_INFO.EMAIL
+					,USER_INFO.STATUS
+					,USER_INFO.PERSONAL_NO
+					,USER_INFO.LAST_DT
+					,USER_IDC.DUTY_YN
+					,USER_IDC.COMPANY_CD
+					,USER_IDC.POSITION
+					,USER_IDC.SABUN
+					,USER_IDC.SORT_SEQ
+					,USER_INFO.RNAME
+					,USER_INFO.RID
+				FROM (SELECT USER_INFO.*, SYS_ROLE.RNAME, SYS_ROLE.RID 
+				        FROM SYS_ROLE JOIN SYS_ROLE_USER 
+				        ON SYS_ROLE.RID = SYS_ROLE_USER.RID
+				        RIGHT JOIN USER_INFO
+				        ON USER_INFO.USER_ID = SYS_ROLE_USER.USER_ID) AS USER_INFO
+			        , USER_IDC, CUST_INFO
+		    	WHERE USER_INFO.USER_ID = USER_IDC.USER_ID
+				AND   USER_INFO.CS_NO   = CUST_INFO.CS_NO
+				AND   CUST_INFO.CS_IDC_CHECK = '1'
+				AND   USER_INFO.STATUS != 'D'
+			<if test="srchFormationCd1 != null and srchFormationCd1 != ''">
+				AND USER_IDC.MANAGE_CID = #{srchFormationCd1}
+			</if>
+			<if test="srchFormationCd2 != null and srchFormationCd2 != ''">
+				AND USER_IDC.FORMATION_CD LIKE CONCAT(#{srchFormationCd2}, '%') 
+			</if>
+			<if test="searchUserId != null and searchUserId != ''">
+				AND USER_INFO.USER_ID LIKE CONCAT('%', #{searchUserId}, '%')
+			</if>
+			<if test="searchUserNm != null and searchUserNm != ''">
+				AND USER_INFO.USER_NM LIKE CONCAT('%', #{searchUserNm}, '%')
+			</if>
+			<if test="searchStatus != null and searchStatus != ''">
+				AND USER_INFO.STATUS = #{searchStatus}
+			</if>
+			<if test="searchRid != null and searchRid != ''">
+				AND USER_INFO.RID = #{searchRid}
+			</if>
+			<!-- <if test="statusArr != null and statusArr != ''">
+				AND USER_INFO.STATUS IN
+				<foreach collection="statusArr" item="item" index="index" separator="," open="(" close=")">
+					#{item}
+				</foreach>
+			</if> -->
+				ORDER BY USER_IDC.FORMATION_CD ASC , USER_INFO.USER_NM ASC , USER_INFO.USER_ID ASC
+				) VIEW1
+	</select>
+
+	<!-- 사용자 정보조회 -->
+	<select id="sysm0101Info" parameterType="paramMap" resultType="commMap">
+		<![CDATA[
+			SELECT /* admin.sysm.mapper.Sysm01Mapper.XML sysm0101Info */
+				 A.USER_ID
+				,A.USER_NM
+				,B.MANAGE_CID
+				,B.FORMATION_CD
+				,A.TEL_NO
+				,A.HP_NO
+				,A.EMAIL
+				,B.APPLY_DESC
+				,B.ATTACH_ID
+				,A.STATUS
+				,A.PASSWD
+				,A.CS_NO
+				,A.PERSONAL_NO
+				,A.LAST_IP
+				,A.LAST_DT
+				,A.REG_DT
+				,A.REG_ID
+				,A.UPD_DT
+				,A.UPD_ID
+				,(SELECT
+					FORMATION_NM
+				  FROM FORMATION_INFO
+				  WHERE FORMATION_CD = B.MANAGE_CID
+				 ) AS MANAGE_CNM
+				,(SELECT
+					FORMATION_NM
+				  FROM FORMATION_INFO
+				  WHERE FORMATION_CD = B.FORMATION_CD
+				 ) AS FORMATION_NM
+				,IFNULL(B.DUTY_YN, 'N') AS DUTY_YN
+				,B.COMPANY_CD
+				,B.POSITION
+				,B.SABUN
+				,B.SORT_SEQ
+				,IFNULL(B.TEL_WORK_YN, 'N') AS TEL_WORK_YN
+				,B.AM_YN
+				,IFNULL(B.AM_YN, 'N') AS CHK_AM_YN
+				,B.EMAIL_RECEIVE
+				,IFNULL(B.EMAIL_RECEIVE, 'N') AS CHK_EMAIL_YN
+				,B.SMS_RECEIVE
+				,IFNULL(B.SMS_RECEIVE, 'N') AS CHK_SMS_YN
+			FROM USER_INFO A, USER_IDC B
+			WHERE A.USER_ID = B.USER_ID
+			AND   A.USER_ID = #{userId}
+		]]>
+	</select>
+	
+	<!-- 사용자 권한 목록 -->
+	<select id="sysm0102List" parameterType="paramMap" resultType="commMap">
+		SELECT
+			 A.RNAME
+			,B.RID
+		FROM SYS_ROLE A, SYS_ROLE_USER B
+		WHERE A.RID       = B.RID
+		AND   A.USED_YN   = 'Y'
+		AND   A.SYS_TYPE  = '1'
+		AND   B.USER_ID   = #{userId}
+		ORDER BY B.RID ASC
+	</select>
+	
+	<!-- 권한 목록 -->
+	<select id="sysm0102PopList" parameterType="paramMap" resultType="commMap">
+			SELECT
+				 RID
+				,RNAME
+				,DESCRIPTION
+				,USED_YN
+				,SYS_TYPE
+			FROM SYS_ROLE
+			WHERE SYS_TYPE = '1'
+			AND   USED_YN  = 'Y'
+			ORDER BY RID
+	</select>
+	
+	<!-- 권한 삭제 -->
+	<delete id="deleteSysm0101" parameterType="paramMap">
+		<![CDATA[
+			DELETE                             
+			FROM SYS_ROLE_USER
+			WHERE USER_ID = #{userId}
+		]]>
+	</delete>
+	
+	<!-- 권한 등록 -->
+	<insert id="insertSysm0101" parameterType="paramMap">
+		<![CDATA[
+			INSERT INTO SYS_ROLE_USER
+			(
+			  RID
+			 ,USER_ID
+			 ,REG_DT
+			 ,REG_ID
+			 ,UPD_DT
+			)
+			VALUES
+			(
+			 #{rid}
+			,#{userId}
+			,DATE_FORMAT(NOW(), '%Y%m%d%H%i%s')
+			,#{regId}
+			,DATE_FORMAT(NOW(), '%Y%m%d%H%i%s')
+			)
+		]]>
+	</insert>
+	
+	<!-- 사용자 정보 수정 -->
+	<update id="updateUserInfo" parameterType="paramMap">
+		<![CDATA[
+			UPDATE USER_INFO
+		]]>
+			<set>
+				<if test="tmpPasswd != null and tmpPasswd != ''">PASSWD = #{tmpPasswd},</if>
+				<if test="userNm != null and userNm != ''">USER_NM = #{userNm},</if>
+				<if test="telNo != null and telNo != ''">TEL_NO = #{telNo},</if>
+				<if test="hpNo != null and hpNo != ''">HP_NO = #{hpNo},</if>
+				<if test="email != null and email != ''">EMAIL = #{email},</if>
+				<if test="status != null and status != ''">STATUS = #{status},</if>
+				<if test="loginFailCnt != null and loginFailCnt != ''">LOGIN_FAIL_CNT = #{loginFailCnt},</if>
+				UPD_DT = DATE_FORMAT(NOW(), '%Y%m%d%H%i%s'),
+				CNGPW_DT = DATE_FORMAT(NOW(), '%Y%m%d%H%i%s'),
+				UPD_ID = #{updId}
+			</set>
+		<![CDATA[
+			WHERE USER_ID = #{userId}
+		]]>
+	</update>
+	
+	<!-- IDC 사용자 정보 수정 -->
+	<update id="updateUserIdc" parameterType="paramMap">
+		<![CDATA[
+			UPDATE USER_IDC
+		]]>
+			<set>
+				<if test="chkAmYn != null and chkAmYn != ''">AM_YN = #{chkAmYn},</if>
+				<if test="applyDesc != null and applyDesc != ''">APPLY_DESC = #{applyDesc},</if>
+				<if test="manageCid != null and manageCid != ''">MANAGE_CID = #{manageCid},</if>
+				<if test="formationCd != null and formationCd != ''">FORMATION_CD = #{formationCd},</if>
+				<if test="dutyYn != null and dutyYn != ''">DUTY_YN = #{dutyYn},</if>
+				<if test="telWorkYn != null and telWorkYn != ''">TEL_WORK_YN = #{telWorkYn},</if>
+				<if test="companyCd != null and companyCd != ''">COMPANY_CD = #{companyCd},</if>
+				<if test="position != null and position != ''">POSITION = #{position},</if>
+				<if test="chkEmailYn != null and chkEmailYn != ''">EMAIL_RECEIVE = #{chkEmailYn},</if>
+				<if test="chkSmsYn != null and chkSmsYn != ''">SMS_RECEIVE = #{chkSmsYn},</if>
+				<if test="sabun != null and sabun != ''">SABUN = #{sabun},</if>
+				<if test="sortSeq != null and sortSeq != ''">SORT_SEQ = #{sortSeq},</if>
+				UPD_DT = DATE_FORMAT(NOW(), '%Y%m%d%H%i%s'),
+				UPD_ID = #{updId}
+			</set>
+		<![CDATA[
+			WHERE USER_ID = #{userId}
+		]]>
+	</update>
+
+	<!-- 사용자관리 소속 상세 AJAX 목록 -->
+	<select id="sysm0101srchFormationCd2" parameterType="paramMap" resultType="commMap">
+		SELECT	/* admin.sysm.mapper.Sysm01Mapper.XML sysm0101srchFormationCd2 */
+				FORMATION_CD,
+				FORMATION_NM,
+				HIGHER,
+				SORT_SEQ,
+				DEL_YN
+		FROM	FORMATION_INFO
+		WHERE	HIGHER = #{srchFormationCd1}
+		AND		DEL_YN = 'N'
+		ORDER BY SORT_SEQ
+	</select>
+        
+    <insert id="sysm01InsertUserInfoHst" parameterType="paramMap">
+    INSERT INTO USER_INFO_HST
+    	(
+    		HST_NO
+    		,USER_ID
+    		,CH_DT
+    		,CH_ID
+    		,HST_DESC
+    	) VALUES (
+    		(SELECT IFNULL(MAX(HST_NO), 0) + 1 FROM USER_INFO_HST AS A)
+    		,#{userId}
+    		,DATE_FORMAT(NOW(), '%Y%m%d%H%i%s')
+    		,#{updId}
+    		,#{hstDesc}
+    	)
+    </insert>
+        
+
+</mapper>

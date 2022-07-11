@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+						http://www.springframework.org/schema/beans/spring-beans-4.2.xsd">
+						
+	<bean name="propertyService" class="com.sktelecom.checkit.core.property.PropertyServiceImpl" destroy-method="destroy">
+		<!-- 프로퍼티 정보 -->
+		<property name="properties">
+			<map>
+				<entry key="filePath.csv" value="/data/webapps/apps/upload/csv"/>
+				<entry key="filePath.upload.tmp" value="/data/webapps/apps/upload/tmp"/>
+				<entry key="filePath.upload" value="/data/webapps/apps/upload"/>
+				<entry key="mail.ip" value="211.58.253.133"/>      <!-- 메일서버 IP -->
+				<entry key="mail.port" value="25"/>                <!-- 메일서버 port -->
+				<entry key="peakflow.curl.path" value="/webfile/storage/files/attach/peakflow"/>
+				<entry key="peakflow.view.path" value="/data/webapps/apps/upload/peakflow"/>
+				<entry key="filePath.idc.upload" value="/data/webapps/apps/upload/idc"/>
+				<entry key="filePath.equ.upload" value="/data/webapps/apps/upload/equ"/>
+				<entry key="iris.url" value="http://222.239.252.121:6036/angora/"/>
+				<entry key="iris.token.url" value="auth"/>
+				<entry key="iris.query.jobs.url" value="query/jobs"/>
+				<entry key="iris.post.id" value="idc_api"/>
+				<entry key="iris.post.pwd" value="idc_api2020!@"/>
+				<entry key="iris.group.id" value="IDCTech"/>
+				<entry key="iris.encrypted" value="false"/>
+				<entry key="iris.size" value="500"/>
+				<entry key="iris.fetch.size" value="10"/>
+			</map>
+		</property>
+	</bean>
+</beans>

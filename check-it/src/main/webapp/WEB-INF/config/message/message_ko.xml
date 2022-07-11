@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties version="1.0">
+
+	<!-- 공통 메시지 -->
+	<entry key="common.message.search">조회 하시겠습니까?</entry>
+	
+	<!-- error-code -->
+	<entry key="common.system.403">서버가 요청을 거부 했습니다.</entry>
+	<entry key="common.system.404">서버가 요청한 페이지를 찾을 수 없습니다.</entry>
+	<entry key="common.system.500">서버에 오류가 발생하여 요청을 수행할 수 없습니다.</entry>
+	<entry key="common.error.messagecode">오류가 발생했습니다! error code: {0}, error msg: {1}</entry>
+	
+</properties>

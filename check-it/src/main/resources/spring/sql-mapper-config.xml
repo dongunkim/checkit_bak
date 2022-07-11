@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+	<settings>
+		<setting name="cacheEnabled" value="true"/>
+		<setting name="multipleResultSetsEnabled" value="true"/>		
+		<setting name="mapUnderscoreToCamelCase" value="true"/>
+		<setting name="jdbcTypeForNull" value="NULL"/>
+		<setting name="callSettersOnNulls" value="true"/>
+	</settings>
+	<!-- alias 정의 -->
+	<typeAliases>
+		<typeAlias alias="paramMap" type="java.util.HashMap"/>
+		<typeAlias alias="resultMap" type="java.util.HashMap"/>
+		<typeAlias alias="commMap" type="com.sktelecom.checkit.core.util.CommMap"/>
+	</typeAliases>
+	<typeHandlers>
+		<typeHandler javaType="java.lang.String"	jdbcType="INTEGER"		handler="org.apache.ibatis.type.IntegerTypeHandler" />
+		<typeHandler javaType="java.lang.Float"		jdbcType="FLOAT"		handler="org.apache.ibatis.type.FloatTypeHandler" />
+		<typeHandler javaType="java.lang.Double"	jdbcType="DOUBLE"		handler="org.apache.ibatis.type.DoubleTypeHandler" />
+		<typeHandler javaType="java.sql.Timestamp"	jdbcType="TIMESTAMP"	handler="org.apache.ibatis.type.DateTypeHandler"/>
+		<typeHandler javaType="java.sql.Time"		jdbcType="TIMESTAMP"	handler="org.apache.ibatis.type.DateTypeHandler"/>
+		<typeHandler javaType="java.sql.Date"		jdbcType="TIMESTAMP"	handler="org.apache.ibatis.type.DateTypeHandler"/>
+	</typeHandlers>
+	
+</configuration>
