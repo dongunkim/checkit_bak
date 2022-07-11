@@ -26,8 +26,7 @@ public class Sysm01DAO extends AbstractMapper {
 	 */
 	@SuppressWarnings("unchecked")
 	public HashMap<String, Object> sysm0101List(HashMap<String, Object> param) throws Exception{
-		HashMap<String, Object> rtn = (HashMap<String, Object>)super.selectList("admin.sysm.mapper.sysm0101List", param);
-		return rtn;
+		return (HashMap<String, Object>)super.selectList("admin.sysm.mapper.sysm0101List", param);
 	}
 
 	/**
@@ -38,8 +37,7 @@ public class Sysm01DAO extends AbstractMapper {
 	 */
 	@SuppressWarnings("unchecked")
 	public HashMap<String, Object> sysm0101Info(HashMap<String, Object> param) throws Exception{
-		HashMap<String, Object> rtn = (HashMap<String, Object>)super.selectOne("admin.sysm.mapper.sysm0101Info", param);
-		return rtn;
+		return (HashMap<String, Object>)super.selectOne("admin.sysm.mapper.sysm0101Info", param);
 	}
 
 	/**
@@ -50,8 +48,7 @@ public class Sysm01DAO extends AbstractMapper {
 	 */
 	@SuppressWarnings("unchecked")
 	public HashMap<String, Object> sysm0102List(HashMap<String, Object> param) throws Exception{
-		HashMap<String, Object> rtn = (HashMap<String, Object>)super.selectList("admin.sysm.mapper.sysm0102List", param);
-		return rtn;
+		return (HashMap<String, Object>)super.selectList("admin.sysm.mapper.sysm0102List", param);
 	}
 
 	/**
@@ -62,8 +59,7 @@ public class Sysm01DAO extends AbstractMapper {
 	 */
 	@SuppressWarnings("unchecked")
 	public HashMap<String, Object> sysm0102PopList(HashMap<String, Object> param) throws Exception{
-		HashMap<String, Object> rtn = (HashMap<String, Object>)super.selectList("admin.sysm.mapper.sysm0102PopList", param);
-		return rtn;
+		return (HashMap<String, Object>)super.selectList("admin.sysm.mapper.sysm0102PopList", param);
 	}
 
 	/**
@@ -84,8 +80,7 @@ public class Sysm01DAO extends AbstractMapper {
 	 * @throws CommException
 	 */
 	public int insertSysm0101(HashMap<String, Object> param) throws Exception{
-		int rtn = super.insert("admin.sysm.mapper.insertSysm0101", param);
-		return rtn;
+		return super.insert("admin.sysm.mapper.insertSysm0101", param);
 	}
 
 	/**
@@ -106,8 +101,7 @@ public class Sysm01DAO extends AbstractMapper {
 	 * @throws CommException
 	 */
 	public int updateUserIdc(HashMap<String, Object> param) throws Exception{
-		int rtn = super.update("admin.sysm.mapper.updateUserIdc", param);
-		return rtn;
+		return super.update("admin.sysm.mapper.updateUserIdc", param);
 	}
 
 	/**
@@ -118,8 +112,7 @@ public class Sysm01DAO extends AbstractMapper {
 	 */
 	@SuppressWarnings("unchecked")
 	public HashMap<String, Object> sysm0101srchFormationCd2(HashMap<String, Object> param) throws Exception{
-		HashMap<String, Object> rtn = (HashMap<String, Object>)super.selectList("admin.sysm.mapper.sysm0101srchFormationCd2", param);
-		return rtn;
+		return (HashMap<String, Object>)super.selectList("admin.sysm.mapper.sysm0101srchFormationCd2", param);
 	}
 	
 	/**
@@ -129,7 +122,6 @@ public class Sysm01DAO extends AbstractMapper {
 	 * @throws CommException
 	 */
 	public int sysm01InsertUserInfoHst(HashMap<String, Object> param) throws Exception{
-		int rtn = super.insert("admin.sysm.mapper.sysm01InsertUserInfoHst", param);
-		return rtn;
+		return super.insert("admin.sysm.mapper.sysm01InsertUserInfoHst", param);
 	}
 }
