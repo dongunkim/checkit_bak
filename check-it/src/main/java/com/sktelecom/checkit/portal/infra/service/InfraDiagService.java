@@ -33,11 +33,11 @@ public class InfraDiagService {
 	public HashMap<String, Object> infraDiagList(HashMap<String, Object> param){
 		HashMap<String, Object> rtn = new HashMap<String, Object>();
 		try{
-			rtn = infraDiagDAO.infraDiagList(param);
+			rtn = infraDiagDAO.selectInfraDiagList(param);
 			rtn.put("errorCode", "00");
 		}catch(Exception e){
 			log.error(e.getMessage());
-			rtn.put("errorCode", "ERR_Infra_infraDiagList_01");
+			rtn.put("errorCode", "ERR_infra_infraDiagList_01");
 		}
 		
 		return rtn;
@@ -49,11 +49,11 @@ public class InfraDiagService {
 	public HashMap<String, Object> infraDiagDetail(HashMap<String, Object> param){
 		HashMap<String, Object> rtn = new HashMap<String, Object>();
 		try{
-			rtn = infraDiagDAO.infraDiagDetail(param);
+			rtn = infraDiagDAO.selectInfraDiagDetail(param);
 			rtn.put("errorCode", "00");
 		}catch(Exception e){
 			log.error(e.getMessage());
-			rtn.put("errorCode", "ERR_Infra_infraDiagDetail_01");
+			rtn.put("errorCode", "ERR_infra_infraDiagDetail_01");
 		}
 		return rtn;
 	}
@@ -63,11 +63,11 @@ public class InfraDiagService {
 	public HashMap<String, Object> infraDiagHostList(HashMap<String, Object> param){
 		HashMap<String, Object> rtn = new HashMap<String, Object>();
 		try{
-			rtn = infraDiagDAO.infraDiagHostList(param);
+			rtn = infraDiagDAO.selectInfraDiagHostList(param);
 			rtn.put("errorCode", "00");
 		} catch (Exception e){
 			log.error(e.getMessage());
-			rtn.put("errorCode", "ERR_Infra_infraDiagHostList_01");
+			rtn.put("errorCode", "ERR_infra_infraDiagHostList_01");
 		}
 		return rtn;
 	}
@@ -78,11 +78,11 @@ public class InfraDiagService {
 	public HashMap<String, Object> infraDiagObjList(HashMap<String, Object> param){
 		HashMap<String, Object> rtn = new HashMap<String, Object>();
 		try{
-			rtn = infraDiagDAO.infraDiagObjList(param);
+			rtn = infraDiagDAO.selectInfraDiagObjList(param);
 			rtn.put("errorCode", "00");
 		} catch (Exception e){
 			log.error(e.getMessage());
-			rtn.put("errorCode", "ERR_Infra_infraDiagObjList_01");
+			rtn.put("errorCode", "ERR_infra_infraDiagObjList_01");
 		}
 		return rtn;
 	}
@@ -101,7 +101,7 @@ public class InfraDiagService {
 			rtn.put("errorCode", "00");
 		} catch (Exception e){
 			log.error(e.getMessage());
-			rtn.put("errorCode", "ERR_Infra_deleteHost_01");
+			rtn.put("errorCode", "ERR_infra_hostDelete_01");
 		}
 		return rtn;
 	}

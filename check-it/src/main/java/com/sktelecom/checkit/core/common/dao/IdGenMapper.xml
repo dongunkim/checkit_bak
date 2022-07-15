@@ -4,8 +4,8 @@
 <mapper namespace="common.mapper">
 
 	<select id="selectSeqInfo" parameterType="String" resultType="commMap">
-		SELECT	/* IdGenMapper.selectSeqInfo */
-				TABLE_NAME,
+		/* common.mapper.IdGenMapper.xml selectSeqInfo */
+		SELECT	TABLE_NAME,
 				SEQ_TYPE,
 				PREFIX,
 				CURR_YEAR,
@@ -14,20 +14,20 @@
 				CURR_NO AS SEQ,
 				CIPERS,
 				FILL_CHAR
-		FROM	ID_GEN
+		FROM	T_ID_GEN
 		WHERE	TABLE_NAME = #{seqGb}
 	</select>
 		
 	<update id="updateNextSeq" parameterType="String">
-		UPDATE	/* IdGenMapper.updateNextSeq */
-				ID_GEN
+		/* common.mapper.IdGenMapper.xml updateNextSeq */
+		UPDATE	T_ID_GEN
 		SET		CURR_NO = IFNULL(CURR_NO, 0) + 1
 		WHERE	TABLE_NAME = #{tableName}			
 	</update>
 	
 	<update id="updateSeqCycle" parameterType="commMap">
-		UPDATE	/* IdGenMapper.updateSeqCycle */
-				ID_GEN
+		/* common.mapper.IdGenMapper.xml updateSeqCycle */
+		UPDATE	T_ID_GEN
 		SET		CURR_YEAR = #{vo.currYear},
 				CURR_MONTH = #{vo.currMonth},
 				CURR_DAY = #{vo.currDay}, 

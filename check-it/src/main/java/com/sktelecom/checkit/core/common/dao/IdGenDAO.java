@@ -10,18 +10,13 @@ import org.springframework.stereotype.Repository;
 import com.sktelecom.checkit.core.util.StringUtils;
 
 /**
- * 공통 DAO
- * @author devkimsj
  *
  */
 @Repository
 public class IdGenDAO extends AbstractMapper {
 
 	/**
-	 * SEQ 확인
-	 * @param param
-	 * @return
-	 * @throws Exception
+	 * 
 	 */
 	@SuppressWarnings("unchecked")
 	public HashMap<String, Object> selectSeqInfo(String seqGb) throws Exception{

@@ -11,8 +11,6 @@ import com.sktelecom.checkit.core.common.dao.AbstractMapper;
 
 
 /**
- * 내부 공지 DAO
- * @author devbaekgh
  *
  */
 @Repository
@@ -24,49 +22,43 @@ public class BoardDAO extends AbstractMapper {
 	 *
 	 */
 	@SuppressWarnings("unchecked")
-	public HashMap<String, Object> boardList(HashMap<String, Object> param) throws Exception{
-		HashMap<String, Object> rtn = (HashMap<String, Object>)super.selectList("admin.board.dao.boardList", param);
-		return rtn;
+	public HashMap<String, Object> selectBoardList(HashMap<String, Object> param) throws Exception{
+		return (HashMap<String, Object>)super.selectList("admin.board.dao.selectBoardList", param);
 	}
 
 	/**
 	 *
 	 */
 	@SuppressWarnings("unchecked")
-	public HashMap<String, Object> boardDetail(HashMap<String, Object> param) throws Exception{
-		HashMap<String, Object> rtn = (HashMap<String, Object>)super.selectOne("admin.board.dao.boardDetail", param);
-		return rtn;
+	public HashMap<String, Object> selectBoardDetail(HashMap<String, Object> param) throws Exception{
+		return (HashMap<String, Object>)super.selectOne("admin.board.dao.selectBoardDetail", param);
 	}
 
 	/**
 	 *
 	 */
-	public int updateViewCntBoard(HashMap<String, Object> param) throws Exception{
-		int cnt = super.update("admin.board.dao.updateViewCntBoard", param);
-		return cnt;
+	public int updateBoardViewCnt(HashMap<String, Object> param) throws Exception{
+		return super.update("admin.board.dao.updateBoardViewCnt", param);
 	}
 
 	/**
 	 *
 	 */
 	public int insertBoard(HashMap<String, Object> param) throws Exception{
-		int cnt = super.insert("admin.board.dao.insertBoard", param);
-		return cnt;
+		return super.insert("admin.board.dao.insertBoard", param);
 	}
 
 	/**
 	 *
 	 */
 	public int updateBoard(HashMap<String, Object> param) throws Exception{
-		int cnt = super.update("admin.board.dao.updateBoard", param);
-		return cnt;
+		return super.update("admin.board.dao.updateBoard", param);
 	}
 
 	/**
 	 *
 	 */
 	public int deleteBoard(HashMap<String, Object> param) throws Exception{
-		int cnt = super.update("admin.board.dao.deleteBoard", param);
-		return cnt;
+		return super.update("admin.board.dao.deleteBoard", param);
 	}
 }

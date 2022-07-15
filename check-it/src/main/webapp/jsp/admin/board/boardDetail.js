@@ -1,19 +1,21 @@
 initFunction = function(){
 	// 파일리스트
-	$("#bord0202Fileupload").fileUploadForm({
+	$("#boardFileupload").fileUploadForm({
 		type : "attachList"
 			,attachId : result.attachId
 	});
 
+	console.log(result);
 	utils.inputData(result);
 	$("#bbsDesc").html(result.bbsDesc);
     eventFunction(result);
 }
 
 eventFunction = function(data){
+	console.log(data);
 	// 수정 버튼 클릭 이벤트
 	$("#editBtn").unbind().on("click", function(){
-		var url = "/admin/board/bord0204Edit.do";
+		var url = "/admin/board/boardEdit.do";
 		data.bbsDesc = encodeURIComponent(data.bbsDesc);
 		utils.movePage(url,data);
 	});
@@ -22,12 +24,12 @@ eventFunction = function(data){
 		/*기본값 세팅*/
 		let validator = [];
 		let options = {};
-		options.url = "/admin/board/deleteBord0205.do";
+		options.url = "/admin/board/deleteBoard.ajax";
 		options.params = {};
 		options.params.bbsNo = data.bbsNo;
 		options.params.regId = data.regId;
 		options.msg = "삭제하시겠습니까?";
-		$("#bord0202Form").formSubmit(options, validator, function(result){
+		$("#boardForm").formSubmit(options, validator, function(result){
 			if(result.errorCode == "00"){
 				let param = {};
 				var url = "/admin/board/boardList.do";

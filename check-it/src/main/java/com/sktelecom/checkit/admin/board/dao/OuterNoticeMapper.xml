@@ -5,36 +5,35 @@
 	<!-- 고객 공지 현황 목록 화면 -->
 	<select id="bord0301List" parameterType="paramMap" resultType="commMap">
 		/* admin.board.dao.Bord03Mapper.xml bord0301List */
-		SELECT 
-			 COUNT(*) OVER() RNUM_CNT                          
-			,BBS_NO
-			,BBS_SUB_NO
-			,BBS_GB
-			,BBS_TITLE                             
-			,BBS_DESC
-			,ATTACH_ID
-			,GONGJI_DD
-			,CS_GONGJI_YN
-			,REPL_CNT                                    
-			,REG_DT
-			,REG_ID
-			,FN_GET_USERNM(OUTER_GONGJI.REG_ID) REG_NM
-			,UPD_DT
-			,UPD_ID
-			,VIEW_CNT                                   
-			,(SELECT CODE_NAME FROM T_CODE C WHERE C.CODE_ID = OUTER_GONGJI.BBS_GB) AS BBS_GB_NM 
-		FROM OUTER_GONGJI                                                                
-		WHERE OUTER_GONGJI.DEL_YN = 'N'
+		SELECT	COUNT(*) OVER() RNUM_CNT                          
+				,BBS_NO
+				,BBS_SUB_NO
+				,BBS_GB
+				,BBS_TITLE                             
+				,BBS_DESC
+				,ATTACH_ID
+				,GONGJI_DD
+				,CS_GONGJI_YN
+				,REPL_CNT                                    
+				,REG_DT
+				,REG_ID
+				,FN_GET_USERNM(OUTER_GONGJI.REG_ID) REG_NM
+				,UPD_DT
+				,UPD_ID
+				,VIEW_CNT                                   
+				,(SELECT CODE_NAME FROM T_CODE C WHERE C.CODE_ID = OUTER_GONGJI.BBS_GB) AS BBS_GB_NM 
+		FROM	OUTER_GONGJI                                                                
+		WHERE	OUTER_GONGJI.DEL_YN = 'N'
 		<!-- 상단 검색창에서 입력받은 것을 처리 -->
 		<if test="searchGbn != null and searchGbn != '' and searchGbn.equals('bbs_title') ">		
-		  AND UPPER(TRIM(OUTER_GONGJI.BBS_TITLE)) LIKE CONCAT('%',UPPER(TRIM(#{searchText})),'%')
+		  AND	UPPER(TRIM(OUTER_GONGJI.BBS_TITLE)) LIKE CONCAT('%',UPPER(TRIM(#{searchText})),'%')
 		<!-- AND     REPLACE(UPPER(OUTER_GONGJI.BBS_TITLE),' ','') LIKE REPLACE(UPPER(CONCAT('%',#{searchText},'%')),' ','') -->
 		</if>	
 		<if test="searchGbn != null and searchGbn != '' and searchGbn.equals('reg_id') ">				
-		  AND OUTER_GONGJI.REG_ID IN(SELECT USER_ID FROM USER_INFO WHERE UPPER(REPLACE(USER_NM, ' ','')) LIKE CONCAT('%',#{searchText},'%'))
+		  AND	OUTER_GONGJI.REG_ID IN(SELECT USER_ID FROM USER_INFO WHERE UPPER(REPLACE(USER_NM, ' ','')) LIKE CONCAT('%',#{searchText},'%'))
 		</if>
 		<if test="searchBbsGb != null and searchBbsGb != ''"	>		
-		  AND OUTER_GONGJI.BBS_GB = #{searchBbsGb}
+		  AND	OUTER_GONGJI.BBS_GB = #{searchBbsGb}
 		</if>
 		<if test="calFrom != null and calFrom != ''">
 		  AND (OUTER_GONGJI.REG_DT BETWEEN CONCAT(REPLACE(#{calFrom},'-',''), '000000') AND CONCAT(REPLACE(#{calTo},'-',''), '235959') 	)

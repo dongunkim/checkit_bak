@@ -1,5 +1,5 @@
 <%@ page contentType="text/html; charset=UTF-8"%>
-<div class="contens_bd" id="bord0202Form">
+<div class="contens_bd" id="boardForm">
     <h2>내부 공지 조회</h2>
    	<div class="info_area">
         <h3>상세 내용</h3>
@@ -25,7 +25,7 @@
 			<li>
                 <span class="title">첨부파일</span>
                 <span class="word">
-                	<div id="bord0202Fileupload" data-file-gbn="bbs"></div>
+                	<div id="boardFileupload" data-file-gbn="bbs"></div>
                 </span>
             </li>      
             <li>

@@ -22,32 +22,32 @@ public class InfraDiagDAO extends AbstractMapper {
 	 * 
 	 */
 	@SuppressWarnings("unchecked")
-	public HashMap<String, Object> infraDiagList(HashMap<String, Object> param) throws Exception{
-		return (HashMap<String, Object>)super.selectList("portal.infra.dao.infraDiagList", param);
+	public HashMap<String, Object> selectInfraDiagList(HashMap<String, Object> param) throws Exception{
+		return (HashMap<String, Object>)super.selectList("portal.infra.dao.selectInfraDiagList", param);
 	}
 
 	/**
 	 * 
 	 */
 	@SuppressWarnings("unchecked")
-	public HashMap<String, Object> infraDiagDetail(HashMap<String, Object> param) throws Exception{
-		return (HashMap<String, Object>)super.selectOne("portal.infra.dao.infraDiagDetail", param);
+	public HashMap<String, Object> selectInfraDiagDetail(HashMap<String, Object> param) throws Exception{
+		return (HashMap<String, Object>)super.selectOne("portal.infra.dao.selectInfraDiagDetail", param);
 	}
 
 	/**
 	 * 
 	 */
 	@SuppressWarnings("unchecked")
-	public HashMap<String, Object> infraDiagHostList(HashMap<String, Object> param) throws Exception{
-		return (HashMap<String, Object>)super.selectList("portal.infra.dao.infraDiagHostList", param);
+	public HashMap<String, Object> selectInfraDiagHostList(HashMap<String, Object> param) throws Exception{
+		return (HashMap<String, Object>)super.selectList("portal.infra.dao.selectInfraDiagHostList", param);
 	}
 
 	/**
 	 * 
 	 */
 	@SuppressWarnings("unchecked")
-	public HashMap<String, Object> infraDiagObjList(HashMap<String, Object> param) throws Exception{
-		return (HashMap<String, Object>)super.selectList("portal.infra.dao.infraDiagObjList", param);
+	public HashMap<String, Object> selectInfraDiagObjList(HashMap<String, Object> param) throws Exception{
+		return (HashMap<String, Object>)super.selectList("portal.infra.dao.selectInfraDiagObjList", param);
 	}
 
 	/**

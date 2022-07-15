@@ -6,7 +6,7 @@ let bbsDescData;
 
 initFunction = function(){
 	// 파일리스트
-	$("#bord0204Fileupload").fileUploadForm({
+	$("#boardFileupload").fileUploadForm({
 		type : "attachUpdate"
 		,attachId : result.attachId
 	});
@@ -29,7 +29,7 @@ eventFunction = function(data){
 			{ key : "bbsTitle", label : "제목" }
 			/*,{ key : "bbsDesc", label : "내용" }*/
 		];
-		options.url = "/admin/bord/updateBord0204.do";
+		options.url = "/admin/board/updateBoard.ajax";
 		options.params.bbsNo = data.bbsNo;
 		options.msg = "저장하시겠습니까?";
 		$("#bord0204Edit").formSubmit(options, validator, function(result){
@@ -38,7 +38,7 @@ eventFunction = function(data){
 					title: "알림",
 					msg: result.errorMessage
 				}, function(){
-					let url = "/admin/bord/bord0202Detail.do";
+					let url = "/admin/board/boardDetail.do";
 					utils.movePage(url, data);
 				});
 			}else{
@@ -53,7 +53,7 @@ eventFunction = function(data){
 
 	// 이전 페이지 클릭 이벤트
 	$("#backBtn").unbind().on("click", function(){
-		let url = "/admin/bord/bord0202Detail.do";
+		let url = "/admin/board/boardDetail.do";
 		utils.movePage(url, data);
 	});
 

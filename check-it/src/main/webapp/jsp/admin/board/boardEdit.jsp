@@ -19,7 +19,7 @@
              <li>
                 <span class="title">첨부파일</span>
                 <span class="word">
-                	<div id="bord0204Fileupload" data-file-gbn="bbs" style="width:100%"></div>
+                	<div id="boardFileupload" data-file-gbn="bbs" style="width:100%"></div>
                 </span>
             </li>
             <li>

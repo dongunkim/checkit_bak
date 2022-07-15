@@ -26,19 +26,19 @@ eventFunction = function(data){
 		}
 		*/
 
-		options.url = "/admin/board/insertBoard.do";
+		options.url = "/admin/board/insertBoard.ajax";
 		$("#boardReg").formSubmit(options, validator, function(result){
 			if(result.errorCode == "00"){
 				DIALOG.alert({
 					title: "알림",
-					msg: result.errorMessage
+					msg: "정상 등록되었습니다."
 				}, function(){
 					utils.movePage("/admin/board/boardList.do");
 				});
 			}else{
 				DIALOG.alert({
 					title: "알림",
-					msg: result.errorMessage
+					msg: "등록시 오류가 발생하였습니다."
 				});
 			}
 		});

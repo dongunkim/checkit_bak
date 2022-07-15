@@ -6,7 +6,7 @@ initFunction = function(){
 	searchData.boardType = "01";
 	
 	$.jqGridWrapper({
-		url: "/admin/board/ajaxBoardList.do",
+		url: "/admin/board/boardList.ajax",
 		colNames: [
 				"No",
 				"제목",
@@ -72,7 +72,7 @@ initFunction = function(){
 		}
 	});
 
-	//search();
+	search();
 	
     eventFunction(result);
 }

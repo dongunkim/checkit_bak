@@ -252,9 +252,9 @@
 		INSERT INTO T_ATTACH_FILE /* common.dao.mapper.CommonMapper.xml commonFileUplod */
 		(
 			 ATTACH_SEQ
-		<if test="attachId != null and attachId != ''">
+			<if test="attachId != null and attachId != ''">
 			,ATTACH_ID
-		</if>
+			</if>
 			,FILE_ORIGIN_NAME
 			,FILE_NAME
 			,FILE_SIZE
@@ -266,9 +266,9 @@
 			,UPD_DT
 		)
 		SELECT NVL((MAX(ATTACH_SEQ) + 1), 1)
-		<if test="attachId != null and attachId != ''">
+			<if test="attachId != null and attachId != ''">
 			,#{attachId}
-		</if>
+			</if>
 			,#{fileName}
 			,#{fileChangeName}
 			,#{fileSize}
