@@ -105,6 +105,8 @@ public abstract class AbstractMapper{
 					*/
 
 					params.put("isPaging", true);
+					rtnMap.put("param", params);
+
 					list = sqlSession.selectList(queryId, params);
 					total = new HashMap<String, Object>();
 
@@ -120,7 +122,6 @@ public abstract class AbstractMapper{
 
 					rtnMap.put("list", list);
 					rtnMap.put("total", total);
-					rtnMap.put("param", params);
 
 					return rtnMap;
 				}
@@ -155,11 +156,8 @@ public abstract class AbstractMapper{
 					rtnMap.put("total", total);
 					rtnMap.put("param", params);
 					return rtnMap;
-
 				}
-
 			}
-
 		}catch(Exception e){
 			throw new Exception(e);
 		}

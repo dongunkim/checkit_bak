@@ -19,7 +19,7 @@ eventFunction = function(data){
 			}
 		}
 		
-		var url = "/portal/infra/ajaxDelHost.do";
+		var url = "/portal/infra/ajaxDelHost.ajax";
 		var params = {};
 		params.hostList = JSON.stringify(delHostList);
 		console.log(params);
@@ -30,36 +30,10 @@ eventFunction = function(data){
 		});
 	});
 		
-	// 등록 버튼 이벤트
-	$("#regBtn").unbind().on("click", function(){
-		// Validation
-		let validator = [
-			{ key : "bbsTitle", label : "제목" }
-		];
-
-		options.url = "/admin/board/insertBoard.do";
-		$("#boardReg").formSubmit(options, validator, function(result){
-			if(result.errorCode == "00"){
-				DIALOG.alert({
-					title: "알림",
-					msg: result.errorMessage
-				}, function(){
-					utils.movePage("/admin/board/boardList.do");
-				});
-			}else{
-				DIALOG.alert({
-					title: "알림",
-					msg: result.errorMessage
-				});
-			}
-		});
-
-	});
-
 	// 이전 페이지 클릭 이벤트
 	$("#backBtn").unbind().on("click", function(){
 //		history.go(-1);
-		var url = "/portal/infra/diagList.do";
+		var url = "/portal/infra/infraDiagList.ajax";
 		utils.movePage(url, data);
 	});
 
@@ -70,7 +44,7 @@ initFunction = function(){
 	searchData = result;
 
 	$.jqGridNoPagingWrapper(hostGrid,{
-		url: "/portal/infra/ajaxDiagHostList.do",
+		url: "/portal/infra/infraDiagHostList.ajax",
 		colNames: [
 				"hostId",
 				"호스트명",
@@ -105,7 +79,7 @@ initFunction = function(){
 	});
 
 	$.jqGridNoPagingWrapper(objGrid,{
-		url: "/portal/infra/ajaxDiagObjList.do",
+		url: "/portal/infra/infraDiagObjList.ajax",
 		colNames: [
 				"대분류",
 				"소분류",
@@ -132,8 +106,8 @@ initFunction = function(){
 		]
 	});
 	
-		$.jqGridNoPagingWrapper(diagObjGrid,{
-		url: "/portal/infra/ajaxDiagObjList.do",
+	$.jqGridNoPagingWrapper(diagObjGrid,{
+		url: "/portal/infra/infraDiagObjList.ajax",
 		colNames: [
 				"대분류",
 				"소분류",
@@ -165,7 +139,7 @@ initFunction = function(){
 	});
 
 	$.jqGridNoPagingWrapper(diagHistGrid,{
-		url: "/portal/infra/ajaxDiagObjList.do",
+		url: "/portal/infra/infraDiagObjList.ajax",
 		colNames: [
 				"진단차수",
 				"조치담당자",
@@ -190,7 +164,7 @@ initFunction = function(){
 
 	// 항목별 진단 결과
 	$.jqGridNoPagingWrapper(diagResultGrid,{
-		url: "/portal/infra/ajaxDiagObjList.do",
+		url: "/portal/infra/infraDiagObjList.ajax",
 		colNames: [
 				"그룹명",
 				"점검항목",

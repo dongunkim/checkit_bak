@@ -42,8 +42,8 @@
 		</div>
 		<!-- 검색 버튼 -->
 		<div class="input_button_area">
-			<button class="button_sh w110 m1_button_2" id="searchAllBtn"><span>전체리스트</span></button>
-			<button class="button_sh w110" id="searchBtn"><span>검색</span></button>
+			<button class="button_sh w110 m1_button_3" id="searchBtn" style="float:right"><span>검색</span></button>
+			<button class="button_sh w110 m1_button_3" id="searchAllBtn" style="float:right"><span>검색초기화</span></button>
 		</div>
 		<!-- 검색 버튼 -->
 	</div>

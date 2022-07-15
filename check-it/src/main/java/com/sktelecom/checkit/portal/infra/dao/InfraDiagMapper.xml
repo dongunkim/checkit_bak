@@ -3,8 +3,8 @@
 <mapper namespace="portal.infra.dao">
 
 	<!--  -->
-	<select id="diagList" parameterType="paramMap" resultType="commMap">
-		/* portal.infra.dao.DiagMapper.xml diagList */
+	<select id="infraDiagList" parameterType="paramMap" resultType="commMap">
+		/* portal.infra.dao.InfraDiagMapper.xml infraDiagList */
 		SELECT 
 			COUNT(*) OVER () RNUM_CNT
 			,DIAG_ID
@@ -16,9 +16,9 @@
 			,REQ_USER_ID
 			,REQ_DT
 			,ACCEPT_USER_ID
-			,case when isnull(ACCEPT_DT) and !isnull(REQ_DT) then '0' else STR_TO_DATE(ACCEPT_DT,'%Y%m%d') end ACCEPT_DT
+			,CASE WHEN ISNULL(ACCEPT_DT) AND !ISNULL(REQ_DT) THEN '0' ELSE STR_TO_DATE(ACCEPT_DT,'%Y%m%d') END ACCEPT_DT
 			,PLAN_USER_ID
-			,case when isnull(PLAN_DT) and !isnull(ACCEPT_DT) then '0' else STR_TO_DATE(PLAN_DT,'%Y%m%d') end PLAN_DT
+			,CASE WHEN ISNULL(PLAN_DT) AND !ISNULL(ACCEPT_DT) THEN '0' ELSE STR_TO_DATE(PLAN_DT,'%Y%m%d') END PLAN_DT
 			,DIAG_USER_ID
 			,DIAG_DT
 			,REDIAG_USER_ID
@@ -28,7 +28,7 @@
 			,UPD_ID
 			,UPD_DT
 		FROM T_DIAG                                                                
-		WHERE 1 = 1
+		WHERE DIAG_TYPE_CODE = '01'
 		<if test="searchDiagName != null and searchDiagName != ''">		
 		  AND UPPER(TRIM(DIAG_NAME)) LIKE CONCAT('%',UPPER(TRIM(#{searchDiagName})),'%')
 		</if>	
@@ -37,8 +37,8 @@
 	</select>	
 	
 	<!--  -->
-	<select id="diagDetail" parameterType="paramMap" resultType="commMap">
-		/* portal.infra.dao.DiagMapper.xml diagDetail */
+	<select id="infraDiagDetail" parameterType="paramMap" resultType="commMap">
+		/* portal.infra.dao.DiagMapper.xml infraDiagDetail */
 		SELECT 
 			DIAG_ID
 			,DIAG_NAME
@@ -49,9 +49,9 @@
 			,REQ_USER_ID
 			,REQ_DT
 			,ACCEPT_USER_ID
-			,case when isnull(ACCEPT_DT) and !isnull(REQ_DT) then '0' else STR_TO_DATE(ACCEPT_DT,'%Y%m%d') end ACCEPT_DT
+			,ACCEPT_DT
 			,PLAN_USER_ID
-			,case when isnull(PLAN_DT) and !isnull(ACCEPT_DT) then '0' else STR_TO_DATE(PLAN_DT,'%Y%m%d') end PLAN_DT
+			,PLAN_DT
 			,DIAG_USER_ID
 			,DIAG_DT
 			,REDIAG_USER_ID
@@ -65,8 +65,8 @@
 	</select>
 
 	<!--  -->
-	<select id="diagHostList" parameterType="paramMap" resultType="commMap">
-		/* portal.infra.dao.DiagMapper.xml diagHostList */
+	<select id="infraDiagHostList" parameterType="paramMap" resultType="commMap">
+		/* portal.infra.dao.DiagMapper.xml infraDiagHostList */
 		SELECT 
 			B.HOST_ID
 			,B.HOST_NAME
@@ -83,12 +83,12 @@
 	</select>
 
 	<!--  -->
-	<select id="diagObjList" parameterType="paramMap" resultType="commMap">
-		/* portal.infra.dao.DiagMapper.xml diagObjList */
+	<select id="infraDiagObjList" parameterType="paramMap" resultType="commMap">
+		/* portal.infra.dao.DiagMapper.xml infraDiagObjList */
 		SELECT 
 			DIAG_OBJ_ID
-			,LEVEL1_CATEGORY AS CATEGORY1_NAME 
-			,LEVEL2_CATEGORY AS CATEGORY2_NAME
+			,LEVEL1_CATEGORY 
+			,LEVEL2_CATEGORY
 			,B.HOST_NAME
 			,B.IP_ADDR
 			,VER_URL

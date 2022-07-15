@@ -83,9 +83,11 @@ pageContext.setAttribute("LF", "\n");
 	<script type="text/javascript" src="<c:url value="/resources/js/code.js"/>"></script>
 	<script type="text/javascript" src="<c:url value="/resources/js/sockjs-1.0.0.min.js"/>"></script>
 	<script type="text/javascript" src="<c:url value="/resources/js/fileSaveUtils.js"/>"></script>
+	<script type="text/javascript" src="<c:url value="/resources/js/common.js"/>"></script>
 	
 	<script type="text/javascript" src="/resources/lib/jqgrid-4.7.1/i18n/grid.locale-ko.js"></script>
 	<script type="text/javascript" src="/resources/lib/jqgrid-4.7.1/js/minified/jquery.jqGrid.min.js"></script>
+	<script type="text/javascript" src="/resources/lib/jquery-fileDownload/jquery.fileDownload.js"></script>
 	<script type="text/javascript" src="/resources/js/common.jqgrid.wrapper.js"></script>
 
 	<%-- <script type="text/javascript" src="<c:url value="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"/>"></script> --%>

@@ -12,8 +12,7 @@ import com.sktelecom.checkit.admin.system.dao.MenuDAO;
 import com.sktelecom.checkit.core.common.service.CommonService;
 
 /**
- * 시스템관리 ServiceImpl
- * @author devkimsj
+ * 메뉴 관리 Service
  */
 @Service
 public class MenuService{
@@ -27,7 +26,7 @@ public class MenuService{
 	private CommonService commonService;
 
 	/**
-	 * 
+	 * 메뉴 Tree 목록
 	 */
 	public HashMap<String, Object> menuTreeList(HashMap<String, Object> param) throws Exception{
 		HashMap<String, Object> rtn = new HashMap<String, Object>();

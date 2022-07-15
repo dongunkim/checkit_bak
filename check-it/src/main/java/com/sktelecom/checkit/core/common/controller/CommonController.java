@@ -22,7 +22,7 @@ import com.sktelecom.checkit.core.annotation.Paging;
 import com.sktelecom.checkit.core.common.service.CommonService;
 import com.sktelecom.checkit.core.file.FileUpload;
 import com.sktelecom.checkit.core.util.DateUtils;
-import com.sktelecom.checkit.core.util.ExcelUtils;
+import com.sktelecom.checkit.core.util.CVSUtils;
 import com.sktelecom.checkit.core.util.Session;
 
 /**
@@ -42,7 +42,7 @@ public class CommonController {
 	private FileUpload fileUpload;
 
 	@Resource
-	private ExcelUtils excelUtils;
+	private CVSUtils cvsUtils;
 
 	/**
 	 * 권한없음

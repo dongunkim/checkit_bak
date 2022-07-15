@@ -5,7 +5,7 @@
 	<div class="input_area">
 	    <div class="w1x2">
 		<form id="frm">
-			<input type="hidden" name="boardType" id="boardType" value="01">
+			<input type="hidden" name="diagTypeCode" id="diagTypeCode" value="01">
 			<dl>
 				<dt>조건검색</dt>
 				<dd>

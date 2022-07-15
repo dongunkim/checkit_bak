@@ -33,7 +33,7 @@ import com.sktelecom.checkit.core.annotation.Paging;
 import com.sktelecom.checkit.core.common.SingLoginService;
 import com.sktelecom.checkit.core.common.dao.CommonDAO;
 import com.sktelecom.checkit.core.common.service.CommonService;
-import com.sktelecom.checkit.core.util.ExcelUtils;
+import com.sktelecom.checkit.core.util.CVSUtils;
 import com.sktelecom.checkit.core.util.Session;
 import com.sktelecom.checkit.core.util.CommMap;
 import com.sktelecom.checkit.core.util.StringUtils;
@@ -55,7 +55,7 @@ public class CommInterceptor<T extends Message> implements HandlerInterceptor {
     private CommonService commonService;
 
 	@Autowired
-	private ExcelUtils excelUtils;
+	private CVSUtils excelUtils;
 	
 	@Resource
     private CommonDAO commonDAO;

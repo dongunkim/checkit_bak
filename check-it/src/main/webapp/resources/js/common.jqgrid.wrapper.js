@@ -12,8 +12,7 @@
 			
 			var settings = $.extend({				
 				mtype: "POST",				
-//				datatype: "local",
-				datatype: "json",
+				datatype: "local",
 				postData: searchData,
 				page: (isNull(searchData.pageNo) ? 1 : searchData.pageNo),
 				autowidth: true,
@@ -39,6 +38,7 @@
 					if(obj.total.cnt!=undefined)$(".pagecount > em").text(core.defaultString(obj.total.cnt, "0").money());
 				},
 				loadError: function(xhr, status, error) {
+					console.log(xhr);
 					/*
 					alert("Status : " + xhr.responseJSON.code + "("+ xhr.responseJSON.status + ")" +
 							"\nMessage : " + xhr.responseJSON.message +
@@ -120,4 +120,50 @@
 		}
 
 	});
+
+	$.fn.tuiTableRowSpan = function(colIndexs, compareColId) {
+	    return $(this).each(function() {
+	        //var indexs  = eval("([" + colIndexs + "])");
+	        var indexs = colIndexs;
+	        var girdId = $(this).attr("id");
+	        for (var i = 0; i < indexs.length; i++) {
+	            var colIdx = indexs[i];
+	            var that;
+	            var thatVal = "";
+	            var cColId = "";
+	            $('tbody tr', $(this)).each(function(row) {
+	             $("#"+girdId + " [aria-describedby=" +girdId + "_" + colIdx + "]").eq(row).filter(':visible').each(function(col) {
+	              if( compareColId == "" || compareColId == null || compareColId == undefined || ( compareColId != null && typeof compareColId == "object" && !Object.keys(compareColId).length ) ){
+	               cColId = colIdx;
+	              }else{
+	               cColId = compareColId;
+	              }
+	              
+	              var thisVal = $("#"+girdId + " [aria-describedby=" +girdId + "_" + cColId + "]").eq(row).html();
+	              
+	              if (that != null && thisVal == thatVal) {
+	                   
+	                        rowspan = $(that).attr("rowSpan");
+	                        if (rowspan == undefined) {
+	
+	                            $(that).attr("rowSpan", 1);
+	                            rowspan = $(that).attr("rowSpan");
+	                        }
+	                        rowspan = Number(rowspan) + 1;
+	                        $(that).attr("rowSpan", rowspan); // rowspan을 해준다
+	                        //$(this).remove(); // rowspan 당한 컬럼을 제거 한다.
+	                        $(this).hide(); // rowspan 당한 컬럼을 숨긴다.
+	                    } else {
+	                        that  = this;
+	                        thatVal = thisVal;
+	                    }
+	                    // that = (that == null) ? this : that; // set the that if not already set
+	                });
+	
+	            });
+	        }
+	    });
+	};
+
+
 })(jQuery);

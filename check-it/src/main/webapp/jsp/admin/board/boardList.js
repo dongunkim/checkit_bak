@@ -10,8 +10,8 @@ initFunction = function(){
 		colNames: [
 				"No",
 				"제목",
-				"파일",
 				"작성자",
+				"파일",
 				"등록일시",
 				"조회수",
 				"내용"
@@ -19,8 +19,8 @@ initFunction = function(){
 		colModel: [
 				{ name:'boardId'   ,index:'boardId'   ,width: 5, align:"left" },
 				{ name:'boardTitle',index:'boardTitle',width: 50, align:"left" },
-				{ name:'attachId'  ,index:'attachId'  ,width: 10, align:"left" },
 				{ name:'regId'     ,index:'regNm'     ,width: 10, align:"left" },
+				{ name:'attachId'  ,index:'attachId'  ,width: 10, align:"left" },
 				{ name:'regDt'     ,index:'regDt'     ,width: 10, align:"center"},
 				{ name:'viewCount' ,index:'viewCount' ,width: 10, align:"center"},
 				{ name:'boardDesc' ,index:'viewCount' ,hidden:true}
@@ -51,6 +51,9 @@ initFunction = function(){
     		// 페이징
 			if(obj.total.cnt!=undefined)$(".pagecount > em").text(core.defaultString(obj.total.cnt, "0").money());
     		
+//			$("jqgrid 아이디").tuiTableRowSpan(["boardTitle, "머지 하고자 하는 컬럼 id", "머지 하고자 하는 컬럼 id"], "머지 그룹 기준 컬럼 id");
+		    $("#jqGrid").tuiTableRowSpan(["regId"],"boardTitle");
+
     		/*
     		.click(function () {
 				console.log($(this).find(">a>span"));
@@ -110,6 +113,11 @@ eventFunction = function(data){
   		expand();
 	});
 	
+		// 엑셀 다운로드
+	$("#excelDownBtn").unbind().bind("click", function(){
+		utils.excelDown("stat0101Table1", "기본서비스");
+	});
+
 	// 등록 버튼
 	$("#regBtn").unbind().bind("click",function(){
 		let params = {};

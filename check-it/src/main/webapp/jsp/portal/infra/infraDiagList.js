@@ -3,7 +3,7 @@ var searchData = {};
 initFunction = function(){
 	
 	$.jqGridWrapper({
-		url: "/portal/infra/ajaxDiagList.do",
+		url: "/portal/infra/infraDiagList.ajax",
 		colNames: [
 				"",
 				"진단신청명",
@@ -34,7 +34,7 @@ initFunction = function(){
 			],
 		onSelectRow: function(rowid) {
 			let param = $("#jqGrid").getRowData(rowid);
-			let url = "/portal/infra/diagDetail.do";
+			let url = "/portal/infra/infraDiagDetail.do";
 			utils.movePage(url, param);
 		},
 	});

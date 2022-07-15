@@ -44,6 +44,7 @@ public class CodeService {
 			rtn = codeDAO.codeGrpList(param);
 		} catch(Exception e){
 			log.error(e.getMessage());
+			throw e;
 		}		
 		
 		return rtn;
@@ -61,7 +62,8 @@ public class CodeService {
 			rtn = codeDAO.underCodeList(param);
 		} catch(Exception e){
 			log.error(e.getMessage());
-		}		
+			throw e;
+		}
 		return rtn;
 	}
 
@@ -77,6 +79,7 @@ public class CodeService {
 			rtn = codeDAO.depthCodeList(param);
 		} catch(Exception e){
 			log.error(e.getMessage());
+			throw e;
 		}		
 		return rtn;
 	}
@@ -93,6 +96,7 @@ public class CodeService {
 			rtn = codeDAO.checkDuplicate(param);
 		} catch(Exception e){
 			log.error(e.getMessage());
+			throw e;
 		}		
 		return rtn;
 	}
@@ -103,7 +107,7 @@ public class CodeService {
 	 * @return
 	 * @throws Exception
 	 */
-	public HashMap<String, Object> codeGrpProcess(HashMap<String, Object> param) throws Exception{
+	public HashMap<String, Object> codeGrpProcess(HashMap<String, Object> param){
 
 		HashMap<String, Object> rtn = new HashMap<String, Object>();
 		HashMap<String, Object> paramMap = new HashMap<String, Object>();
@@ -161,7 +165,7 @@ public class CodeService {
 	 * @return
 	 * @throws Exception
 	 */
-	public HashMap<String, Object> codeProcess(HashMap<String, Object> param) throws Exception{
+	public HashMap<String, Object> codeProcess(HashMap<String, Object> param){
 
 		HashMap<String, Object> rtn = new HashMap<String, Object>();
 		HashMap<String, Object> paramsMap = new HashMap<String, Object>();
@@ -247,7 +251,7 @@ public class CodeService {
 	 * @return
 	 * @throws Exception
 	 */
-	public HashMap<String, Object> codeAttUpdate(HashMap<String, Object> param) throws Exception{
+	public HashMap<String, Object> codeAttUpdate(HashMap<String, Object> param){
 		HashMap<String, Object> rtn = new HashMap<String, Object>();
 		
 		try{

@@ -49,11 +49,6 @@
 		<pattern>/admin/wire/wire0202PopRemove.do</pattern>
 	</decorator>
 
-	<!-- DATA AND VIEW 기본 템플릿 -->
-	<decorator name="datvDefalut" title="DATA AND VIEW" page="datv/defaultTemplate.jsp">
-		<pattern>/datv/*</pattern>
-	</decorator>
-
 	<!-- sitemesh를 사용하지 않을 패턴을 지정 -->
 	<excludes>
 		<pattern>/error/*</pattern>

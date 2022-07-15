@@ -59,10 +59,10 @@ import com.sktelecom.checkit.core.property.PropertyService;
  * 엑셀 유틸
  * @author sjkim
  */
-@Component("excelUtils")
-public final class ExcelUtils{
+@Component("cvsUtils")
+public final class CVSUtils{
 
-	private final static Log log = LogFactory.getLog(ExcelUtils.class);
+	private final static Log log = LogFactory.getLog(CVSUtils.class);
 
 	private static final String XML_ENCODING  = "UTF-8";
 

@@ -44,6 +44,7 @@ public class RoleService {
 			rtn = roleDAO.roleList(param);
 		} catch(Exception e) {
 			log.error(e.getMessage());
+			throw(e);
 		}
 		return rtn;
 	}
