@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="login.dao">
+	
+	<!-- 사용자 정보 -->
+	<select id="loginCheck" parameterType="paramMap" resultType="commMap">
+	<![CDATA[
+		/* login.dao.loginCheck */
+		SELECT 
+			 	USER_ID
+				,USER_NAME
+				,PASSWORD
+				,USER_STATUS
+				,EXT_USER_YN			
+				,USER_TYPE
+				,REG_TYPE
+				,COMPANY_TYPE
+				,EMAIL_ADDR
+				,OC_SIP
+				,EXPIRED_DATE
+				,MOBILE_NO
+				,TEL_NO
+				,POSITION_NAME
+				,COMPANY_NAME
+				,USER_DESC
+				,MAIL_ALARM_YN
+				,NOTE_ALARM_YN
+				,SMS_ALARM_YN			
+				,LOGIN_FAIL_CNT
+				,PASSWORD_EXP_DT
+				,LAST_IP
+				,LAST_LOGIN_DT
+				,USE_YN
+				,REG_ID
+				,REG_DT
+				,UPD_ID
+				,UPD_DT
+				,CASE WHEN IFNULL(PASSWORD_EXP_DT, '') <= DATE_FORMAT(NOW(), '%Y%m%d%H%i%S') THEN 'Y' ELSE 'N' END AS IS_EXPIRED			
+		  FROM  T_USER
+		 WHERE  USER_ID = #{userId}
+		   AND  USE_YN = 'Y'
+	]]>
+	</select>
+	
+	<!-- 로그인 실패횟수 추가 -->
+	<update id="loginUserPwdErr" parameterType="paramMap">
+		/* login.dao.loginUserPwdErr */
+		UPDATE T_USER 
+		   SET LOGIN_FAIL_CNT = IFNULL(LOGIN_FAIL_CNT, 0) + 1,
+			   USER_STATUS    = IF(IFNULL(LOGIN_FAIL_CNT, 0) >= 4, '3', USER_STATUS),
+			   UPD_DT         = DATE_FORMAT(NOW(), '%Y%m%d%H%i%S'),
+			   UPD_ID         = #{userId}
+		 WHERE USER_ID = #{userId}
+	</update>
+	
+	<!-- 로그인 실패횟수 초기화 -->
+	<update id="loginUserPwdInit" parameterType="paramMap">
+		/* login.daologinUserPwdInit */
+		UPDATE T_USER 
+		   SET LOGIN_FAIL_CNT = 0,			   
+			   LAST_IP        = #{lastIp},
+			   LAST_LOGIN_DT  = DATE_FORMAT(NOW(), '%Y%m%d%H%i%S'),
+			   UPD_DT         = DATE_FORMAT(NOW(), '%Y%m%d%H%i%S'),
+			   UPD_ID         = #{userId}
+		 WHERE USER_ID = #{userId}
+	</update>
+	
+</mapper>
