@@ -30,7 +30,7 @@
 			,UPD_ID
 			,UPD_DT
 			,'1' AS SYS_TYPE
-		FROM T_USER
+		FROM T_USER_BAK
 		WHERE USER_ID = #{userId}
 		  AND (USER_STATUS = 'A' OR USER_STATUS = 'L')
 	]]>

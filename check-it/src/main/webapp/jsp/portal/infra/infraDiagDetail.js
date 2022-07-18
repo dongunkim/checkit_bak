@@ -19,7 +19,7 @@ eventFunction = function(data){
 			}
 		}
 		
-		var url = "/portal/infra/ajaxDelHost.ajax";
+		var url = "/portal/infra/deleteHost.ajax";
 		var params = {};
 		params.hostList = JSON.stringify(delHostList);
 		console.log(params);
@@ -33,7 +33,7 @@ eventFunction = function(data){
 	// 이전 페이지 클릭 이벤트
 	$("#backBtn").unbind().on("click", function(){
 //		history.go(-1);
-		var url = "/portal/infra/infraDiagList.ajax";
+		var url = "/portal/infra/infraDiagList.do";
 		utils.movePage(url, data);
 	});
 

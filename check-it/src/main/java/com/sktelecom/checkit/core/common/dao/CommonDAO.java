@@ -19,155 +19,99 @@ public class CommonDAO extends AbstractMapper {
 
 	/**
 	 * 메뉴를 조회후 캐시에 저장
-	 * @param param
-	 * @return
-	 * @throws Exception
 	 */
-	public List<HashMap<String, Object>> getAdMenuList(HashMap<String, Object> param) throws Exception{
-		List<HashMap<String, Object>> menuList = super.list("common.mapper.getAdMenuList", param);
-		return menuList;
+	public List<HashMap<String, Object>> selAdMenuList(HashMap<String, Object> param) throws Exception{
+		return super.list("common.dao.selAdMenuList", param);
 	}
 
 	/**
 	 * 메뉴를 조회후 캐시에 저장
-	 * @param param
-	 * @return
-	 * @throws Exception
 	 */
-	public List<HashMap<String, Object>> getMenuList(HashMap<String, Object> param) throws Exception{
-		List<HashMap<String, Object>> menuList = super.list("common.mapper.getMenuList", param);
-		return menuList;
+	public List<HashMap<String, Object>> selMenuList(HashMap<String, Object> param) throws Exception{
+		return super.list("common.dao.selMenuList", param);
 	}
 
 	/**
 	 * 공통코드를 조회후 캐시에 저장
-	 * @param param
-	 * @return
-	 * @throws Exception
 	 */
 	@SuppressWarnings("unchecked")
-	public HashMap<String, Object> getCommonCode(String code) throws Exception{
-		HashMap<String, Object> rtn = (HashMap<String, Object>)super.selectList("common.mapper.getCommonCode", code);
-		return rtn;
+	public HashMap<String, Object> selCode(String code) throws Exception{
+		return (HashMap<String, Object>)super.selectList("common.dao.selCode", code);
 	}
 
 	/**
 	 * 공통코드를 조회후 캐시에 저장
-	 * @param param
-	 * @return
-	 * @throws Exception
 	 */
 	@SuppressWarnings("unchecked")
-	public HashMap<String, Object> getCommonCodeRoot(String code) throws Exception{
-		HashMap<String, Object> rtn = (HashMap<String, Object>)super.selectList("common.mapper.getCommonCodeRoot", code);
-		return rtn;
+	public HashMap<String, Object> selCodeRoot(String code) throws Exception{
+		return (HashMap<String, Object>)super.selectList("common.dao.selCodeRoot", code);
 	}
 
 	/**
 	 * 공통코드를 조회후 캐시에 저장
-	 * @param param
-	 * @return
-	 * @throws Exception
 	 */
 	@SuppressWarnings("unchecked")
-	public HashMap<String, Object> getCommonCodeSubDepth(HashMap<String, Object> param) throws Exception{
-		HashMap<String, Object> rtn = (HashMap<String, Object>)super.selectList("common.mapper.getCommonCodeSubDepth", param);
-		return rtn;
-	}
-	
-	/**
-	 * 공통코드를 조회후 캐시에 저장
-	 * @param param
-	 * @return
-	 * @throws Exception
-	 */
-	public String getCommonCsvCode(String code) throws Exception{
-		String rtn = super.selectStringOne("common.mapper.getCommonCsvCode", code);
-		return rtn;
+	public HashMap<String, Object> selCodeSubDepth(HashMap<String, Object> param) throws Exception{
+		return (HashMap<String, Object>)super.selectList("common.dao.selCodeSubDepth", param);
 	}
 
 	/**
-	 * 파일업로드 정보 등록
-	 * @param param
-	 * @return
-	 * @throws Exception
+	 *  File Upload 정보 반영
 	 */
-	public int commonFileUplod(List<HashMap<String, Object>> fileList) throws Exception{
-
-		int trCk = 1;
-		int rtnId = 0;
-
-		if(fileList != null && fileList.size() > 0) {
+	public int updUploadFile(List<HashMap<String, Object>> fileList) throws Exception{
+		int attachId = 0;
+		for(int i = 0; i < fileList.size(); i++) {
 			HashMap<String, Object> map = new HashMap<String, Object>();
-			for(int i = 0; i < fileList.size(); i++) {
-				map = fileList.get(i);
-				// 신규 등록일경우
-				if("0".equals(String.valueOf(map.get("attachId")))) {
-					if(i != 0) {
-						rtnId = super.lastIndex();
-					}
-
-					// 등록후 삭제되었을경우
-					if(!"ID".equals(String.valueOf(map.get("cud")))){
-						map.put("attachId", rtnId);
-						trCk *= super.insert("common.mapper.commonFileUplodInsert", map);
-						rtnId = super.lastIndex();
-					}
-
-				}else{
-					// 등록일경우
-					if("I".equals(String.valueOf(map.get("cud")))){
-						trCk *= super.insert("common.mapper.commonFileUplodInsert", map);
-						// 삭제일경우
-					}else if("D".equals(String.valueOf(map.get("cud")))){
-						trCk *= super.delete("common.mapper.commonFileUplodDelete", map);
-					}
+			map = fileList.get(i);
+			// 신규 등록일경우
+			if("0".equals(String.valueOf(map.get("attachId")))) {
+				if(i != 0) {
+					attachId = lastIndex();
 				}
-			}
 
-			if(trCk != 1) {
-				throw new Exception("파일정보 등록오류");
+				// 등록 후 삭제된 경우가 아니라면
+				if(!"ID".equals(String.valueOf(map.get("cud")))){
+					map.put("attachId", attachId);
+					insAttachFile(map);
+					attachId = lastIndex();
+				}
+			}else{
+				// 등록일경우
+				if("I".equals(String.valueOf(map.get("cud")))){
+					insAttachFile(map);
+					// 삭제일경우
+				}else if("D".equals(String.valueOf(map.get("cud")))){
+					delAttachFile(map);
+				}
 			}
 		}
 
-		return rtnId;
+		return attachId;
+	}
+
+	public int insAttachFile(HashMap<String, Object> param) throws Exception{
+		return super.insert("common.dao.insAttachFile", param);
+	}
+
+	public int delAttachFile(HashMap<String, Object> param) throws Exception{
+		return super.delete("common.dao.delAttachFile", param);
 	}
 
 	/**
 	 * 파일 리스트조회
-	 * @param param
-	 * @return
-	 * @throws Exception
 	 */
 	@SuppressWarnings("unchecked")
-	public HashMap<String, Object> commFileList(HashMap<String, Object> param) throws Exception{
-		HashMap<String, Object> rtn = (HashMap<String, Object>)super.selectList("common.mapper.commFileList", param);
-		return rtn;
+	public HashMap<String, Object> selAttachFileList(HashMap<String, Object> param) throws Exception{
+		return (HashMap<String, Object>)super.selectList("common.dao.selAttachFileList", param);
 
 	}
 
 	/**
 	 * 파일 조회
-	 * @param param
-	 * @return
-	 * @throws Exception
 	 */
 	@SuppressWarnings("unchecked")
-	public HashMap<String, Object> commFileInfo(HashMap<String, Object> param) throws Exception{
-		HashMap<String, Object> rtn = (HashMap<String, Object>)super.selectOne("common.mapper.commFileInfo", param);
-		return rtn;
-	}
-
-	/**
-	 * SEQ 확인
-	 * @param param
-	 * @return
-	 * @throws Exception
-	 */
-	@SuppressWarnings("unchecked")
-	public HashMap<String, Object> getSeq(String seqGb) throws Exception{
-		HashMap<String, Object> seq = (HashMap<String, Object>) super.selectOne("common.mapper.getSeq", seqGb);
-		return seq;
+	public HashMap<String, Object> selAttachFileDetail(HashMap<String, Object> param) throws Exception{
+		return (HashMap<String, Object>)super.selectOne("common.dao.selAttachFileDetail", param);
 	}
 
 }

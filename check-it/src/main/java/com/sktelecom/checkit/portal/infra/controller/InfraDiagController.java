@@ -80,7 +80,7 @@ public class InfraDiagController{
 	/**
 	 * 
 	 */
-	@RequestMapping({"/hostDelete.ajax"})
+	@RequestMapping({"/deleteHost.ajax"})
 	@ResponseBody
 	public Map<String, Object> deleteHost(@RequestParam HashMap<String, Object> param) throws Exception {
 		return infraDiagService.deleteHost(param);

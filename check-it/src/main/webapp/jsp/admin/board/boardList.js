@@ -6,21 +6,19 @@ initFunction = function(){
 	searchData.boardType = "01";
 	
 	$.jqGridWrapper({
-		url: "/admin/board/boardList.ajax",
+		url: "/admin/board/selBoardList.ajax",
 		colNames: [
 				"No",
-				"제목",
 				"작성자",
-				"파일",
+				"제목",
 				"등록일시",
 				"조회수",
 				"내용"
 			],
 		colModel: [
 				{ name:'boardId'   ,index:'boardId'   ,width: 5, align:"left" },
-				{ name:'boardTitle',index:'boardTitle',width: 50, align:"left" },
 				{ name:'regId'     ,index:'regNm'     ,width: 10, align:"left" },
-				{ name:'attachId'  ,index:'attachId'  ,width: 10, align:"left" },
+				{ name:'boardTitle',index:'boardTitle',width: 50, align:"left" },
 				{ name:'regDt'     ,index:'regDt'     ,width: 10, align:"center"},
 				{ name:'viewCount' ,index:'viewCount' ,width: 10, align:"center"},
 				{ name:'boardDesc' ,index:'viewCount' ,hidden:true}
@@ -52,23 +50,8 @@ initFunction = function(){
 			if(obj.total.cnt!=undefined)$(".pagecount > em").text(core.defaultString(obj.total.cnt, "0").money());
     		
 //			$("jqgrid 아이디").tuiTableRowSpan(["boardTitle, "머지 하고자 하는 컬럼 id", "머지 하고자 하는 컬럼 id"], "머지 그룹 기준 컬럼 id");
-		    $("#jqGrid").tuiTableRowSpan(["regId"],"boardTitle");
+		    $("#jqGrid").rowspans("regId","boardTitle");
 
-    		/*
-    		.click(function () {
-				console.log($(this).find(">a>span"));
-		    });
-		    */
-    		
-    		/*
-			var ids = $("#jqGrid").getDataIDs();
-			for(var i in ids){
-				$("#jqGrid").expandSubGridRow(i);
-			}
-			*/
-
-			//$("#jqGrid").jqGrid("hideCol","subgrid");
-			//$(".subgrid-cell").hide();
 		}
 	});
 

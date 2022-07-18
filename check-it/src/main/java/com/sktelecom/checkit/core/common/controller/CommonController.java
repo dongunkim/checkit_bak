@@ -22,7 +22,6 @@ import com.sktelecom.checkit.core.annotation.Paging;
 import com.sktelecom.checkit.core.common.service.CommonService;
 import com.sktelecom.checkit.core.file.FileUpload;
 import com.sktelecom.checkit.core.util.DateUtils;
-import com.sktelecom.checkit.core.util.CVSUtils;
 import com.sktelecom.checkit.core.util.Session;
 
 /**
@@ -40,10 +39,6 @@ public class CommonController {
 
 	@Resource
 	private FileUpload fileUpload;
-
-	@Resource
-	private CVSUtils cvsUtils;
-
 	/**
 	 * 권한없음
 	 * @param modelAndView
@@ -151,10 +146,10 @@ public class CommonController {
 			String code = "";
 			if(null != param.get("root")) {
 				code = String.valueOf(param.get("root"));
-				rtn = commonService.getCommonCode(code);
+				rtn = commonService.selCode(code);
 			}else{
 				code = String.valueOf(param.get("code"));
-				rtn = commonService.getCommonCode(code);
+				rtn = commonService.selCode(code);
 			}
 
 			modelAndView.addObject("result", rtn);
@@ -186,7 +181,7 @@ public class CommonController {
 			params.put("code", String.valueOf(param.get("code")));
 			params.put("higher", String.valueOf(param.get("higher")));
 			
-			rtn = commonService.getCommonCodeSubDepth(params);
+			rtn = commonService.selCodeSubDepth(params);
 			modelAndView.addObject("result", rtn);
 		}catch(Exception e){
 			log.error(e.getMessage());
@@ -212,7 +207,7 @@ public class CommonController {
 
 		try{
 
-			rtn = commonService.commFileList(param);
+			rtn = commonService.selAttachFileList(param);
 
 			modelAndView.addObject("result", rtn);
 
@@ -285,7 +280,7 @@ public class CommonController {
 
 			modelAndView = new ModelAndView("downloadView");
 
-			fileInfo = commonService.commFileInfo(param);
+			fileInfo = commonService.selAttachFileDetail(param);
 
 			filePath = String.valueOf(fileInfo.get("filePath")) + File.separator + String.valueOf(fileInfo.get("fileName"));
 			file = new File(filePath);

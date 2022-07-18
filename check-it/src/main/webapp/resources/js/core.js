@@ -428,7 +428,7 @@ var popupCloseCallback = {
 				});
 			}
 
-			if(total.number() > 0){
+			if(total > 0){
 
 				$(".pagecount > em").text(core.defaultString(total, "0").money());
 
@@ -1167,27 +1167,6 @@ var popupCloseCallback = {
 
 							}
 
-							// 에디터가 있을경우 에디터의 데이터도 form에 추가
-							if(typeof window.AXEditor_instances != "undefined"){
-								$.each(window.AXEditor_instances, function(index, klass){
-
-									let editId = klass.config.targetID;
-									let editContent = klass.getContent();
-
-									if(klass.getContentCheck()){
-										editContent = utils.replaceAll(editContent, '"', "&quot;");
-									}else{
-										editContent = "";
-									}
-									if($("[name='" + editId + "']").length == 0){
-										str += "<input type=\"hidden\" name=\"" + editId + "\" value=\"" + editContent + "\"/>";
-									}else{
-										$("[name='" + editId + "']").val(editContent);
-									}
-
-								});
-							}
-
 							$("#" + targetId + "Form").append(str);
 
 						}else{
@@ -1284,6 +1263,7 @@ var popupCloseCallback = {
 							}
 
 							// 에디터가 있을경우 에디터의 데이터도 form에 추가
+							/*
 							if(typeof window.AXEditor_instances != "undefined"){
 								$.each(window.AXEditor_instances, function(index, klass){
 
@@ -1303,6 +1283,7 @@ var popupCloseCallback = {
 
 								});
 							}
+							*/
 
 							$("#" + targetId + "Form").append(str);
 							$("#" + targetId + "Form").attr("action", options.url);
@@ -1554,7 +1535,7 @@ var popupCloseCallback = {
 
 						$.each(ckUploadFiles, function(idx, data){
 							if(data.result.errorCode != "00"){
-								DIALOG.alert(data.result.errorMessage);
+								DIALOG.alert("파일업로드중 오류가 발생하였습니다.");
 								_this.self.removeFileAll();
 								isUpload = false;
 								return false;
@@ -2810,6 +2791,7 @@ core = {
 		,
 		movePage : function(param){
 
+			alert('AAA');
 			let url = document.location.pathname;
 			if (url == ""){
 				alert("이동할 URL이 설정되지 않았습니다.");
@@ -2837,6 +2819,7 @@ core = {
 				});
 				$("#nextForm").append(paramStr);
 			}
+			
 
 			$("#nextForm").submit();	// submit
 		}

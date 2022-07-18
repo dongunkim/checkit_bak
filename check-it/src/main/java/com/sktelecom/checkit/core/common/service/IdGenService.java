@@ -29,8 +29,8 @@ public class IdGenService  {
 	 * @return
 	 * @throws Exception
 	 */
-	public HashMap<String, Object> getSeq(String seqGb) throws Exception {
-		HashMap<String, Object> seq = idGenDAO.selectSeqInfo(seqGb);
+	public HashMap<String, Object> selSeq(String seqGb) throws Exception {
+		HashMap<String, Object> seq = idGenDAO.selSeq(seqGb);
 		return seq;
 	}
 

@@ -45,9 +45,9 @@ public class CommonService  {
 	 * 메뉴를 조회후 캐시에 저장
 	 * @return
 	 */
-	public List<HashMap<String, Object>> getAdMenuList(HashMap<String, Object> param) throws Exception{
+	public List<HashMap<String, Object>> selAdMenuList(HashMap<String, Object> param) throws Exception{
 		List<HashMap<String, Object>> menuList = null;
-		menuList = commonDAO.getAdMenuList(param);
+		menuList = commonDAO.selAdMenuList(param);
 		return menuList;
 	}
 
@@ -56,9 +56,9 @@ public class CommonService  {
 	 * @return
 	 */
 	@Cacheable(value="menuList", key="#param")
-	public List<HashMap<String, Object>> getMenuList(HashMap<String, Object> param) throws Exception{
+	public List<HashMap<String, Object>> selMenuList(HashMap<String, Object> param) throws Exception{
 		List<HashMap<String, Object>> menuList = null;
-		menuList = commonDAO.getMenuList(param);
+		menuList = commonDAO.selMenuList(param);
 		return menuList;
 	}
 
@@ -69,7 +69,7 @@ public class CommonService  {
 	@CacheEvict(value="menuList", key="#param")
 	public List<HashMap<String, Object>> evictMenuList(HashMap<String, Object> param) throws Exception{
 		List<HashMap<String, Object>> menuList = null;
-		menuList = commonDAO.getMenuList(param);
+		menuList = commonDAO.selMenuList(param);
 
 		return menuList;
 	}
@@ -81,29 +81,7 @@ public class CommonService  {
 	@CachePut(value="menuList", key="#param")
 	public List<HashMap<String, Object>> putMenuList(HashMap<String, Object> param) throws Exception{
 		List<HashMap<String, Object>> menuList = null;
-		menuList = commonDAO.getMenuList(param);
-		return menuList;
-	}
-
-	/**
-	 * 메뉴 캐시 삭제후 갱신
-	 * @return
-	 */
-	@CacheEvict(value="enMenuList", key="#param")
-	public List<HashMap<String, Object>> evictEnMenuList(HashMap<String, Object> param) throws Exception{
-		List<HashMap<String, Object>> menuList = null;
-		menuList = commonDAO.getMenuList(param);
-		return menuList;
-	}
-
-	/**
-	 * 메뉴 캐시 추가
-	 * @return
-	 */
-	@CachePut(value="enMenuList", key="#param")
-	public List<HashMap<String, Object>> putEnMenuList(HashMap<String, Object> param) throws Exception{
-		List<HashMap<String, Object>> menuList = null;
-		menuList = commonDAO.getMenuList(param);
+		menuList = commonDAO.selMenuList(param);
 		return menuList;
 	}
 
@@ -112,9 +90,9 @@ public class CommonService  {
 	 * @return
 	 */
 	@Cacheable(value="commonCode", key="#code")
-	public HashMap<String, Object> getCommonCode(String code) throws Exception{
+	public HashMap<String, Object> selCode(String code) throws Exception{
 		HashMap<String, Object> rtn = new HashMap<String, Object>();
-		rtn = commonDAO.getCommonCode(code);
+		rtn = commonDAO.selCode(code);
 		return rtn;
 	}
 
@@ -123,9 +101,9 @@ public class CommonService  {
 	 * @return
 	 */
 	@Cacheable(value="commonCode", key="#code")
-	public HashMap<String, Object> getCommonCodeRoot(String code) throws Exception{
+	public HashMap<String, Object> selCodeRoot(String code) throws Exception{
 		HashMap<String, Object> rtn = new HashMap<String, Object>();
-		rtn = commonDAO.getCommonCodeRoot(code);
+		rtn = commonDAO.selCodeRoot(code);
 		return rtn;
 	}
 	
@@ -134,31 +112,20 @@ public class CommonService  {
 	 * @return
 	 */
 	@Cacheable(value="commonCode", key="#param")
-	public HashMap<String, Object> getCommonCodeSubDepth(HashMap<String, Object> param) throws Exception{
+	public HashMap<String, Object> selCodeSubDepth(HashMap<String, Object> param) throws Exception{
 		HashMap<String, Object> rtn = new HashMap<String, Object>();
-		rtn = commonDAO.getCommonCodeSubDepth(param);
+		rtn = commonDAO.selCodeSubDepth(param);
 		return rtn;
 	}
 	
-	/**
-	 * CSV코드캐시를 조회 후 저장
-	 * @return
-	 */
-	@Cacheable(value="commonCsvCode", key="#code")
-	public String getCommonCsvCode(String code) throws Exception{
-		String rtn = null;
-		rtn = commonDAO.getCommonCsvCode(code);
-		return rtn;
-	}
-
 	/**
 	 * 캐시를 삭제후 다시 생성
 	 * @return
 	 */
 	@CacheEvict("commonCode")
-	public HashMap<String, Object> evictCommonCode(String code) throws Exception{
+	public HashMap<String, Object> evictCode(String code) throws Exception{
 		HashMap<String, Object> rtn = new HashMap<String, Object>();
-		rtn = commonDAO.getCommonCode(code);
+		rtn = commonDAO.selCode(code);
 		return rtn;
 	}
 
@@ -167,32 +134,68 @@ public class CommonService  {
 	 * @return
 	 */
 	@CachePut("commonCode")
-	public HashMap<String, Object> putCommonCode(String code) throws Exception{
+	public HashMap<String, Object> putCode(String code) throws Exception{
 		HashMap<String, Object> rtn = new HashMap<String, Object>();
-		rtn = commonDAO.getCommonCode(code);
+		rtn = commonDAO.selCode(code);
 		return rtn;
 	}
+
 
 	/**
 	 * 파일업로드 정보 등록
 	 * @return
 	 * @throws JsonMappingException
 	 */
+	/*
 	public int commonFileUplod(HashMap<String, Object> param) throws Exception{
+		// File Upload
 		ObjectMapper mapper = new ObjectMapper();
 		List<HashMap<String, Object>> fileList = mapper.readValue(String.valueOf(param.get("attachFileList")), new TypeReference<List<HashMap<String, Object>>>(){});
 		String keyStr = "filePath.upload";
 		fileUpload.upload(fileList, keyStr);
-		int rtn = commonDAO.commonFileUplod(fileList);
+		
+		// File Upload DB 반영
+		int trCk = 1;
+		int rtn = 0;
+		if(fileList != null && fileList.size() > 0) {
+			HashMap<String, Object> map = new HashMap<String, Object>();
+			for(int i = 0; i < fileList.size(); i++) {
+				map = fileList.get(i);
+				// 신규 등록일경우
+				if("0".equals(String.valueOf(map.get("attachId")))) {
+					if(i != 0) {
+						rtn = commonDAO.lastIndex();
+					}
+
+					// 등록후 삭제되었을경우
+					if(!"ID".equals(String.valueOf(map.get("cud")))){
+						map.put("attachId", rtn);
+						commonDAO.commonFileUplodInsert(map);
+						rtn = commonDAO.lastIndex();
+					}
+
+				}else{
+					// 등록일경우
+					if("I".equals(String.valueOf(map.get("cud")))){
+						trCk *= commonDAO.commonFileUplodInsert(map);
+						// 삭제일경우
+					}else if("D".equals(String.valueOf(map.get("cud")))){
+						commonDAO.commonFileUplodDelete(map);
+					}
+				}
+			}
+		}
+
 		return rtn;
 	}
+	*/
 
 	/**
 	 * 파일 리스트조회
 	 * @return
 	 */
-	public HashMap<String, Object> commFileList(HashMap<String, Object> param) throws Exception{
-		HashMap<String, Object> rtn = commonDAO.commFileList(param);
+	public HashMap<String, Object> selAttachFileList(HashMap<String, Object> param) throws Exception{
+		HashMap<String, Object> rtn = commonDAO.selAttachFileList(param);
 		return rtn;
 	}
 
@@ -200,20 +203,9 @@ public class CommonService  {
 	 * 파일 조회
 	 * @return
 	 */
-	public HashMap<String, Object> commFileInfo(HashMap<String, Object> param) throws Exception{
-		HashMap<String, Object> rtn = commonDAO.commFileInfo(param);
+	public HashMap<String, Object> selAttachFileDetail(HashMap<String, Object> param) throws Exception{
+		HashMap<String, Object> rtn = commonDAO.selAttachFileDetail(param);
 		return rtn;
-	}
-
-	/**
-	 * SEQ 확인
-	 * @param param
-	 * @return
-	 * @throws Exception
-	 */
-	public HashMap<String, Object> getSeq(String seqGb) throws Exception {
-		HashMap<String, Object> seq = commonDAO.getSeq(seqGb);
-		return seq;
 	}
 
 	/**

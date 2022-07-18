@@ -17,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.sktelecom.checkit.admin.board.service.BoardService;
 import com.sktelecom.checkit.core.annotation.Paging;
+import com.sktelecom.checkit.core.common.service.CommonService;
 import com.sktelecom.checkit.core.util.Session;
 
 /**
@@ -30,6 +31,9 @@ public class BoardController{
 	@Resource
 	private BoardService boardService;
 
+	@Resource
+	private CommonService commonService;
+
 	/**
 	 * 
 	 */
@@ -42,10 +46,10 @@ public class BoardController{
 	 * 
 	 */
 	@Paging(value=true)
-	@RequestMapping({"/boardList.ajax"})
+	@RequestMapping({"/selBoardList.ajax"})
 	@ResponseBody
-	public Map<String, Object> boardList(@RequestParam HashMap<String, Object> param) throws Exception {
-		return boardService.boardList(param);
+	public Map<String, Object> selBoardList(@RequestParam HashMap<String, Object> param) throws Exception {
+		return boardService.selBoardList(param);
 	}
 
 	/**
@@ -54,8 +58,8 @@ public class BoardController{
 	@RequestMapping({"/boardDetail.do"})
 	public ModelAndView boardDetail(ModelAndView modelAndView, @RequestParam HashMap<String, Object> param) throws Exception {
 		HashMap<String, Object> rtn = new HashMap<String, Object>();
-		rtn = boardService.boardDetail(param);
-		rtn.put("param", param.get("param"));
+		rtn = boardService.selBoardDetail(param);
+		if(!"00".equals(rtn.get("errorCode").toString())) throw new Exception();
 		modelAndView.addObject("result", rtn);
 		return modelAndView;
 	}
@@ -72,10 +76,13 @@ public class BoardController{
 	/**
 	 * 
 	 */
-	@RequestMapping({"/insertBoard.ajax"})
-	public HashMap<String, Object> insertBoard(@RequestParam HashMap<String, Object> param, Session session) throws Exception {
+	@RequestMapping({"/insBoard.ajax"})
+	@ResponseBody
+	public Map<String, Object> insBoard(@RequestParam HashMap<String, Object> param, Session session) throws Exception {
+		HashMap<String, Object> rtn = new HashMap<String, Object>();
 		param.put("regId", session.getUserId());
-		return boardService.insertBoard(param);
+		rtn.put("result",boardService.insBoard(param));
+		return rtn;
 	}
 
 	/**
@@ -90,24 +97,23 @@ public class BoardController{
 	/**
 	 * 
 	 */
-	@RequestMapping({"/updateBoard.ajax"})
-	public ModelAndView updateBoard(ModelAndView modelAndView, @RequestParam HashMap<String, Object> param, Session session) throws Exception {
+	@RequestMapping({"/updBoard.ajax"})
+	@ResponseBody
+	public Map<String, Object> updBoard(@RequestParam HashMap<String, Object> param, Session session) throws Exception {
 		HashMap<String, Object> rtn = new HashMap<String, Object>();
 		param.put("updId", session.getUserId());
-		boardService.updateBoard(param);
-		modelAndView.addObject("result", rtn);
-		return modelAndView;
+		rtn.put("result",boardService.updBoard(param));
+		return rtn;
 	}
 
 	/**
 	 * 
 	 */
-	@RequestMapping({"/deleteBoard.ajax"})
-	public ModelAndView deleteBoard(ModelAndView modelAndView, HttpServletRequest req, HttpServletResponse res, @RequestParam HashMap<String, Object> param, Session session) throws Exception {
-		HashMap<String, Object> rtn = new HashMap<String, Object>();
+	@RequestMapping({"/delBoard.ajax"})
+	@ResponseBody
+	public ModelAndView delBoard(ModelAndView modelAndView, HttpServletRequest req, HttpServletResponse res, @RequestParam HashMap<String, Object> param, Session session) throws Exception {
 		param.put("updId", session.getUserId());
-		boardService.deleteBoard(param);
-		modelAndView.addObject("result", rtn);
+		modelAndView.addObject("result", boardService.delBoard(param));
 		return modelAndView;
 	}
 }

@@ -33,7 +33,6 @@ import com.sktelecom.checkit.core.annotation.Paging;
 import com.sktelecom.checkit.core.common.SingLoginService;
 import com.sktelecom.checkit.core.common.dao.CommonDAO;
 import com.sktelecom.checkit.core.common.service.CommonService;
-import com.sktelecom.checkit.core.util.CVSUtils;
 import com.sktelecom.checkit.core.util.Session;
 import com.sktelecom.checkit.core.util.CommMap;
 import com.sktelecom.checkit.core.util.StringUtils;
@@ -54,9 +53,6 @@ public class CommInterceptor<T extends Message> implements HandlerInterceptor {
 	@Autowired
     private CommonService commonService;
 
-	@Autowired
-	private CVSUtils excelUtils;
-	
 	@Resource
     private CommonDAO commonDAO;
 	
@@ -304,32 +300,6 @@ public class CommInterceptor<T extends Message> implements HandlerInterceptor {
 				  ConfigurableEnvironment env = ctx.getEnvironment();
 				  String serverType = env.getProperty("domain.type");
 				  
-				if( ( !"ad".equals(serverType) && "Y".equals(req.getParameter("csvDownload")) ) ||
-					( "Y".equals(req.getParameter("csvDownload")) && "ad".equals(serverType) 
-							&& session != null && session.getAdminYn() != null	&& session.getAdminYn().equals("Y"))
-						) {
-					HashMap result = (HashMap)modelAndView.getModelMap().get("result");
-					HashMap param = (HashMap)result.get("param");
-					String fileName      = String.valueOf(param.get("fileName"));
-					String headListParam = String.valueOf(param.get("headList"));
-					TypeCastUtils typeCastUtils = new TypeCastUtils();
-
-					List<HashMap<String, Object>> csvList = (List<HashMap<String, Object>>)result.get("list");
-					List<HashMap<String, Object>> headList  = typeCastUtils.stringToArrayList(headListParam);
-
-					
-					String searchTextBox = (String)param.get("searchTextBox");
-					File file = null;
-					if(searchTextBox != null && searchTextBox != "") {
-						file = excelUtils.csvDownload(fileName, csvList, headList, req, res, searchTextBox);
-					} else {
-						file = excelUtils.csvDownload(fileName, csvList, headList, req, res);
-					}
-					
-					session.setCsvFile(file);
-
-				}
-
 				modelAndView.setViewName("jsonView");
 
 			}
@@ -412,7 +382,7 @@ public class CommInterceptor<T extends Message> implements HandlerInterceptor {
 
 					}else{
 						param.put("sysType", StringUtils.defaultString(session.getSysType(), "2"));
-						myMenuList = commonService.getMenuList(param);
+						myMenuList = commonService.selMenuList(param);
 						modelAndView.addObject("menuList", objectMapper.defaultPrettyPrintingWriter().writeValueAsString(myMenuList));
 
 					}

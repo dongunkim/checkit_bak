@@ -67,96 +67,39 @@ public abstract class AbstractMapper{
 	public Object selectList(String queryId, Object object) throws Exception{
 
 		List list = null;
-		HashMap<String, Object> total = new HashMap<String, Object>();
+		int total = 0;
 		HashMap<String, Object> rtnMap = new HashMap<String, Object>();
 		Session session = new Session();
 
 		try{
-
-			if(session.isPaging()) {
-
-				if(object instanceof String){
-
-					list = sqlSession.selectList(queryId, object);
-
-					rtnMap.put("list", list);
-					rtnMap.put("param", object);
-					return rtnMap;
-
-				}else{
-					HashMap params = (HashMap)object;
-					
-					String pageSize = StringUtils.nvl(String.valueOf(params.get("pageSize")), "10");
+			if(object instanceof String){
+				list = sqlSession.selectList(queryId, object);
+				rtnMap.put("list", list);
+				return rtnMap;
+			}else{
+				HashMap params = (HashMap)object;
+				params.put("isPaging", session.isPaging());
+				if(session.isPaging()) {
 					int pageNo = Integer.valueOf(StringUtils.nvl(String.valueOf(params.get("pageNo")), "1"));
-					params.put("startPageNo", (pageNo-1)*Integer.parseInt(pageSize));
+					int pageSize = Integer.valueOf(StringUtils.nvl(String.valueOf(params.get("pageSize")), "10"));
+					params.put("startPageNo", (pageNo-1)*pageSize);
 					params.put("pageSize", pageSize);
-					params.put("pageNo", pageNo);
 					
-					/*
-					if("".equals(StringUtils.nvl(String.valueOf(params.get("pageNo")), ""))){
-						params.put("startPageNo", 1);
-						params.put("endPageNo", pageSize);
-						params.put("pageNo", 1);
-					}else{
-						int pageNo = Integer.valueOf(StringUtils.nvl(String.valueOf(params.get("pageNo")), "1"));
-						params.put("startPageNo", (pageNo * Integer.parseInt(pageSize)) - (Integer.parseInt(pageSize)-1));
-						params.put("endPageNo", pageNo * Integer.parseInt(pageSize));
-					}
-					*/
-
-					params.put("isPaging", true);
-					rtnMap.put("param", params);
-
-					list = sqlSession.selectList(queryId, params);
-					total = new HashMap<String, Object>();
-
-					if(list.size() == 0){
-					    total.put("cnt", 0);
-					} else {
-						if(list.get(0) instanceof CommMap) {
-							total.put("cnt", Integer.parseInt(StringUtils.defaultString(((ListOrderedMap)list.get(0)).get("rnumCnt"), "0").toString()));
-						}else if(list.get(0) instanceof HashMap) {
-							total.put("cnt", Integer.parseInt(StringUtils.defaultString(((HashMap<String, Object>)list.get(0)).get("RNUM_CNT"), "0").toString()));
-						}
-					}
-
-					rtnMap.put("list", list);
-					rtnMap.put("total", total);
-
-					return rtnMap;
+					// paging
+					HashMap<String, Object> paging = new HashMap<String, Object>();
+					paging.put("pageNo", pageNo);
+					paging.put("pageSize", pageSize);
+					rtnMap.put("paging", paging);
 				}
 
-			} else {
-
-				if(object instanceof String){
-
-					list = sqlSession.selectList(queryId, object);
-
-					rtnMap.put("list", list);
-					rtnMap.put("param", object);
-					return rtnMap;
-
-				}else{
-					HashMap params = (HashMap)object;
-					params.put("isPaging", false);
-
-					list = sqlSession.selectList(queryId, params);
-
-					if(list.size() == 0){
-						total.put("cnt", 0);
-					} else {
-						if(list.get(0) instanceof CommMap) {
-							total.put("cnt", Integer.parseInt(StringUtils.defaultString(((ListOrderedMap)list.get(0)).get("rnumCnt"), "0").toString()));
-						}else if(list.get(0) instanceof HashMap) {
-							total.put("cnt", Integer.parseInt(StringUtils.defaultString(((HashMap<String, Object>)list.get(0)).get("RNUM_CNT"), "0").toString()));
-						}
-					}
-
-					rtnMap.put("list", list);
-					rtnMap.put("total", total);
-					rtnMap.put("param", params);
-					return rtnMap;
+				list = sqlSession.selectList(queryId, params);
+				if(list.size() != 0){
+					total = Integer.parseInt(StringUtils.defaultString(((ListOrderedMap)list.get(0)).get("rnumCnt"), "0"));
 				}
+
+				rtnMap.put("list", list);
+				rtnMap.put("total", total);
+				return rtnMap;
 			}
 		}catch(Exception e){
 			throw new Exception(e);

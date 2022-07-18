@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <!-- 공통 Mapper -->
-<mapper namespace="common.mapper">
+<mapper namespace="common.dao">
 
-	<select id="selectSeqInfo" parameterType="String" resultType="commMap">
-		/* common.mapper.IdGenMapper.xml selectSeqInfo */
+	<select id="selSeq" parameterType="String" resultType="commMap">
+		/* common.mapper.IdGenMapper.xml selSeq */
 		SELECT	TABLE_NAME,
 				SEQ_TYPE,
 				PREFIX,
@@ -18,14 +18,14 @@
 		WHERE	TABLE_NAME = #{seqGb}
 	</select>
 		
-	<update id="updateNextSeq" parameterType="String">
+	<update id="updNextSeq" parameterType="String">
 		/* common.mapper.IdGenMapper.xml updateNextSeq */
 		UPDATE	T_ID_GEN
 		SET		CURR_NO = IFNULL(CURR_NO, 0) + 1
 		WHERE	TABLE_NAME = #{tableName}			
 	</update>
 	
-	<update id="updateSeqCycle" parameterType="commMap">
+	<update id="updSeqCycle" parameterType="commMap">
 		/* common.mapper.IdGenMapper.xml updateSeqCycle */
 		UPDATE	T_ID_GEN
 		SET		CURR_YEAR = #{vo.currYear},

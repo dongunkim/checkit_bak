@@ -26,8 +26,9 @@ eventFunction = function(data){
 		}
 		*/
 
-		options.url = "/admin/board/insertBoard.ajax";
+		options.url = "/admin/board/insBoard.ajax";
 		$("#boardReg").formSubmit(options, validator, function(result){
+			console.log(result);
 			if(result.errorCode == "00"){
 				DIALOG.alert({
 					title: "알림",

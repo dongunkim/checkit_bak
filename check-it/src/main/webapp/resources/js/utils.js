@@ -342,7 +342,6 @@ utils = {
 			let codeNmArr = [];
 			let attachId;
 			$.each(data, function(key, value){
-
 				// dataType 처리
 				let obj = $("#" + key);
 				let dataType = obj.attr("data-type");
@@ -375,6 +374,14 @@ utils = {
 					}else{
 						if($.type(value) == "string"){
 							value = _this.defaultString(value).replace(/\n/g,"<br/>");
+						} else if($.type(value) == "object"){
+							var html = "";
+							if(key=="attachList"){
+								$.each(value.list, function(index, data){
+									html +="<a href='/common/fileDownload.do?attachId=" + data.attachId + "&attachSeq=" + data.attachSeq +"'>"+data.fileOriginName+"</a></br>";
+								});
+							}
+							value = html;
 						}
 						obj.html(value);
 					}

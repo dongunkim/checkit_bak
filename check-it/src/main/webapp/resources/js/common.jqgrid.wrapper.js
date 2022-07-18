@@ -51,8 +51,8 @@
 				jsonReader: {
 					root   : function(obj) {return obj.list;},
 				    records: function(obj) {return obj.total.cnt;},
-				    page   : function(obj) {return obj.param.pageNo;},
-				    total  : function(obj) {return Math.ceil(obj.total.cnt / obj.param.pageSize);},
+				    page   : function(obj) {return obj.paging.pageNo;},
+				    total  : function(obj) {return Math.ceil(obj.total.cnt / obj.paging.pageSize);},
 				    repeatitems: false,
 				    repeat: false
 				},
@@ -121,49 +121,46 @@
 
 	});
 
-	$.fn.tuiTableRowSpan = function(colIndexs, compareColId) {
-	    return $(this).each(function() {
-	        //var indexs  = eval("([" + colIndexs + "])");
-	        var indexs = colIndexs;
-	        var girdId = $(this).attr("id");
-	        for (var i = 0; i < indexs.length; i++) {
-	            var colIdx = indexs[i];
-	            var that;
-	            var thatVal = "";
-	            var cColId = "";
-	            $('tbody tr', $(this)).each(function(row) {
-	             $("#"+girdId + " [aria-describedby=" +girdId + "_" + colIdx + "]").eq(row).filter(':visible').each(function(col) {
-	              if( compareColId == "" || compareColId == null || compareColId == undefined || ( compareColId != null && typeof compareColId == "object" && !Object.keys(compareColId).length ) ){
-	               cColId = colIdx;
-	              }else{
-	               cColId = compareColId;
-	              }
-	              
-	              var thisVal = $("#"+girdId + " [aria-describedby=" +girdId + "_" + cColId + "]").eq(row).html();
-	              
-	              if (that != null && thisVal == thatVal) {
-	                   
-	                        rowspan = $(that).attr("rowSpan");
-	                        if (rowspan == undefined) {
-	
-	                            $(that).attr("rowSpan", 1);
-	                            rowspan = $(that).attr("rowSpan");
-	                        }
-	                        rowspan = Number(rowspan) + 1;
-	                        $(that).attr("rowSpan", rowspan); // rowspan을 해준다
-	                        //$(this).remove(); // rowspan 당한 컬럼을 제거 한다.
-	                        $(this).hide(); // rowspan 당한 컬럼을 숨긴다.
-	                    } else {
-	                        that  = this;
-	                        thatVal = thisVal;
-	                    }
-	                    // that = (that == null) ? this : that; // set the that if not already set
-	                });
-	
-	            });
-	        }
-	    });
+	$.fn.rowspans = function(colIndex1,colIndex2) {
+		return $(this).each(function() {
+			var girdId = $(this).attr("id");
+            var befIdx1;
+            var befIdx1Val = "";
+            var befIdx2;
+            var befIdx2Val = "";
+			$('tbody tr', $(this)).each(function(row) {
+				$("#"+girdId + " [aria-describedby=" +girdId + "_" + colIndex1 + "]").eq(row).filter(':visible').each(function(col) {
+					cur1 = this;
+					cur2 = $("#"+girdId + " [aria-describedby=" +girdId + "_" + colIndex2 + "]").eq(row)[0];
+					//console.log(cur2);
+					var curVal1 = $("#"+girdId + " [aria-describedby=" +girdId + "_" + colIndex1 + "]").eq(row).html();
+					var curVal2 = $("#"+girdId + " [aria-describedby=" +girdId + "_" + colIndex2 + "]").eq(row).html();
+					if (befIdx1 != null && curVal1 == befIdx1Val) { // 이전값과 같으면
+						// Index2 처리
+						if (befIdx2 != null && curVal2 == befIdx2Val) { // 이전값과 같으면
+							rowspan = $(befIdx2).attr("rowSpan") == undefined ? 1 : $(befIdx2).attr("rowSpan");
+							rowspan = Number(rowspan) + 1;
+							$(befIdx2).attr("rowSpan", rowspan); // rowspan을 해준다
+							$(cur2).hide(); // rowspan 당한 컬럼을 숨긴다.
+						} else {
+							befIdx2  = cur2;
+							befIdx2Val = curVal2;
+						}
+						
+						// Index1 처리
+						rowspan = $(befIdx1).attr("rowSpan") == undefined ? 1 : $(befIdx1).attr("rowSpan");
+						rowspan = Number(rowspan) + 1;
+						$(befIdx1).attr("rowSpan", rowspan); // rowspan을 해준다
+						$(cur1).hide(); // rowspan 당한 컬럼을 숨긴다.
+					} else {
+						befIdx1  = cur1;
+						befIdx1Val = curVal1;
+						befIdx2  = cur2;
+						befIdx2Val = curVal2;
+					}
+				});
+			});
+		});
 	};
-
 
 })(jQuery);

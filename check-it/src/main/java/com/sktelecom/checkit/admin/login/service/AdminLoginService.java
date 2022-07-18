@@ -108,7 +108,7 @@ public class AdminLoginService {
 
 					param.put("rid", String.valueOf(rollMap.get("rid")));
 					param.put("sysType", String.valueOf(userMap.get("sysType")));
-					menuList = commonService.getAdMenuList(param);
+					menuList = commonService.selAdMenuList(param);
 					
 					Cookie storeIdCookie = new Cookie("storeIdCookie", String.valueOf(userMap.get("userId")));
 				    storeIdCookie.setPath(serverType + "/adLogin.do");

@@ -19,9 +19,9 @@ public class IdGenDAO extends AbstractMapper {
 	 * 
 	 */
 	@SuppressWarnings("unchecked")
-	public HashMap<String, Object> selectSeqInfo(String seqGb) throws Exception{
-		super.update("common.mapper.updateNextSeq", seqGb);
-		HashMap<String, Object> seq = (HashMap<String, Object>) super.selectOne("common.mapper.selectSeqInfo", seqGb);
+	public HashMap<String, Object> selSeq(String seqGb) throws Exception{
+		super.update("common.dao.updNextSeq", seqGb);
+		HashMap<String, Object> seq = (HashMap<String, Object>) super.selectOne("common.dao.selSeq", seqGb);
 		return seq;
 	}
 

@@ -22,43 +22,43 @@ public class BoardDAO extends AbstractMapper {
 	 *
 	 */
 	@SuppressWarnings("unchecked")
-	public HashMap<String, Object> selectBoardList(HashMap<String, Object> param) throws Exception{
-		return (HashMap<String, Object>)super.selectList("admin.board.dao.selectBoardList", param);
+	public HashMap<String, Object> selBoardList(HashMap<String, Object> param) throws Exception{
+		return (HashMap<String, Object>)super.selectList("admin.board.dao.selBoardList", param);
 	}
 
 	/**
 	 *
 	 */
 	@SuppressWarnings("unchecked")
-	public HashMap<String, Object> selectBoardDetail(HashMap<String, Object> param) throws Exception{
-		return (HashMap<String, Object>)super.selectOne("admin.board.dao.selectBoardDetail", param);
+	public HashMap<String, Object> selBoardDetail(HashMap<String, Object> param) throws Exception{
+		return (HashMap<String, Object>)super.selectOne("admin.board.dao.selBoardDetail", param);
 	}
 
 	/**
 	 *
 	 */
-	public int updateBoardViewCnt(HashMap<String, Object> param) throws Exception{
-		return super.update("admin.board.dao.updateBoardViewCnt", param);
+	public int updBoardViewCnt(HashMap<String, Object> param) throws Exception{
+		return super.update("admin.board.dao.updBoardViewCnt", param);
 	}
 
 	/**
 	 *
 	 */
-	public int insertBoard(HashMap<String, Object> param) throws Exception{
-		return super.insert("admin.board.dao.insertBoard", param);
+	public int insBoard(HashMap<String, Object> param) throws Exception{
+		return super.insert("admin.board.dao.insBoard", param);
 	}
 
 	/**
 	 *
 	 */
-	public int updateBoard(HashMap<String, Object> param) throws Exception{
-		return super.update("admin.board.dao.updateBoard", param);
+	public int updBoard(HashMap<String, Object> param) throws Exception{
+		return super.update("admin.board.dao.updBoard", param);
 	}
 
 	/**
 	 *
 	 */
-	public int deleteBoard(HashMap<String, Object> param) throws Exception{
-		return super.update("admin.board.dao.deleteBoard", param);
+	public int delBoard(HashMap<String, Object> param) throws Exception{
+		return super.update("admin.board.dao.delBoard", param);
 	}
 }

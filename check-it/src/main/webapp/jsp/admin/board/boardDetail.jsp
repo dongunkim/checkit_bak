@@ -24,9 +24,7 @@
             </li>     
 			<li>
                 <span class="title">첨부파일</span>
-                <span class="word">
-                	<div id="boardFileupload" data-file-gbn="bbs"></div>
-                </span>
+                <span class="word" id="attachList"></span>
             </li>      
             <li>
             	<span class="title">내용</span>
