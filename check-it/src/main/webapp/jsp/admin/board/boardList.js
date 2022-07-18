@@ -2,7 +2,7 @@ var searchData = {};
 
 initFunction = function(){
 	// 공지구분 SETTING
-	utils.getCommNm("931", "searchBbsGb");
+	utils.getCommNm("931", "searchGbn");
 	searchData.boardType = "01";
 	
 	$.jqGridWrapper({

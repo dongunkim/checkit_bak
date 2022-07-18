@@ -49,7 +49,7 @@ public class UserController{
 		try{
 			rtn = sysm01Service.sysm0101List(param);
 			modelAndView.addObject("result", rtn);
-			session.setMaskIsComplete(false);
+//			session.setMaskIsComplete(false);
 		}catch(Exception e){
 			log.error(e.getMessage());
 		}

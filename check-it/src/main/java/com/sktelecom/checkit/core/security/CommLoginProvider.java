@@ -57,19 +57,20 @@ public class CommLoginProvider implements AuthenticationProvider {
 			HashMap<String, Object> param = new HashMap<String, Object>();
 			param.put("userId", userId);
 
-			AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
-			ConfigurableEnvironment env = ctx.getEnvironment();
-			String serverType = env.getProperty("domain.type");
+//			AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
+//			ConfigurableEnvironment env = ctx.getEnvironment();
+//			String serverType = env.getProperty("domain.type");
 
-			if("ad".equals(serverType)) {
-				userMap = commLoginService.loginAdUserInfo(param);
-			}else {
-				userMap = commLoginService.loginMyUserInfo(param);
-			}
+			userMap = commLoginService.loginAdUserInfo(param);
+//			if("ad".equals(serverType)) {
+//				userMap = commLoginService.loginAdUserInfo(param);
+//			}else {
+//				userMap = commLoginService.loginMyUserInfo(param);
+//			}
 
 			if(userMap != null){
 
-				if(!"ad".equals(serverType) && !userMap.isEmpty()) {
+				if(!userMap.isEmpty()) {
 					if(Integer.valueOf(String.valueOf(userMap.get("loginFailCnt"))) >= 5){
 						throw new BadCredentialsException("비밀번호 5회입력에 5회 실패하셨습니다.관리자에게 문의 잠김을 풀어주세요.");
 					}
@@ -142,9 +143,9 @@ public class CommLoginProvider implements AuthenticationProvider {
 					result.setDetails(new CommLoginUserDetails(userId, passwd));
 				}else{
 
-					if(!"ad".equals(serverType)) {
-						commLoginService.loginMyUserPwdErr(param);
-					}
+//					if(!"ad".equals(serverType)) {
+//						commLoginService.loginMyUserPwdErr(param);
+//					}
 
 					throw new BadCredentialsException("아이디 또는 비밀번호를 확인해주세요.");
 				}

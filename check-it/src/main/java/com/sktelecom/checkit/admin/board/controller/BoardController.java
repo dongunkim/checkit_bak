@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.sktelecom.checkit.admin.board.service.BoardService;
+import com.sktelecom.checkit.core.annotation.Api;
 import com.sktelecom.checkit.core.annotation.Paging;
 import com.sktelecom.checkit.core.util.Session;
 
@@ -35,6 +36,7 @@ public class BoardController{
 	 */
 	@RequestMapping({"/boardList.do"})
 	public ModelAndView boardList(ModelAndView modelAndView) throws Exception {
+		log.info("-----------------------------------------------------> TEST 0");
 		return modelAndView;
 	}
 
@@ -42,6 +44,7 @@ public class BoardController{
 	 * 
 	 */
 	@Paging(value=true)
+	@Api
 	@RequestMapping({"/boardList.ajax"})
 	@ResponseBody
 	public Map<String, Object> boardList(@RequestParam HashMap<String, Object> param) throws Exception {

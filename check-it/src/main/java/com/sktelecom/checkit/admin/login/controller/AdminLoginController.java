@@ -1,6 +1,7 @@
 package com.sktelecom.checkit.admin.login.controller;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -11,12 +12,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.sktelecom.checkit.admin.login.service.AdminLoginService;
+import com.sktelecom.checkit.core.annotation.Api;
 import com.sktelecom.checkit.core.annotation.NoLogin;
 import com.sktelecom.checkit.core.util.Session;
-import com.sktelecom.checkit.core.util.StringUtils;
 
 /**
  * 로그인
@@ -58,8 +60,10 @@ public class AdminLoginController{
 	 * @throws Exception
 	 */
 	@NoLogin
+	@Api
 	@RequestMapping({"/adLogin.do"})
-	public ModelAndView adLogin(ModelAndView modelAndView, HttpServletRequest req, HttpServletResponse res, @RequestParam HashMap<String, Object> param) throws Exception {
+	@ResponseBody
+	public Map<String, Object> adLogin(HttpServletRequest req, HttpServletResponse res, @RequestParam HashMap<String, Object> param) throws Exception {
 
 		HashMap<String, Object> rtn = new HashMap<String, Object>();
 		String ip  = req.getHeader("X-Forwarded-For");
@@ -80,12 +84,12 @@ public class AdminLoginController{
 		}
 		param.put("userIP",ip);
 		
-		rtn = adminLoginService.loginUserInfo(param);
+		//rtn = adminLoginService.loginUserInfo(param);
+		rtn.put("result", adminLoginService.loginUserInfo(param));
+		//modelAndView.addObject("result", rtn);
 
-		modelAndView.addObject("result", rtn);
-
-		return modelAndView;
-
+		//return modelAndView;
+		return rtn;
 	}
 
 	/**
