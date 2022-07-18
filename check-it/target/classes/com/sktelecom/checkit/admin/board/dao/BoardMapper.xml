@@ -38,18 +38,18 @@
 	
 	<select id="selBoardDetail" parameterType="paramMap" resultType="commMap">
 		/* admin.board.dao.BoardMapper.xml selBoardDetail */
-		SELECT	BOARD_ID
-				,BOARD_TYPE
-				,BOARD_TITLE
-				,BOARD_DESC
-				,ATTACH_ID
-				,VIEW_COUNT
-				,BP_DISP_YN
-				,USE_YN                             
-				,REG_ID
-				,REG_DT
-				,UPD_ID
-				,UPD_DT
+		SELECT	BOARD_ID,
+				BOARD_TYPE,
+				BOARD_TITLE,
+				BOARD_DESC,
+				ATTACH_ID,
+				VIEW_COUNT,
+				BP_DISP_YN,
+				USE_YN,                        
+				REG_ID,
+				REG_DT,
+				UPD_ID,
+				UPD_DT
 		FROM	T_BOARD                                                                
 		WHERE	BOARD_TYPE = #{boardType}
 		  AND	BOARD_ID = #{boardId}		
@@ -68,31 +68,31 @@
 		/* admin.board.dao.BoardMapper.xml insBoard */
 		INSERT INTO T_BOARD 
 			(
-				 BOARD_TYPE
-				,BOARD_ID
-				,BOARD_TITLE
-				,BOARD_DESC
-				,VIEW_COUNT
-				,BP_DISP_YN
-				,ATTACH_ID
-				,USE_YN			
-				,REG_ID
-				,REG_DT
-				,UPD_ID			
-				,UPD_DT			
+				BOARD_TYPE,
+				BOARD_ID,
+				BOARD_TITLE,
+				BOARD_DESC,
+				VIEW_COUNT,
+				BP_DISP_YN,
+				ATTACH_ID,
+				USE_YN,	
+				REG_ID,
+				REG_DT,
+				UPD_ID,		
+				UPD_DT
 			)
 		SELECT	#{boardType}
-				,IFNULL(MAX(BOARD_ID),0)+1
-				,#{boardTitle}
-				,#{boardDesc}
-				,0
-				,'Y'
-				,#{attachId}
-				,'N'
-				,#{regId}
-				,DATE_FORMAT(NOW(), '%Y%m%d%H%i%s')
-				,#{regId}
-				,DATE_FORMAT(NOW(), '%Y%m%d%H%i%s')
+				IFNULL(MAX(BOARD_ID),0)+1,
+				#{boardTitle},
+				#{boardDesc},
+				0,
+				'Y',
+				#{attachId},
+				'N',
+				#{regId},
+				DATE_FORMAT(NOW(), '%Y%m%d%H%i%s'),
+				#{regId},
+				DATE_FORMAT(NOW(), '%Y%m%d%H%i%s')
 		FROM	T_BOARD
 		WHERE	BOARD_TYPE = #{boardType}
 	</insert>
@@ -101,19 +101,19 @@
 	<update id="updBoard" parameterType="paramMap">
 		/* admin.board.dao.BoardMapper.xml updBoard */		
 		UPDATE	T_BOARD  
-		SET		UPD_DT = DATE_FORMAT(NOW(), '%Y%m%d%H%i%s')
-				,UPD_ID = #{updId}
+		SET		UPD_DT = DATE_FORMAT(NOW(), '%Y%m%d%H%i%s'),
+				UPD_ID = #{updId},
 				<if test="boardTitle != null and boardTitle != ''">
-				,BOARD_TITLE = #{boardTitle}
+				BOARD_TITLE = #{boardTitle},
 				</if>
 				<if test="boardDesc != null and boardDesc != ''">
-				,BOARD_DESC = #{boardDesc}
+				BOARD_DESC = #{boardDesc},
 				</if>
 				<if test="viewCount != null and viewCount != ''">
-				,VIEW_COUNT = #{viewCount}
+				VIEW_COUNT = #{viewCount},
 				</if>
 				<if test="viewCnt != null and viewCnt != ''">
-				,USE_YN = #{useYn}
+				USE_YN = #{useYn}
 				</if>
 		WHERE	BOARD_TYPE = #{boardType}
 		  AND	BOARD_ID = #{boardId}		
@@ -122,8 +122,7 @@
 	<!-- 게시판 삭제 -->
 	<update id="delBoard" parameterType="paramMap">
 		/* admin.board.dao.BoardMapper.xml delBoard */		
-		DELETE
-		FROM	T_BOARD  
+		DELETE	FROM T_BOARD  
 		WHERE	BOARD_TYPE = #{boardType}
 		  AND	BOARD_ID = #{boardId}		
 	</update>

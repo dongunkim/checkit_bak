@@ -332,7 +332,7 @@
 	<!-- 파일 정보 삭제 -->
 	<delete id="delAttachFile" parameterType="paramMap">
 		/* common.dao.CommonMapper.xml delAttachFile */
-		DELETE FROM T_ATTACH_FILE
+		DELETE	FROM T_ATTACH_FILE
 		WHERE	ATTACH_ID = #{attachId}
 		  AND	ATTACH_SEQ = #{attachSeq}
 	</delete>

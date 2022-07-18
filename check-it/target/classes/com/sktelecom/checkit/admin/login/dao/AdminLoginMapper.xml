@@ -4,43 +4,43 @@
 	
 	<!-- 업무지원시스템 유저 -->
 	<select id="loginUserInfo" parameterType="paramMap" resultType="commMap">
+		/* admin.login.dao.AdminLognMapper.xml loginUserInfo */
 	<![CDATA[
-		SELECT /* admin.login.dao.AdminLognMapper.xml loginUserInfo */
-			USER_ID
-			,PASSWORD
-			,USER_STATUS
-			,ID_TYPE
-			,USER_TYPE
-			,USER_NAME
-			,NICKNAME
-			,EMAIL
-			,HP_NO
-			,PHONE_NO
-			,AGENCY
-			,USER_DESC
-			,START_DATE
-			,END_DATE
-			,LOGIN_FAIL_CNT
-			,PASSWORD_UPD_DT
-			,CASE WHEN IFNULL(PASSWORD_UPD_DT, '') <= date_add(now(), interval -3 month) THEN 'C' ELSE 'P' END AS CNGPW_DT
-			,LAST_LOGIN_DT
-			,USE_YN
-			,REG_ID
-			,REG_DT
-			,UPD_ID
-			,UPD_DT
-			,'1' AS SYS_TYPE
-		FROM T_USER_BAK
-		WHERE USER_ID = #{userId}
-		  AND (USER_STATUS = 'A' OR USER_STATUS = 'L')
+		SELECT	USER_ID,
+				PASSWORD,
+				USER_STATUS,
+				ID_TYPE,
+				USER_TYPE,
+				USER_NAME,
+				NICKNAME,
+				EMAIL,
+				HP_NO,
+				PHONE_NO,
+				AGENCY,
+				USER_DESC,
+				START_DATE,
+				END_DATE,
+				LOGIN_FAIL_CNT,
+				PASSWORD_UPD_DT,
+				CASE WHEN IFNULL(PASSWORD_UPD_DT, '') <= date_add(now(), interval -3 month) THEN 'C' ELSE 'P' END AS CNGPW_DT,
+				LAST_LOGIN_DT,
+				USE_YN,
+				REG_ID,
+				REG_DT,
+				UPD_ID,
+				UPD_DT,
+				'1' AS SYS_TYPE
+		FROM	T_USER_BAK
+		WHERE	USER_ID = #{userId}
+		  AND	(USER_STATUS = 'A' OR USER_STATUS = 'L')
 	]]>
 	</select>
 	
 	<!-- 로그인 실패횟수 추가 -->
 	<update id="loginAdminUserPwdErr" parameterType="paramMap">
-		UPDATE T_USER /* admin.login.dao.AdminLognMapper.xml loginAdminUserPwdErr */
-		SET
-			LOGIN_FAIL_CNT = IFNULL(LOGIN_FAIL_CNT, 0) + 1
+		/* admin.login.dao.AdminLognMapper.xml loginAdminUserPwdErr */
+		UPDATE	T_USER
+		SET		LOGIN_FAIL_CNT = IFNULL(LOGIN_FAIL_CNT, 0) + 1
 			,USER_STATUS = IF(IFNULL(LOGIN_FAIL_CNT, 0) > 9, 'L', USER_STATUS)
 			,UPD_DT = DATE_FORMAT(NOW(), '%Y%m%d%H%i%S')
 			,UPD_ID = #{userId}

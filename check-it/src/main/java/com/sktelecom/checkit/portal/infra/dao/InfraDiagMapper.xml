@@ -5,27 +5,27 @@
 	<!--  -->
 	<select id="selectInfraDiagList" parameterType="paramMap" resultType="commMap">
 		/* portal.infra.dao.InfraDiagMapper.xml selectInfraDiagList */
-		SELECT	COUNT(*) OVER () RNUM_CNT
-				,DIAG_ID
-				,DIAG_NAME
-				,PROD_ID
-				,DIAG_TYPE_CODE
-				,DIAG_TYPE_ID
-				,STATUS_CODE
-				,REQ_USER_ID
-				,REQ_DT
-				,ACCEPT_USER_ID
-				,CASE WHEN ISNULL(ACCEPT_DT) AND !ISNULL(REQ_DT) THEN '0' ELSE STR_TO_DATE(ACCEPT_DT,'%Y%m%d') END ACCEPT_DT
-				,PLAN_USER_ID
-				,CASE WHEN ISNULL(PLAN_DT) AND !ISNULL(ACCEPT_DT) THEN '0' ELSE STR_TO_DATE(PLAN_DT,'%Y%m%d') END PLAN_DT
-				,DIAG_USER_ID
-				,DIAG_DT
-				,REDIAG_USER_ID
-				,REDIAG_DT
-				,REG_ID
-				,REG_DT
-				,UPD_ID
-				,UPD_DT
+		SELECT	COUNT(*) OVER () RNUM_CNT,
+				DIAG_ID,
+				DIAG_NAME,
+				PROD_ID,
+				DIAG_TYPE_CODE,
+				DIAG_TYPE_ID,
+				STATUS_CODE,
+				REQ_USER_ID,
+				REQ_DT,
+				ACCEPT_USER_ID,
+				CASE WHEN ISNULL(ACCEPT_DT) AND !ISNULL(REQ_DT) THEN '0' ELSE STR_TO_DATE(ACCEPT_DT,'%Y%m%d') END ACCEPT_DT,
+				PLAN_USER_ID,
+				CASE WHEN ISNULL(PLAN_DT) AND !ISNULL(ACCEPT_DT) THEN '0' ELSE STR_TO_DATE(PLAN_DT,'%Y%m%d') END PLAN_DT,
+				DIAG_USER_ID,
+				DIAG_DT,
+				REDIAG_USER_ID,
+				REDIAG_DT,
+				REG_ID,
+				REG_DT,
+				UPD_ID,
+				UPD_DT
 		FROM	T_DIAG                                                                
 		WHERE	DIAG_TYPE_CODE = '01'
 		<if test="searchDiagName != null and searchDiagName != ''">		
