@@ -1,4 +1,1 @@
-/check-it/
-
-.project
-.classpath
+*/target/*

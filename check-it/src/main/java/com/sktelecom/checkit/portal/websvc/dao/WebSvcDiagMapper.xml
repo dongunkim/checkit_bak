@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="portal.websvc.dao">
+
+	<!--  -->
+	<select id="selectWebSvcDiagList" parameterType="paramMap" resultType="commMap">
+		/* portal.websvc.dao.WebSvcDiagMapper.xml selectWebSvcDiagList */
+		SELECT	<if test="isPaging == true">
+				COUNT(*) OVER () RNUM_CNT,
+				</if>
+				DIAG_ID,
+				DIAG_NAME,
+				PROD_ID,
+				DIAG_TYPE_CODE,
+				DIAG_TYPE_ID,
+				STATUS_CODE,
+				REQ_USER_ID,
+				REQ_DT,
+				ACCEPT_USER_ID,
+				CASE WHEN ISNULL(ACCEPT_DT) AND !ISNULL(REQ_DT) THEN '0' ELSE STR_TO_DATE(ACCEPT_DT,'%Y%m%d') END ACCEPT_DT,
+				PLAN_USER_ID,
+				CASE WHEN ISNULL(PLAN_DT) AND !ISNULL(ACCEPT_DT) THEN '0' ELSE STR_TO_DATE(PLAN_DT,'%Y%m%d') END PLAN_DT,
+				DIAG_USER_ID,
+				DIAG_DT,
+				REDIAG_USER_ID,
+				REDIAG_DT,
+				REG_ID,
+				REG_DT,
+				UPD_ID,
+				UPD_DT
+		FROM	T_DIAG                                                                
+		WHERE	DIAG_TYPE_CODE = '01'
+		<if test="searchDiagName != null and searchDiagName != ''">
+		  AND	UPPER(TRIM(DIAG_NAME)) LIKE CONCAT('%',UPPER(TRIM(#{searchDiagName})),'%')
+		</if>
+		ORDER BY DIAG_ID DESC
+		<if test="isPaging == true">
+		LIMIT #{startPageNo},#{pageSize}
+		</if>
+	</select>	
+	
+	<!--  -->
+	<select id="selectWebSvcDiagDetail" parameterType="paramMap" resultType="commMap">
+		/* portal.websvc.dao.WebSvcDiagMapper.xml selectWebSvcDiagDetail */
+		SELECT	DIAG_ID,
+				DIAG_NAME,
+				PROD_ID,
+				DIAG_TYPE_CODE,
+				DIAG_TYPE_ID,
+				STATUS_CODE,
+				REQ_USER_ID,
+				REQ_DT,
+				ACCEPT_USER_ID,
+				ACCEPT_DT,
+				PLAN_USER_ID,
+				PLAN_DT,
+				DIAG_USER_ID,
+				DIAG_DT,
+				REDIAG_USER_ID,
+				REDIAG_DT,
+				REG_ID,
+				REG_DT,
+				UPD_ID,
+				UPD_DT
+		FROM	T_DIAG
+		WHERE	DIAG_ID = #{diagId}                                                                 
+	</select>
+
+</mapper>
