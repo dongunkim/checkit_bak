@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.sktelecom.checkit.admin.board.service.BoardService;
+import com.sktelecom.checkit.core.annotation.Api;
 import com.sktelecom.checkit.core.annotation.Paging;
-import com.sktelecom.checkit.core.common.service.CommonService;
 import com.sktelecom.checkit.core.util.Session;
 
 /**
@@ -31,14 +31,12 @@ public class BoardController{
 	@Resource
 	private BoardService boardService;
 
-	@Resource
-	private CommonService commonService;
-
 	/**
 	 * 
 	 */
 	@RequestMapping({"/boardList.do"})
 	public ModelAndView boardList(ModelAndView modelAndView) throws Exception {
+		log.info("-----------------------------------------------------> TEST 0");
 		return modelAndView;
 	}
 
@@ -46,9 +44,10 @@ public class BoardController{
 	 * 
 	 */
 	@Paging(value=true)
-	@RequestMapping({"/selBoardList.ajax"})
+	@Api
+	@RequestMapping({"/boardList.ajax"})
 	@ResponseBody
-	public Map<String, Object> selBoardList(@RequestParam HashMap<String, Object> param) throws Exception {
+	public Map<String, Object> boardList(@RequestParam HashMap<String, Object> param) throws Exception {
 		return boardService.selBoardList(param);
 	}
 
@@ -59,7 +58,7 @@ public class BoardController{
 	public ModelAndView boardDetail(ModelAndView modelAndView, @RequestParam HashMap<String, Object> param) throws Exception {
 		HashMap<String, Object> rtn = new HashMap<String, Object>();
 		rtn = boardService.selBoardDetail(param);
-		if(!"00".equals(rtn.get("errorCode").toString())) throw new Exception();
+		rtn.put("param", param.get("param"));
 		modelAndView.addObject("result", rtn);
 		return modelAndView;
 	}
@@ -76,13 +75,10 @@ public class BoardController{
 	/**
 	 * 
 	 */
-	@RequestMapping({"/insBoard.ajax"})
-	@ResponseBody
-	public Map<String, Object> insBoard(@RequestParam HashMap<String, Object> param, Session session) throws Exception {
-		HashMap<String, Object> rtn = new HashMap<String, Object>();
+	@RequestMapping({"/insertBoard.ajax"})
+	public HashMap<String, Object> insertBoard(@RequestParam HashMap<String, Object> param, Session session) throws Exception {
 		param.put("regId", session.getUserId());
-		rtn.put("result",boardService.insBoard(param));
-		return rtn;
+		return boardService.insBoard(param);
 	}
 
 	/**
@@ -97,23 +93,24 @@ public class BoardController{
 	/**
 	 * 
 	 */
-	@RequestMapping({"/updBoard.ajax"})
-	@ResponseBody
-	public Map<String, Object> updBoard(@RequestParam HashMap<String, Object> param, Session session) throws Exception {
+	@RequestMapping({"/updateBoard.ajax"})
+	public ModelAndView updateBoard(ModelAndView modelAndView, @RequestParam HashMap<String, Object> param, Session session) throws Exception {
 		HashMap<String, Object> rtn = new HashMap<String, Object>();
 		param.put("updId", session.getUserId());
-		rtn.put("result",boardService.updBoard(param));
-		return rtn;
+		boardService.updBoard(param);
+		modelAndView.addObject("result", rtn);
+		return modelAndView;
 	}
 
 	/**
 	 * 
 	 */
-	@RequestMapping({"/delBoard.ajax"})
-	@ResponseBody
-	public ModelAndView delBoard(ModelAndView modelAndView, HttpServletRequest req, HttpServletResponse res, @RequestParam HashMap<String, Object> param, Session session) throws Exception {
+	@RequestMapping({"/deleteBoard.ajax"})
+	public ModelAndView deleteBoard(ModelAndView modelAndView, HttpServletRequest req, HttpServletResponse res, @RequestParam HashMap<String, Object> param, Session session) throws Exception {
+		HashMap<String, Object> rtn = new HashMap<String, Object>();
 		param.put("updId", session.getUserId());
-		modelAndView.addObject("result", boardService.delBoard(param));
+		boardService.delBoard(param);
+		modelAndView.addObject("result", rtn);
 		return modelAndView;
 	}
 }

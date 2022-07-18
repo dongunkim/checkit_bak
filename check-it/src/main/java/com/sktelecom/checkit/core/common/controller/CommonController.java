@@ -4,6 +4,7 @@ import java.io.File;
 import java.net.URLDecoder;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -15,8 +16,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.sktelecom.checkit.core.annotation.Api;
 import com.sktelecom.checkit.core.annotation.NoLogin;
 import com.sktelecom.checkit.core.annotation.Paging;
 import com.sktelecom.checkit.core.common.service.CommonService;
@@ -39,6 +42,7 @@ public class CommonController {
 
 	@Resource
 	private FileUpload fileUpload;
+
 	/**
 	 * 권한없음
 	 * @param modelAndView
@@ -77,19 +81,19 @@ public class CommonController {
 	@RequestMapping({"/accessTime.do"})
 	public ModelAndView accessTime(ModelAndView modelAndView, HttpServletRequest req, HttpServletResponse res, @RequestParam HashMap<String, Object> param, Session session) throws Exception {
 
-		HashMap<String, Object> rtn = new HashMap<String, Object>();
-
-		try{
-
-			int sessionTime = session.getMaxInactiveInterval();
-
-			rtn.put("sessionTime", sessionTime);
-
-			modelAndView.addObject("result", rtn);
-
-		}catch(Exception e){
-			log.error(e.getMessage());
-		}
+//		HashMap<String, Object> rtn = new HashMap<String, Object>();
+//
+//		try{
+//
+//			int sessionTime = session.getMaxInactiveInterval();
+//
+//			rtn.put("sessionTime", sessionTime);
+//
+//			modelAndView.addObject("result", rtn);
+//
+//		}catch(Exception e){
+//			log.error(e.getMessage());
+//		}
 
 		return modelAndView;
 
@@ -107,14 +111,14 @@ public class CommonController {
 	@RequestMapping({"/accessNew.do"})
 	public ModelAndView accessNew(ModelAndView modelAndView, HttpServletRequest req, HttpServletResponse res, @RequestParam HashMap<String, Object> param, Session session) throws Exception {
 
-		try{
-
-			session.setMaxInactiveInterval(10*60);
-			modelAndView.addObject("result", param);
-
-		}catch(Exception e){
-			log.error(e.getMessage());
-		}
+//		try{
+//
+//			session.setMaxInactiveInterval(10*60);
+//			modelAndView.addObject("result", param);
+//
+//		}catch(Exception e){
+//			log.error(e.getMessage());
+//		}
 
 		return modelAndView;
 
@@ -137,8 +141,10 @@ public class CommonController {
 	 * @throws Exception
 	 */
 	@NoLogin
+	@Api
 	@RequestMapping({"/getCommonCode.do"})
-	public ModelAndView getCommonCode(ModelAndView modelAndView, HttpServletRequest req, HttpServletResponse res, @RequestBody HashMap<String, Object> param, Session session) throws Exception {
+	@ResponseBody
+	public Map<String, Object> getCommonCode(ModelAndView modelAndView, HttpServletRequest req, HttpServletResponse res, @RequestBody HashMap<String, Object> param, Session session) throws Exception {
 
 		HashMap<String, Object> rtn = new HashMap<String, Object>();
 		try{
@@ -146,19 +152,18 @@ public class CommonController {
 			String code = "";
 			if(null != param.get("root")) {
 				code = String.valueOf(param.get("root"));
-				rtn = commonService.selCode(code);
 			}else{
 				code = String.valueOf(param.get("code"));
-				rtn = commonService.selCode(code);
 			}
 
-			modelAndView.addObject("result", rtn);
+			rtn.put("result", commonService.selCode(code));
+			//modelAndView.addObject("result", rtn);
 
 		}catch(Exception e){
 			log.error(e.getMessage());
 		}
 
-		return modelAndView;
+		return rtn;
 
 	}
 	
@@ -309,16 +314,16 @@ public class CommonController {
 
 		File file = null;
 
-		try {
-			file = session.getCsvFile();
-			modelAndView = new ModelAndView("csvDownloadView", "file", file);
-		
-		}catch(Exception e){
-			log.error(e.getMessage());
-			
-		}finally {
-			session.setCsvFile(null);
-		}
+//		try {
+//			file = session.getCsvFile();
+//			modelAndView = new ModelAndView("csvDownloadView", "file", file);
+//		
+//		}catch(Exception e){
+//			log.error(e.getMessage());
+//			
+//		}finally {
+//			session.setCsvFile(null);
+//		}
 
 		return modelAndView;
 

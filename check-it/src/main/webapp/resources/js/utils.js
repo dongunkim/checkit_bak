@@ -13,25 +13,33 @@ utils = {
 		 * @param param
 		 * @param callback
 		 */
-		ajax: function(url, params, callback, isLoading){
+		ajax: function(url, params, callback, isLoading) {
 
-			if(typeof isLoading === "undefined"){
+			if (typeof isLoading === "undefined") {
 				isLoading = true;
 			}
 
-			if(typeof params === "undefined"){
+			if (typeof params === "undefined") {
 				params = {};
 			}
+			
 			var option = {
 					url: url,
-					data: (typeof params === "object")?$.param(params):params,
+					data: (typeof params === "object") ? $.param(params) : params,
 					type: "post",
 					cache: false,   
 					dataType: "json",
 					contentType: "application/x-www-form-urlencoded; charset=UTF-8;",
+					beforeSend: function(xhr) {						
+						if (isLoading) {
+							setTimeout(function() {
+								utils.loading(true);
+							}, 50);
+						}
+					},
 					success: function(result, status, xhr) {
 						//세션 타임아웃이 아니고, 중복 로그인으로 인해 세션이 끊어져서 ajax 통신 후 result값이 아예 없이 들어오는경우
-						if(url != "/admin/cumn/cumn0301TempCsUnique.do" && url != "/admin/sysm/sysm0101Info.do" 
+						if (url != "/admin/cumn/cumn0301TempCsUnique.do" && url != "/admin/sysm/sysm0101Info.do" 
 							&& url != "/admin/wkmn/wkmn06OverlapCheck.do" && url != "/admin/wkmn/wkmn06CheckDuplicate.do"
 							&& url != "/admin/wire/wire05OverlapCheck.do" && url != "/admin/wire/wire05CheckDuplicate.do"
 							&& url != "/admin/stat/stat04CheckDuplicatedCheck.do" && url != "/admin/stat/stat0402DeleteDuplicatedCheck.do"
@@ -39,30 +47,19 @@ utils = {
 							&& url != "/admin/cumn/searchCarDetail.do"
 							&& url != "/common/accessNew.do" && xhr.responseText == "{\"result\":{}}"){ 
                     		//location.href = "/admin/login/login0101Page.do" ; //로그아웃 창으로 튕겨버림
-                    	}else{
+                    	} else {
                     		callback(result);
                     	}
 					},
 					error: function(req, status, error) {
-					},
-					beforeSend: function(xhr){
-//						let token = $("meta[name='_csrf']").attr("content");
-//						let header = $("meta[name='_csrf_header']").attr("content");
-//						xhr.setRequestHeader(header, token);
-						xhr.setRequestHeader("ajax", true);
-						if(isLoading){
-							setTimeout(function(){
-								utils.loading(true);
-							}, 50);
-						}
-					},
-					complete: function(){
-						if(isLoading){
-							setTimeout(function(){
+					},					
+					complete: function() {
+						if (isLoading) {
+							setTimeout(function() {
 								utils.loading(false);
 							}, 50);
 						}
-					}
+					},
 			};
 			$.ajax(option);
 
@@ -89,6 +86,7 @@ utils = {
                     cache: false,
                     dataType: "json",
                     contentType: "application/json; charset=UTF-8;",
+                    beforeSend: function(xhr) {},
                     success: function(response) {
 
                     	if($.type(code) === "string"){
@@ -123,18 +121,8 @@ utils = {
             				}
             			}
                     },
-                    error: function(req, status, error) {
-                    },
-                    beforeSend: function(xhr){
-//                    	var token = $("meta[name='_csrf']").attr("content");
-//                    	var header = $("meta[name='_csrf_header']").attr("content");
-//                    	xhr.setRequestHeader(header, token);
-                    	xhr.setRequestHeader("ajax", true);
-//                    	utils.loading(true);
-		    		},
-		            complete: function(){
-//	            		utils.loading(false);
-				    }
+                    error: function(req, status, error) {},
+		            complete: function(){}
                 };
             $.ajax(option);
 
@@ -732,10 +720,11 @@ utils = {
 		/**
 		 * 엔터 키 이벤트
 		 */
-		,enter : function(target, clickTarget){
-			$(target).bind("keydown", function(event){
-				if(event.keyCode == 13){
+		,enter : function(target, clickTarget) {
+			$(target).bind("keydown", function(event) {
+				if(event.keyCode == 13) {
 					$(clickTarget).click();
+					event.preventDefault();			
 				}
 			})
 		},

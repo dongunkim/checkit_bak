@@ -262,7 +262,7 @@ public class CommonService  {
 			if(certKey.equals(checkCertKey)) {
 				rtn.put("errorCode", "00");
 				rtn.put("errorMessage", "인증에 성공하였습니다.");
-				session.setMarskRelease(true);
+//				session.setMarskRelease(true);
 			}else {
 				rtn.put("errorCode", "01");
 				rtn.put("errorMessage", "인증에 실패하였습니다.\n인증키를 확인하세요.");

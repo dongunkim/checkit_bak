@@ -20,7 +20,6 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.sktelecom.checkit.admin.login.dao.AdminLoginDAO;
-import com.sktelecom.checkit.core.common.SingLoginService;
 import com.sktelecom.checkit.core.common.service.CommonService;
 import com.sktelecom.checkit.core.util.CommMaskUtils;
 import com.sktelecom.checkit.core.util.DateUtils;
@@ -59,7 +58,7 @@ public class AdminLoginService {
 		HashMap<String, Object> rollMap = new HashMap<String, Object>();
 
 		param.put("passwd", passwd);
-		String answer = "";
+		
 		userMap = adminLoginDAO.loginUserInfo(param);
 
 		if(!userMap.isEmpty()){
@@ -67,77 +66,68 @@ public class AdminLoginService {
 				throw new Exception("잠긴 계정입니다.\n아래 전화번호로 문의 주세요. \n02-6266-3166");
 			}
 			
-			if(Integer.valueOf(String.valueOf(userMap.get("loginFailCnt"))) >= 5) {
-				answer = String.valueOf(((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest().getSession().getAttribute("captcha"));
-			}
-			
 			AnnotationConfigApplicationContext ctx = new AnnotationConfigApplicationContext();
 			ConfigurableEnvironment env = ctx.getEnvironment();
 			String serverType = env.getProperty("deploy.server.type");
-			if(answer.equals(String.valueOf(param.get("sndAnswer")))) {
-				if(passwd.equals(userMap.get("password"))){
-					
-					HttpSession session = null;
-					List<HashMap<String, Object>> menuList;
+			
+			if(passwd.equals(userMap.get("password"))){
+				
+				HttpSession session = null;
+				List<HashMap<String, Object>> menuList;
 
-					rollMap = adminLoginDAO.getRid(param);
+				rollMap = adminLoginDAO.getRid(param);
 
-					if(rollMap.get("rid") == null) {
-						throw new Exception("로그인 권한이 없습니다.\n관리자에게 문의하세요.");
-					}
-					
-					session = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest().getSession(true);
-					
-					//String clientIp = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest().getRemoteAddr();
-					String clientIp = (String) param.get("userIP");
-					
-					session.setAttribute("isLogin", true); // 로그인 여부
-					session.setAttribute("sysType", String.valueOf(userMap.get("sysType")));
-					session.setAttribute("loginTime", String.valueOf(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))); // 로그인 시간
-					session.setAttribute("userId", String.valueOf(userMap.get("userId"))); // 사용자 ID
-					session.setAttribute("userNm", String.valueOf(userMap.get("userName"))); // 사용자 이름
-					session.setAttribute("hpNo", String.valueOf(userMap.get("hpNo"))); // 휴대폰번호
-					session.setAttribute("phoneNo", String.valueOf(userMap.get("phoneNo"))); // 전화번호
-					session.setAttribute("email", String.valueOf(userMap.get("email"))); // 이메일
-					session.setAttribute("userStatus", String.valueOf(userMap.get("userStatus")));// 사용자상태
-					session.setAttribute("lastIp", clientIp);// 최종접속IP
-					session.setAttribute("lastDt", String.valueOf(LocalDateTime.now()));// 최종접속일시
-					session.setAttribute("loginFailCnt", String.valueOf(userMap.get("loginFailCnt")));
-					
-					session.setAttribute("rid", String.valueOf(rollMap.get("rid")));
-
-					param.put("rid", String.valueOf(rollMap.get("rid")));
-					param.put("sysType", String.valueOf(userMap.get("sysType")));
-					menuList = commonService.selAdMenuList(param);
-					
-					Cookie storeIdCookie = new Cookie("storeIdCookie", String.valueOf(userMap.get("userId")));
-				    storeIdCookie.setPath(serverType + "/adLogin.do");
-				    storeIdCookie.setMaxAge(60 * 60 * 24 * 30);
-				    //response.addCookie(storeIdCookie); 
-				    ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getResponse().addCookie(storeIdCookie);
-					
-					session.setAttribute("menuList", menuList);
-					session.setMaxInactiveInterval(60*10); // 세션유지 시간 10분
-					if("P".equals(userMap.get("cngpwDt"))) {
-						rtn.put("errorCode", "00");
-						rtn.put("errorMessage", "로그인");
-					}else {
-						rtn.put("errorCode", "01");
-						rtn.put("errorMessage", "비밀번호 변경");
-					}
-					param.put("lastIp", clientIp);
-					adminLoginDAO.loginAdminUserPwdInit(param);
-				}else{
-					adminLoginDAO.loginAdminUserPwdErr(param);
-					int failCnt = Integer.valueOf(String.valueOf(userMap.get("loginFailCnt")))+1;
-					rtn.put("errorCode", "98");
-					rtn.put("errorMessage", "아이디 또는 비밀번호를 확인해주세요.");
-					rtn.put("failCnt", failCnt);
+				if(rollMap.get("rid") == null) {
+					throw new Exception("로그인 권한이 없습니다.\n관리자에게 문의하세요.");
 				}
-			}else {
-				rtn.put("errorCode", "99");
-				rtn.put("errorMessage", "입력하신 번호와 캡차가\n일치하지 않습니다.\n정확한 번호를 입력하여 주시기 바랍니다.");
-				rtn.put("failCnt", Integer.valueOf(String.valueOf(userMap.get("loginFailCnt"))));
+				
+				session = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest().getSession(true);
+				
+				//String clientIp = ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getRequest().getRemoteAddr();
+				String clientIp = (String) param.get("userIP");
+				
+				session.setAttribute("isLogin", true); // 로그인 여부
+				session.setAttribute("sysType", String.valueOf(userMap.get("sysType")));
+				session.setAttribute("loginTime", String.valueOf(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm")))); // 로그인 시간
+				session.setAttribute("userId", String.valueOf(userMap.get("userId"))); // 사용자 ID
+				session.setAttribute("userNm", String.valueOf(userMap.get("userName"))); // 사용자 이름
+				session.setAttribute("hpNo", String.valueOf(userMap.get("hpNo"))); // 휴대폰번호
+				session.setAttribute("phoneNo", String.valueOf(userMap.get("phoneNo"))); // 전화번호
+				session.setAttribute("email", String.valueOf(userMap.get("email"))); // 이메일
+				session.setAttribute("userStatus", String.valueOf(userMap.get("userStatus")));// 사용자상태
+				session.setAttribute("lastIp", clientIp);// 최종접속IP
+				session.setAttribute("lastDt", String.valueOf(LocalDateTime.now()));// 최종접속일시
+				session.setAttribute("loginFailCnt", String.valueOf(userMap.get("loginFailCnt")));
+				
+				session.setAttribute("rid", String.valueOf(rollMap.get("rid")));
+
+				param.put("rid", String.valueOf(rollMap.get("rid")));
+				param.put("sysType", String.valueOf(userMap.get("sysType")));
+				menuList = commonService.selAdMenuList(param);
+				
+				Cookie storeIdCookie = new Cookie("storeIdCookie", String.valueOf(userMap.get("userId")));
+			    storeIdCookie.setPath(serverType + "/adLogin.do");
+			    storeIdCookie.setMaxAge(60 * 60 * 24 * 30);
+			    //response.addCookie(storeIdCookie); 
+			    ((ServletRequestAttributes)RequestContextHolder.getRequestAttributes()).getResponse().addCookie(storeIdCookie);
+				
+				session.setAttribute("menuList", menuList);
+				session.setMaxInactiveInterval(60*10); // 세션유지 시간 10분
+				if("P".equals(userMap.get("cngpwDt"))) {
+					rtn.put("errorCode", "00");
+					rtn.put("errorMessage", "로그인");
+				}else {
+					rtn.put("errorCode", "01");
+					rtn.put("errorMessage", "비밀번호 변경");
+				}
+				param.put("lastIp", clientIp);
+				adminLoginDAO.loginAdminUserPwdInit(param);
+			}else{
+				adminLoginDAO.loginAdminUserPwdErr(param);
+				int failCnt = Integer.valueOf(String.valueOf(userMap.get("loginFailCnt")))+1;
+				rtn.put("errorCode", "98");
+				rtn.put("errorMessage", "아이디 또는 비밀번호를 확인해주세요.");
+				rtn.put("failCnt", failCnt);
 			}
 
 		}else {

@@ -1,31 +1,16 @@
 let failCnt = 0;
-initFunction = function(){
-
+initFunction = function() {
     eventFunction();
-
 }
 
-eventFunction = function(){
-	
+eventFunction = function() {	
 	history.pushState(null, null, location.href);
 	window.onpopstate = function(event){
 		history.go(1);
 	};
 
 	// 로그인
-	$("#loginBtn").bind("click", function(){
-		
-		let answer = "";
-		if(failCnt >= 5){
-			if($("#answer").val().length == 0){
-				showCapChar();
-				DIALOG.alert("자동 로그인 방지번호를 입력하여 주십시오.");
-				return;
-			}else{
-				answer = $("#answer").val();
-			}
-			
-		}
+	$("#loginBtn").bind("click", function() {
 		
 		if($("#userId").val().length == 0){
 			DIALOG.alert("아이디를 입력하여 주십시오.");
@@ -42,23 +27,25 @@ eventFunction = function(){
 		var params = {};
 			params.userId = $("#userId").val();
 			params.passwd = $("#passwd").val();
-			params.sndAnswer = answer;
-		utils.ajax(url, params, function(response){
-			if(response.result.errorCode == "98"){
+			//params.sndAnswer = answer;
+		utils.ajax(url, params, function(response) {
+			console.log('------------------------> response');			
+			console.log(response);
+			if (response.result.errorCode == "98"){
 				failCnt = response.result.failCnt;
-				showCapChar();
-				refreshBtn();
+				
+				
 				utils.loading(false);
 				DIALOG.alert(response.result.errorMessage);
-			}else if(response.result.errorCode == "99"){
+			} else if(response.result.errorCode == "99"){
 				failCnt = response.result.failCnt;
-				refreshBtn();
+				
 				if($("#captchaDiv").css("display") == "none" && failCnt >= 5){
 					DIALOG.alert("로그인 5회이상 실패하셨습니다.<br/>재 로그인시 아이디/비밀번호와 <br/>자동 로그인 방지번호를 함께 <br/>입력하여 주십시오.");
 				}else{
 					DIALOG.alert(response.result.errorMessage);
 				}
-				showCapChar();
+				
 				$("#answer").val("");
 				utils.loading(false);
 			}else if(response.result.errorCode == "00"){
@@ -101,10 +88,7 @@ eventFunction = function(){
 
 	});
 	
-	$("#refreshBtn").bind("click", function(){
-		refreshBtn();
-	});
-	
+		
 	// id 찾기 팝업
 	$("#idSearchBtn").popup({
 		 title : "ID 찾기"
@@ -131,54 +115,4 @@ eventFunction = function(){
 
 	utils.enter("#userId, #passwd", "#loginBtn");
 
-}
-
-showCapChar = function(){
-	if(failCnt >= 5){
-		 $("#captchaDiv").show();
-	}
-}
-
-//영문음성은 나오나 한국어음성은 개발중
-audio = function(){
-	var lang = "ko"
-	if(locale.content != "ko"){
-		lang = "en"
-	}
-	
-	var rand = Math.random();
-	var url = "/common/captchaAudio.do";
-	$.ajax({
-		url: url,
-		type : "POST",
-		dataType : "text",
-		data: "rand=" +rand+'&lang='+lang,
-		async: false,
-		success: function(resp){
-			var uAgent = navigator.userAgent;
-			var soundUrl = '/common/captchaAudio.do?rand=' +rand +'lang='+lang;
-			
-			if(uAgent.indexOf('Trident') > -1 || uAgent.indexOf('MSIE') > -1){
-				winPlayer(soundUrl+'&agent=msie');
-			}else if(!!document.createElement('audio').canPlayType){
-				try{
-					new Audio(soundUrl).play();
-				}catch(e){
-					winPlayer(soundUrl);
-				}
-			}else{
-				window.open(soundUrl, '', 'width=1, heigth=1');
-			}
-		}
-	});
-}
-
-refreshBtn = function(type){
-		var rand = Math.random();
-		var url = "/common/captchaImg.do?rand="+rand;
-		$("#captchaImg").attr("src",url);
-}
-
-winPlayer = function(objUrl){
-		$("#captchaAudio").html(' <bgsound src="' + objUrl + '">');
 }

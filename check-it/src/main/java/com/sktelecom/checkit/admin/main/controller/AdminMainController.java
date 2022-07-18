@@ -77,23 +77,23 @@ public class AdminMainController{
 	@RequestMapping({"/main/main0108Pop.do"})
 	public ModelAndView main0108Pop(ModelAndView modelAndView, HttpServletRequest req, HttpServletResponse res, @RequestParam HashMap<String, Object> param, Session session) throws Exception, IOException {
 
-		if("Y".equals(String.valueOf(session.getEtc()))) {
-			session.setEtc(null);
-			HashMap<String, Object> rtn = new HashMap<String, Object>();
-			rtn.put("userNm", session.getUserNm());
-			rtn.put("manageCid", session.getManageCid());
-			rtn.put("telNo", session.getTelNo());
-			rtn.put("hpNo", session.getHpNo());
-			rtn.put("email", session.getEmail());
-			rtn.put("manageCidNm", session.getManageCidNm());
-			rtn.put("manageCnm", session.getManageCnm());
-			rtn.put("formationCd", session.getFormationCd());
-			rtn.put("formationNm", session.getFormationNm());
-			rtn.put("param", param);
-			modelAndView.addObject("result", rtn);
-		}else {
-			res.sendRedirect("/admin/main/main0107Pop.do");
-		}
+//		if("Y".equals(String.valueOf(session.getEtc()))) {
+//			session.setEtc(null);
+//			HashMap<String, Object> rtn = new HashMap<String, Object>();
+//			rtn.put("userNm", session.getUserNm());
+//			rtn.put("manageCid", session.getManageCid());
+//			rtn.put("telNo", session.getTelNo());
+//			rtn.put("hpNo", session.getHpNo());
+//			rtn.put("email", session.getEmail());
+//			rtn.put("manageCidNm", session.getManageCidNm());
+//			rtn.put("manageCnm", session.getManageCnm());
+//			rtn.put("formationCd", session.getFormationCd());
+//			rtn.put("formationNm", session.getFormationNm());
+//			rtn.put("param", param);
+//			modelAndView.addObject("result", rtn);
+//		}else {
+//			res.sendRedirect("/admin/main/main0107Pop.do");
+//		}
 
 		return modelAndView;
 	}
@@ -109,18 +109,16 @@ public class AdminMainController{
 	 */
 	@RequestMapping({"/main/main0101Page.do"})
 	public ModelAndView mainPage(ModelAndView modelAndView, HttpServletRequest req, HttpServletResponse res, @RequestParam HashMap<String, Object> param, Session session) throws Exception, IOException {
-
-		log.error("************** req : "+req);
-
-		HashMap<String, Object> rtn = new HashMap<String, Object>();
-
-		try{
-			modelAndView.addObject("result", rtn);
-
-		}catch(Exception e){
-			log.error(e.getMessage());
-		}
-		log.error(modelAndView);
+		
+//		HashMap<String, Object> rtn = new HashMap<String, Object>();
+//
+//		try{
+//			modelAndView.addObject("result", rtn);
+//
+//		}catch(Exception e){
+//			log.error(e.getMessage());
+//		}
+//		log.error(modelAndView);
 
 		return modelAndView;
 	}
@@ -145,9 +143,9 @@ public class AdminMainController{
 			param.put("passwdEnc", passwdEnc);
 			rtn = amdinMainService.pwdCheck(param);
 
-			if(String.valueOf(rtn.get("errorCode")) == "00") {
-				session.setEtc("Y");
-			}
+//			if(String.valueOf(rtn.get("errorCode")) == "00") {
+//				session.setEtc("Y");
+//			}
 
 		}catch(Exception e){
 			//rtn.put("errorCode", e.getCode());

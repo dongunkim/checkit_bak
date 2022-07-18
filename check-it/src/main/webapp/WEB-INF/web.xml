@@ -57,18 +57,7 @@
 		<dispatcher>REQUEST</dispatcher>
 		<dispatcher>FORWARD</dispatcher>
 	</filter-mapping>
-	
-	<!-- 
-	<filter>
-		<filter-name>HttpFilter</filter-name>
-		<filter-class>com.sktelecom.checkit.core.filter.HttpFilter</filter-class>
-	</filter>
-	<filter-mapping>
-		<filter-name>HttpFilter</filter-name>
-		<url-pattern>*.do</url-pattern>
-	</filter-mapping>
-	 -->
-		 
+				 
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
@@ -83,28 +72,6 @@
         <listener-class>com.sktelecom.checkit.core.listener.CommJobListener</listener-class>
     </listener>
     
-    <!-- spring security 중복로그인 방지를 위해 사용
-    <listener>
-    	<listener-class>org.springframework.security.web.session.HttpSessionEventPublisher</listener-class>
-    </listener>
-	 -->
-	 
-	<!-- spring security -->
-    <!-- <filter>
-    	<filter-name>springSecurityFilterChain</filter-name>
-    	<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
-    </filter>
-    
-    <filter-mapping>
-    	<filter-name>springSecurityFilterChain</filter-name>
-    	<url-pattern>/admin</url-pattern>
-    </filter-mapping>
-    
-    spring security 중복로그인 방지
-	<listener>
-		<listener-class>org.springframework.security.web.session.HttpSessionEventPublisher</listener-class>
-	</listener> -->
-    
     <!-- session timeout -->
 	<session-config>
 		<session-timeout>15</session-timeout>
@@ -117,7 +84,7 @@
 			<param-name>contextConfigLocation</param-name>
 			<param-value>/WEB-INF/config/action-servlet.xml</param-value>
 		</init-param>
-	<!-- <load-on-startup>1</load-on-startup> -->
+	<load-on-startup>1</load-on-startup>
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>action</servlet-name>
