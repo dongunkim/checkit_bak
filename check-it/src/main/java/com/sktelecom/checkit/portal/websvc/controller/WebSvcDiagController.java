@@ -27,7 +27,7 @@ import com.sktelecom.checkit.portal.websvc.service.WebSvcDiagService;
  * @since 2018.12.17
  */
 @Controller
-@RequestMapping("/portal/websvc")
+@RequestMapping("/websvc")
 public class WebSvcDiagController{
 	private final static Log log = LogFactory.getLog(WebSvcDiagController.class);
 

@@ -22,7 +22,7 @@ import com.sktelecom.checkit.portal.infra.service.InfraDiagService;
  * 
  */
 @Controller
-@RequestMapping("/portal/infra")
+@RequestMapping("/infra")
 public class InfraDiagController{
 	private final static Log log = LogFactory.getLog(InfraDiagController.class);
 

@@ -11,9 +11,11 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.sktelecom.checkit.admin.system.service.RoleService;
+import com.sktelecom.checkit.core.annotation.Api;
 import com.sktelecom.checkit.core.annotation.Paging;
 import com.sktelecom.checkit.core.util.Session;
 
@@ -34,7 +36,7 @@ public class RoleController{
 	 * 
 	 */
 	@RequestMapping({"/roleList.do"})
-	public ModelAndView roleList(ModelAndView modelAndView, HttpServletRequest req, HttpServletResponse res, @RequestParam HashMap<String, Object> param, Session session) throws Exception {
+	public ModelAndView roleList(ModelAndView modelAndView) throws Exception {
 		return modelAndView;
 	}
 
@@ -42,10 +44,13 @@ public class RoleController{
 	 * 
 	 */
 	@Paging(value=false)
-	@RequestMapping({"/ajaxRoleList.do"})
-	public ModelAndView ajaxRoleList(ModelAndView modelAndView, HttpServletRequest req, HttpServletResponse res, @RequestParam HashMap<String, Object> param, Session session) throws Exception {
-		modelAndView.addObject("result", roleService.roleList(param));
-		return modelAndView;
+	@Api
+	@RequestMapping({"/roleList.ajax"})
+	@ResponseBody
+	public HashMap<String, Object> roleList(ModelAndView modelAndView, HttpServletRequest req, HttpServletResponse res, @RequestParam HashMap<String, Object> param, Session session) throws Exception {
+		HashMap<String, Object> rtn = new HashMap<String, Object>();
+		rtn.put("result", roleService.roleList(param));
+		return rtn;
 	}
 
 	/**

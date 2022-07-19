@@ -44,9 +44,9 @@ public class BoardController{
 	 */
 	@Paging(value=true)
 	@Api
-	@RequestMapping({"/boardList.ajax"})
+	@RequestMapping({"/selBoardList.ajax"})
 	@ResponseBody
-	public Map<String, Object> boardList(@RequestParam HashMap<String, Object> param) throws Exception {
+	public Map<String, Object> selBoardList(@RequestParam HashMap<String, Object> param) throws Exception {
 		return boardService.selBoardList(param);
 	}
 

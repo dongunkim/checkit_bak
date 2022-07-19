@@ -189,7 +189,7 @@ setGridFn = function(data){
 	let param = {};
 	param = data;
 
-	url = "/admin/system/ajaxCodeGrpList.do",
+	url = "/admin/system/codeGrpList.ajax",
 	option = {};
 	option.ajax = true;
 	option.url  = url;

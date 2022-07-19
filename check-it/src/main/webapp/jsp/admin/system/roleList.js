@@ -137,7 +137,7 @@ setGridFn = function(data){
 
 	let param = {};
 	param.sysType = data.sysType;
-	url = "/admin/system/ajaxRoleList.do",
+	url = "/admin/system/roleList.ajax",
 	option = {};
 	option.ajax = true;
 	option.url  = url;

@@ -4,7 +4,7 @@ initFunction = function(){
 //	utils.includeFile("/resources/js/treeUtils.js", "js");
 	$("#tree_target").tree({
 		 ajax : true
-		,url : "/admin/system/menuTreeList.do"
+		,url : "/admin/system/menuTreeList.ajax"
 		,paramData: {menuId:"0", sysType:sysType}
 		,height : 745
 		,callBackFn: function(data){
@@ -175,7 +175,7 @@ commonFn = function(data){
 }
 //
 setGridFn = function(data){
-	let url = "/admin/system/menuPgmList.do",
+	let url = "/admin/system/menuPgmList.ajax",
 	option = {};
 	option.ajax = true;
 	option.url  = url;

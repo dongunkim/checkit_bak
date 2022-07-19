@@ -40,7 +40,7 @@ public class CodeController{
 	 * @throws CommException
 	 */
 	@RequestMapping({"/codeGrpList.do"})
-	public ModelAndView codeGrpList(ModelAndView modelAndView, HttpServletRequest req, HttpServletResponse res, @RequestParam HashMap<String, Object> param, Session session) throws Exception {
+	public ModelAndView codeGrpList(ModelAndView modelAndView) throws Exception {
 		return modelAndView;
 	}
 
@@ -69,10 +69,11 @@ public class CodeController{
 	 * @throws CommException
 	 */
 	@Paging(value=false)
-	@RequestMapping({"/ajaxCodeGrpList.do"})
-	public ModelAndView ajaxCodeGrpList(ModelAndView modelAndView, HttpServletRequest req, HttpServletResponse res, @RequestParam HashMap<String, Object> param, Session session) throws Exception {
-		modelAndView.addObject("result", codeService.codeGrpList(param));
-		return modelAndView;
+	@RequestMapping({"/codeGrpList.ajax"})
+	public HashMap<String, Object> codeGrpList(@RequestParam HashMap<String, Object> param) throws Exception {
+		HashMap<String, Object> rtn = new HashMap<String, Object>();
+		rtn.put("result", codeService.codeGrpList(param));
+		return rtn;
 	}
 
 	/**

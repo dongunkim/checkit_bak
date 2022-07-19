@@ -11,9 +11,11 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.sktelecom.checkit.admin.system.service.MenuService;
+import com.sktelecom.checkit.core.annotation.Api;
 import com.sktelecom.checkit.core.annotation.Paging;
 import com.sktelecom.checkit.core.util.Session;
 
@@ -50,23 +52,26 @@ public class MenuController{
 	/**
 	 * 메뉴 트리 목록 조회
 	 */
-	@RequestMapping({"/menuTreeList.do"})
-	public ModelAndView menTreeList(ModelAndView modelAndView, HttpServletRequest req, HttpServletResponse res, @RequestParam HashMap<String, Object> param, Session session) throws Exception {
-		log.error("***************");
-		log.error(param);
-		log.error("***************");
-		modelAndView.addObject("result", menuService.menuTreeList(param));
-		return modelAndView;
+	@Api
+	@RequestMapping({"/menuTreeList.ajax"})
+	@ResponseBody
+	public HashMap<String, Object> menTreeList(ModelAndView modelAndView, HttpServletRequest req, HttpServletResponse res, @RequestParam HashMap<String, Object> param, Session session) throws Exception {
+		HashMap<String, Object> rtn = new HashMap<String, Object>();
+		rtn.put("result", menuService.menuTreeList(param));
+		return rtn;
 	}
 
 	/**
 	 * 프로그램 목록 조회
 	 */
 	@Paging(value=false)
-	@RequestMapping({"/menuPgmList.do"})
-	public ModelAndView menuPgmList(ModelAndView modelAndView, HttpServletRequest req, HttpServletResponse res, @RequestParam HashMap<String, Object> param, Session session) throws Exception {
-		modelAndView.addObject("result", menuService.menuPgmList(param));
-		return modelAndView;
+	@Api
+	@RequestMapping({"/menuPgmList.ajax"})
+	@ResponseBody
+	public HashMap<String, Object> menuPgmList(ModelAndView modelAndView, HttpServletRequest req, HttpServletResponse res, @RequestParam HashMap<String, Object> param, Session session) throws Exception {
+		HashMap<String, Object> rtn = new HashMap<String, Object>();
+		rtn.put("result", menuService.menuPgmList(param));
+		return rtn;
 	}
 
 	/**
