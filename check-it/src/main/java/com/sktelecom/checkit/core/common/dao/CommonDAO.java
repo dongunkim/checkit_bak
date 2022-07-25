@@ -114,4 +114,25 @@ public class CommonDAO extends AbstractMapper {
 		return (HashMap<String, Object>)super.selectOne("common.dao.selAttachFileDetail", param);
 	}
 
+	/**
+	 * 시퀀스 NextVal Update 
+	 */
+	public int updIdGenNextNo(String tableName) throws Exception{
+		return super.update("common.dao.updIdGenNextNo", tableName);
+	}
+
+	/**
+	 * 시퀀스 조회
+	 */
+	@SuppressWarnings("unchecked")
+	public HashMap<String, Object> selIdGen(String tableName) throws Exception{
+		return (HashMap<String, Object>) super.selectOne("common.dao.selIdGen", tableName);
+	}
+
+	/**
+	 * 날짜별 Cycle Sequence Update
+	 */
+	public int updIdGenCycle(HashMap<String, Object> param) throws Exception{
+		return super.update("common.dao.updIdGenCycle", param);
+	}
 }

@@ -3,13 +3,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://www.opensymphony.com/sitemesh/decorator" prefix="decorator"%>
 <%@ taglib uri="http://www.opensymphony.com/sitemesh/page" prefix="page"%>
-<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
-<%
-pageContext.setAttribute("CR", "\r"); 
-pageContext.setAttribute("LF", "\n"); 
-%>
 <!DOCTYPE html>
-<html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no">
@@ -18,99 +12,38 @@ pageContext.setAttribute("LF", "\n");
 	<meta id="_csrf" name="_csrf" content="${_csrf.token}"/>
 	<meta id="_csrf_header" name="_csrf_header" content="${_csrf.headerName}"/>
 	<meta id="_csrf_parameter" name="_csrf_parameter" content="${_csrf.parameterName}"/>
-	
-	<!--[if lt IE 9]>
-      <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-    <![endif]--><!--ie9 미만 접속시 html5, Media Query지원 스트립트 연결-->
+		
+	<link rel='stylesheet' href='/resources/portal/css/css-pro-layout.css'>
+    <link rel='stylesheet' href='/resources/portal/fonts/remixicon.css'>
+    <link rel="stylesheet" href="/resources/portal/css/style.css">
 
-	
-	<!-- 퍼블리싱 css start -->
-	<link rel="stylesheet" type="text/css" href="<c:url value="/resources/admin/css/w_base.css"/>"/>
-	<link rel="stylesheet" type="text/css" href="<c:url value="/resources/admin/css/w_reset.css"/>"/>
-	<link rel="stylesheet" type="text/css" href="<c:url value="/resources/admin/css/w_media.css"/>"/>
-	<link rel="stylesheet" type="text/css" href="<c:url value="/resources/admin/css/all_base.css"/>"/>
-	<!-- 퍼블리싱 css start -->
-	
-	<!-- 퍼블리싱 js start -->
-	<script type="text/javascript" src="<c:url value="/resources/js/jquery/jquery.min.js"/>"></script>
-	<script type="text/javascript" src="<c:url value="/resources/js/jquery/jquery-ui.min.js"/>"></script>
-	<script type="text/javascript" src="<c:url value="/resources/js/jquery/jquery.form.js"/>"></script>
-	<script type="text/javascript" src="<c:url value="/resources/js/jquery/jquery-direct.min.js"/>"></script>
-	<!-- 퍼블리싱 js end -->
-	
-	<!-- 개발용 css start -->
-	<link rel="stylesheet" type="text/css" href="<c:url value="/resources/lib/axj/css/AXJ.min.css"/>"/>
-	<link rel="stylesheet" type="text/css" href="<c:url value="/resources/lib/ax5/css/font-awesome.css"/>">
-	<link rel="stylesheet" type="text/css" href="<c:url value="/resources/lib/ax5/css/ax5picker.css"/>">
-	<link rel="stylesheet" type="text/css" href="<c:url value="/resources/lib/ax5/css/ax5calendar.css"/>">
-	<link rel="stylesheet" type="text/css" href="<c:url value="/resources/lib/ax5/css/ax5uploader.css"/>">
+    <link rel="stylesheet" type="text/css" href="/resources/portal/js/lib/css/jquery-ui.css"/>
+    <link rel="stylesheet" type="text/css" href="/resources/portal/js/lib/jqgrid-4.7.1/css/ui.jqgrid.css" />
+    <link rel="stylesheet" type="text/css" href="/resources/portal/js/lib/jqgrid-4.7.1/css/ui.jqgrid-bootstrap.css" />
+
+    <script type="text/javascript" src="/resources/portal/js/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="/resources/portal/js/jquery/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="/resources/portal/js/jquery/jquery.form.js"></script>
+    <script type="text/javascript" src="/resources/portal/js/jquery/jquery-direct.min.js"></script>
+    <script type="text/javascript" src="/resources/portal/js/lib/jqgrid-4.7.1/i18n/grid.locale-ko.js"></script>
+    <script type="text/javascript" src="/resources/portal/js/lib/jqgrid-4.7.1/js/minified/jquery.jqGrid.min.js"></script>
+    
+    <!-- 개발용 css start -->	
 	<link rel="stylesheet" type="text/css" href="<c:url value="/resources/lib/ax5/css/ax5dialog.css"/>">
-	<link rel="stylesheet" type="text/css" href="<c:url value="/resources/lib/ax5/css/ax5grid.css"/>">
-	<link rel="stylesheet" type="text/css" href="<c:url value="/resources/lib/ax5/css/ax5modal.css"/>">
-	<!-- <link rel="stylesheet" type="text/css" href="<c:url value="/resources/lib/ax5/css/ax5mask.css"/>"> -->
-	<link rel="stylesheet" type="text/css" href="<c:url value="/resources/lib/css/jquery-ui.css"/>">
-	<link rel="stylesheet" type="text/css" href="<c:url value="/resources/lib/css/dev_cust.css"/>">
-	
-	<link rel="stylesheet" type="text/css" href="/resources/lib/jqgrid-4.7.1/css/ui.jqgrid.css" />
-<!-- <link rel="stylesheet" type="text/css" href="/resources/lib/jqgrid-4.7.1/css/ui.jqgrid-bootstrap.css" /> -->
-	<link rel="stylesheet" type="text/css" href="<c:url value="/resources/admin/css/grid.css"/>"/>
 	<!-- 개발용 css start -->
 	
-	<!-- 개발용 js start -->
-	<script type="text/javascript" src="<c:url value="/resources/lib/axj/js/AXJ.min.js"/>"></script>
-	<script type="text/javascript" src="<c:url value="/resources/lib/axj/js/AXConfig.js"/>"></script>
-	<script type="text/javascript" src="<c:url value="/resources/lib/axj/js/AXUtil.js"/>"></script>
-	<script type="text/javascript" src="<c:url value="/resources/lib/axj/js/AXCore.js"/>"></script>
-	<script type="text/javascript" src="<c:url value="/resources/lib/axj/js/AXEditor.js"/>"></script>
+    <!-- 개발용 js start -->
 	<script type="text/javascript" src="<c:url value="/resources/lib/ax5/js/ax5core.min.js"/>"></script>
 	<script type="text/javascript" src="<c:url value="/resources/lib/ax5/js/ax5picker.js"/>"></script>
 	<script type="text/javascript" src="<c:url value="/resources/lib/ax5/js/ax5formatter.min.js"/>"></script>
-	<script type="text/javascript" src="<c:url value="/resources/lib/ax5/js/ax5calendar.min.js"/>"></script>
-	<script type="text/javascript" src="<c:url value="/resources/lib/ax5/js/ax5uploader.js"/>"></script>
 	<script type="text/javascript" src="<c:url value="/resources/lib/ax5/js/ax5dialog.js"/>"></script>
-	<script type="text/javascript" src="<c:url value="/resources/lib/ax5/js/ax5grid.min.js"/>"></script>
-	<script type="text/javascript" src="<c:url value="/resources/lib/ax5/js/ax5modal.js"/>"></script>
-	<script type="text/javascript" src="<c:url value="/resources/lib/ax5/js/ax5mask.min.js"/>"></script>
-	<script type="text/javascript" src="<c:url value="/resources/js/ui.js"/>"></script>
-	<script type="text/javascript" src="<c:url value="/resources/admin/js/roll.js"/>"></script>
-	<script type="text/javascript" src="<c:url value="/resources/admin/js/menu.js"/>"></script>
-	<script type="text/javascript" src="<c:url value="/resources/admin/js/siteMap.js"/>"></script>
-	<script type="text/javascript" src="<c:url value="/resources/js/utils.js"/>"></script>
-	<script type="text/javascript" src="<c:url value="/resources/js/editUtils.js"/>"></script>
-	<script type="text/javascript" src="<c:url value="/resources/js/treeUtils.js"/>"></script>
 	<script type="text/javascript" src="<c:url value="/resources/js/core.js"/>"></script>
-	<script type="text/javascript" src="<c:url value="/resources/js/code.js"/>"></script>
-	<script type="text/javascript" src="<c:url value="/resources/js/sockjs-1.0.0.min.js"/>"></script>
-	<script type="text/javascript" src="<c:url value="/resources/js/fileSaveUtils.js"/>"></script>
+	<script type="text/javascript" src="<c:url value="/resources/js/utils.js"/>"></script>
 	<script type="text/javascript" src="<c:url value="/resources/js/common.js"/>"></script>
-	
-	<script type="text/javascript" src="/resources/lib/jqgrid-4.7.1/i18n/grid.locale-ko.js"></script>
-	<script type="text/javascript" src="/resources/lib/jqgrid-4.7.1/js/minified/jquery.jqGrid.min.js"></script>
-	<script type="text/javascript" src="/resources/lib/jquery-fileDownload/jquery.fileDownload.js"></script>
-	<script type="text/javascript" src="/resources/js/common.jqgrid.wrapper.js"></script>
-
-	<%-- <script type="text/javascript" src="<c:url value="https://cdn.jsdelivr.net/npm/sockjs-client@1/dist/sockjs.min.js"/>"></script> --%>
 	<!-- 개발용 js end -->
 
-<c:set var="toRequest" value="${fn:replace(fn:replace(toRequestUri, LF, ''), CR, '')}" />
 <script type="text/javascript">
-//<![CDATA[
-var result   = ${(result == null || result == "")? "{}" : result};
-const menuList = ${(menuList == null || menuList == "")? "{}" : menuList};
-const menuId   = ${(menuId == null || menuId == "")? "" : menuId};
-const rid      = ${(rid == null || rid == "")? "" : rid};
-const toPageUrl = '${toRequest }';
-$(document).ready(function(){
-	if(typeof initFunction === "function"){
-		if(typeof utils.defaultString(result) === "object"){
-			initFunction(result);
-		}else{
-			initFunction();
-		}
-	}
-});
-//]]>
+
 </script>
 <%
 	// 화면에 해당하는 js 파일을 자동으로 include 한다.
@@ -118,7 +51,7 @@ $(document).ready(function(){
 	if( url.lastIndexOf(".") > 0 ) {
 		String jsPath = url.substring(0, url.lastIndexOf("/"));
 		if(jsPath.indexOf("jsp/") == -1){
-			jsPath = "/jsp" + url.substring(0, url.lastIndexOf("/"));
+			jsPath = "/jsp/portal" + url.substring(0, url.lastIndexOf("/"));
 		}
 		String screenId = url.substring(url.lastIndexOf("/"), url.lastIndexOf("."));
 		String jsFileNm = screenId + ".js";
@@ -131,31 +64,34 @@ $(document).ready(function(){
 		
 	}
 %>
-<title>업무지원시스템</title>
+<title>IT보안진단시스템</title>
 </head>
 <body>
-	<div class="wrap">
-		<!-- header start -->
-		<page:applyDecorator id="adminHeaderTemplate" name="adminHeaderTemplate"/>
-		<!-- header end -->
-		<!-- body -->
-		<div class="container">
-			<!-- 사이트맵 -->
-			<page:applyDecorator id="adminSiteMapTemplate" name="adminSiteMapTemplate"/>
-			<!-- 사이트맵 -->
+	<div class="layout has-sidebar fixed-sidebar fixed-header">
+		<!-- left start -->
+		<page:applyDecorator id="leftTemplate" name="leftTemplate"/>
+	    <div id="overlay" class="overlay"></div>
+		<!-- left end -->
+
+		<div class="layout">
+			<!-- header start -->
+			<page:applyDecorator id="headerTemplate" name="headerTemplate"/>
+			<!-- header End -->
+			
 			<!-- 컨텐츠 start -->
 			<decorator:body/>
 			<!-- 컨텐츠 end-->
-			<input type="hidden" name="sort" id="sort">
-			<input type="hidden" name="sortType" id="sortType">
+
+			<!-- footer start -->
+			<page:applyDecorator id="footerTemplate" name="footerTemplate"/>
+			<!-- footer end -->
+	        <div class="overlay"></div>
 		</div>
-		<!-- body -->
-		<!-- footer start -->
-		<!-- <page:applyDecorator id="adminFooterTemplate" name="adminFooterTemplate"/> -->
-		<!-- footer end -->
 	</div>
-	<page:applyDecorator id="adminLoadingTemplate" name="adminLoadingTemplate"/>
+	<page:applyDecorator id="loadingTemplate" name="loadingTemplate"/>
 	<a href="javascript:void(0)" class="btn_top"><img src="/resources/images/icon/btn_top.png"></a>
 	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
+
+	<script type="text/javascript" src="<c:url value="/resources/js/script.js"/>"></script>
 </body>
 </html>

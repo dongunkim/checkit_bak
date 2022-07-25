@@ -1,6 +1,6 @@
 package com.sktelecom.checkit.core.common.service;
 
-import java.security.SecureRandom;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -13,12 +13,9 @@ import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.JsonMappingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sktelecom.checkit.core.common.dao.CommonDAO;
 import com.sktelecom.checkit.core.file.FileUpload;
-import com.sktelecom.checkit.core.util.Session;
+import com.sktelecom.checkit.core.util.StringUtils;
 import com.sktelecom.checkit.core.util.TypeCastUtils;
 
 /**
@@ -40,6 +37,8 @@ public class CommonService  {
 
 	@Resource
 	private TypeCastUtils typeCastUtils;
+
+	final String SEPERATOR = "";
 
 	/**
 	 * 메뉴를 조회후 캐시에 저장
@@ -209,69 +208,119 @@ public class CommonService  {
 	}
 
 	/**
-	 * 랜덤 숫자 생성
-	 * @return
+	 * 시퀀스 조회
 	 */
-	private String makeRandomNum() {
-		SecureRandom random = new SecureRandom();
-		int rIndex = random.nextInt(999999);
-		return String.valueOf(rIndex);
+	public String getNextId(String tableName) throws Exception {
+		String nextId = null;
+		commonDAO.updIdGenNextNo(tableName);
+		HashMap<String, Object> rtn = commonDAO.selIdGen(tableName);
+
+		String seqType = (String)rtn.get("seqType");
+		String prefix = (String)rtn.get("prefix");
+		String currYear = (String)rtn.get("currYear");
+		String currMonth = (String)rtn.get("currMonth");
+		String currDay = (String)rtn.get("currDay");
+		int currNo = (int)rtn.get("currNo");
+		int cipers = (int)rtn.get("cipers");
+		String fillChar = (String)rtn.get("fillChar");
+
+		switch(seqType) {
+			case "SIMPLE":
+				nextId = StringUtils.lpad(String.valueOf(currNo), cipers, fillChar);				
+				break;
+			case "PREFIX":
+				nextId = prefix + SEPERATOR + StringUtils.lpad(String.valueOf(currNo), cipers, fillChar);
+				break;
+			case "YEAR":
+				currNo = checkYear(tableName, currYear) ? currNo : 1;
+				nextId = currYear + SEPERATOR + StringUtils.lpad(String.valueOf(currNo), cipers, fillChar);
+				break;
+			case "MONTH":
+				currNo = checkMonth(tableName, currMonth) ? currNo : 1;
+				nextId = currYear + currMonth + SEPERATOR + StringUtils.lpad(String.valueOf(currNo), cipers, fillChar);
+				break;
+			case "DAY":
+				currNo = checkDate(tableName, currDay) ? currNo : 1;
+				nextId = currYear + currMonth + currDay + SEPERATOR + StringUtils.lpad(String.valueOf(currNo), cipers, fillChar);				
+				break;
+			case "MIX-Y":
+				currNo = checkYear(tableName, currYear) ? currNo : 1;
+				nextId = prefix + SEPERATOR + currYear + currMonth + SEPERATOR + StringUtils.lpad(String.valueOf(currNo), cipers, fillChar);
+				break;
+			case "MIX-M":
+				currNo = checkMonth(tableName, currMonth) ? currNo : 1;
+				nextId = prefix + SEPERATOR + currYear + currMonth + SEPERATOR + StringUtils.lpad(String.valueOf(currNo), cipers, fillChar);
+				break;
+			case "MIX-D":
+				currNo = checkDate(tableName, currDay) ? currNo : 1;
+				nextId = prefix + SEPERATOR + currYear + currMonth + currDay + SEPERATOR + StringUtils.lpad(String.valueOf(currNo), cipers, fillChar);
+				break;
+		}
+
+		return nextId;
 	}
 
-	/**
-	 * 랜덤 문자열 생성
-	 * @return
+	/*
+	 * 현재 년도와 시퀀스 테이블의 년도 비교
+	 * @Return true  동일한 경우
+	 *         false 동일하지 않은 경우(DB 업데이트)
+	 *          
 	 */
+	private boolean checkYear(String tableName, String year) throws Exception {
+		Calendar today = Calendar.getInstance();
+		
+		if(today.get(Calendar.YEAR) != Integer.parseInt(year)){
+			HashMap<String, Object> param = new HashMap<String, Object>();
+			param.put("tableName", tableName);
+			param.put("currYear", String.valueOf(today.get(Calendar.YEAR)));
+			param.put("currNo", 1);
+			commonDAO.updIdGenCycle(param);
+			return false;
+		}
+		return true;
+	}
 	
-	private String makeRandomStr() {
-		StringBuffer randomStr = new StringBuffer();
-		SecureRandom random = new SecureRandom();
-		for (int i = 0; i < 10; i++) {
-			int rIndex = random.nextInt(2);
-			switch (rIndex) {
-			case 0:
-				// a-z
-				randomStr.append((char) ((random.nextInt(26)) + 97));
-				break;
-			case 1:
-				// A-Z
-				randomStr.append((char) ((random.nextInt(26)) + 65));
-				break;
-			}
-		}
-
-		return randomStr.toString();
-	}
-
-	/**
-	 * 인증키 확인
-	 * @return
+	/*
+	 * 현재 월과 시퀀스 테이블의 월 비교
+	 * @Return true  동일한 경우
+	 *         false 동일하지 않은 경우(DB 업데이트)
+	 *          
 	 */
-	public HashMap<String, Object> commCertKeyCheck(HashMap<String, Object> param) throws Exception{
-
-		HashMap<String, Object> rtn = new HashMap<String, Object>();
-		String certKey = "";
-		String checkCertKey = "";
-
-		try{
-
-			Session session = new Session();
-			certKey = session.getCertKey();
-			checkCertKey = String.valueOf(param.get("checkCertKey"));
-
-			if(certKey.equals(checkCertKey)) {
-				rtn.put("errorCode", "00");
-				rtn.put("errorMessage", "인증에 성공하였습니다.");
-//				session.setMarskRelease(true);
-			}else {
-				rtn.put("errorCode", "01");
-				rtn.put("errorMessage", "인증에 실패하였습니다.\n인증키를 확인하세요.");
-			}
-
-		}catch(Exception e){
-			log.error(e.getMessage());
+	private boolean checkMonth(String tableName, String month) throws Exception {
+		Calendar today = Calendar.getInstance();
+		
+		if((today.get(Calendar.MONTH) + 1) != Integer.parseInt(month)){
+			HashMap<String, Object> param = new HashMap<String, Object>();
+			param.put("tableName", tableName);
+			param.put("currYear", String.valueOf(today.get(Calendar.YEAR)));
+			param.put("currMonth", String.valueOf(today.get(Calendar.MONTH) + 1));
+			param.put("currNo", 1);
+			commonDAO.updIdGenCycle(param);
+			return false;
 		}
-		return rtn;
+		return true;
+	}
+	
+	/*
+	 * 현재 일자와 시퀀스 테이블의 일자 비교
+	 * @Return true  동일한 경우
+	 *         false 동일하지 않은 경우(DB 업데이트)
+	 *          
+	 */
+	private boolean checkDate(String tableName, String day) throws Exception {
+		Calendar today = Calendar.getInstance();
+				
+		if(today.get(Calendar.DATE) != Integer.parseInt(day)){
+			HashMap<String, Object> param = new HashMap<String, Object>();
+			param.put("tableName", tableName);
+			param.put("currYear", String.valueOf(today.get(Calendar.YEAR)));
+			param.put("currMonth", String.valueOf(today.get(Calendar.MONTH) + 1));
+			param.put("currDay", String.valueOf(today.get(Calendar.DATE)));
+			param.put("currNo", 1);
+			commonDAO.updIdGenCycle(param);
+			return false;
+		}
+		return true;
 	}
 
 }

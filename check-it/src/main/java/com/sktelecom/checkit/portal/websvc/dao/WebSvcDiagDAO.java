@@ -22,16 +22,16 @@ public class WebSvcDiagDAO extends AbstractMapper {
 	 * 
 	 */
 	@SuppressWarnings("unchecked")
-	public HashMap<String, Object> selectWebSvcDiagList(HashMap<String, Object> param) throws Exception{
-		return (HashMap<String, Object>)super.selectList("portal.websvc.dao.selectWebSvcDiagList", param);
+	public HashMap<String, Object> selWebSvcDiagList(HashMap<String, Object> param) throws Exception{
+		return (HashMap<String, Object>)super.selectList("portal.websvc.dao.selWebSvcDiagList", param);
 	}
 
 	/**
 	 * 
 	 */
 	@SuppressWarnings("unchecked")
-	public HashMap<String, Object> selectWebSvcDiagDetail(HashMap<String, Object> param) throws Exception{
-		return (HashMap<String, Object>)super.selectOne("portal.websvc.dao.selectWebSvcDiagDetail", param);
+	public HashMap<String, Object> selWebSvcDiagDetail(HashMap<String, Object> param) throws Exception{
+		return (HashMap<String, Object>)super.selectOne("portal.websvc.dao.selWebSvcDiagDetail", param);
 	}
 
 }

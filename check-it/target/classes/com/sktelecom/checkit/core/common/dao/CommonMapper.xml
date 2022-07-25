@@ -374,4 +374,37 @@
 		  AND	ATTACH_SEQ = #{attachSeq}
 	</select>
 
+	<!-- Sequence 조회 -->
+	<select id="selIdGen" parameterType="String" resultType="commMap">
+		/* common.dao.CommonMapper.xml selIdGen */
+		SELECT	TABLE_NAME,
+				SEQ_TYPE,
+				PREFIX,
+				CURR_YEAR,
+				CURR_MONTH,
+				CURR_DAY,
+				CURR_NO AS SEQ,
+				CIPERS,
+				FILL_CHAR
+		FROM	T_ID_GEN
+		WHERE	TABLE_NAME = #{tableName}
+	</select>
+		
+	<update id="updIdGenNextNo" parameterType="String">
+		/* common.dao.CommonMapper.xml updIdGenNextNo */
+		UPDATE	T_ID_GEN
+		SET		CURR_NO = IFNULL(CURR_NO, 0) + 1
+		WHERE	TABLE_NAME = #{tableName}			
+	</update>
+	
+	<update id="updIdGenCycle" parameterType="commMap">
+		/* common.dao.CommonMapper.xml updIdGenCycle */
+		UPDATE	T_ID_GEN
+		SET		CURR_YEAR = #{currYear},
+				CURR_MONTH = #{currMonth},
+				CURR_DAY = #{currDay}, 
+				CURR_NO = #{currNo}
+		WHERE	TABLE_NAME = #{tableName}			
+	</update>	
+
 </mapper>

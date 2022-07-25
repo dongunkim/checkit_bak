@@ -3,8 +3,8 @@
 <mapper namespace="portal.infra.dao">
 
 	<!--  -->
-	<select id="selectInfraDiagList" parameterType="paramMap" resultType="commMap">
-		/* portal.infra.dao.InfraDiagMapper.xml selectInfraDiagList */
+	<select id="selInfraDiagList" parameterType="paramMap" resultType="commMap">
+		/* portal.infra.dao.InfraDiagMapper.xml selInfraDiagList */
 		SELECT	COUNT(*) OVER () RNUM_CNT,
 				DIAG_ID,
 				DIAG_NAME,
@@ -36,8 +36,8 @@
 	</select>	
 	
 	<!--  -->
-	<select id="selectInfraDiagDetail" parameterType="paramMap" resultType="commMap">
-		/* portal.infra.dao.DiagMapper.xml selectInfraDiagDetail */
+	<select id="selInfraDiagDetail" parameterType="paramMap" resultType="commMap">
+		/* portal.infra.dao.DiagMapper.xml selInfraDiagDetail */
 		SELECT	DIAG_ID
 				,DIAG_NAME
 				,PROD_ID
@@ -62,26 +62,28 @@
 		WHERE	DIAG_ID = #{diagId}                                                                 
 	</select>
 
-	<!--  -->
-	<select id="selectInfraDiagHostList" parameterType="paramMap" resultType="commMap">
-		/* portal.infra.dao.DiagMapper.xml selectInfraDiagHostList */
-		SELECT	B.HOST_ID
-				,B.HOST_NAME
-				,B.IP_ADDR
-				,B.EQUIP_TYPE
-				,'Y' IS_OS
-				,'Y' IS_DBMS
-				,'N' IS_WEB_SERVER
-				,'N' IS_WAS
-				,'N' IS_WEB_SERVICE
-		FROM	T_DIAG_HOST A, T_HOST B
-		WHERE	DIAG_ID = #{diagId}
-		  AND	A.HOST_ID = B.HOST_ID                                                                  
-	</select>
+	<!-- 진단 인프라 대분류 Insert -->
+	<insert id="insDiagInfraCategory" parameterType="paramMap">
+		/* portal.diagreq.dao.InfraDiagReqMapper.xml insDiagInfraCategory */
+		INSERT INTO T_DIAG_INFRA_CATEGORY 
+			(
+				DIAG_ID,
+				HOST_ID,
+				LEVEL1_CATEGORY,
+				REG_ID,
+				REG_DT
+			) VALUES ( 
+				#{diagId},
+				#{hostId},
+				#{level1Category},
+				#{userId},
+				DATE_FORMAT(NOW(), '%Y%m%d%h%m%s')
+			) 
+	</insert>
 
 	<!--  -->
-	<select id="selectInfraDiagObjList" parameterType="paramMap" resultType="commMap">
-		/* portal.infra.dao.DiagMapper.xml selectInfraDiagObjList */
+	<select id="selInfraDiagObjList" parameterType="paramMap" resultType="commMap">
+		/* portal.infra.dao.DiagMapper.xml selInfraDiagObjList */
 		SELECT	DIAG_OBJ_ID
 				,LEVEL1_CATEGORY 
 				,LEVEL2_CATEGORY
@@ -93,17 +95,5 @@
 		WHERE	DIAG_ID = #{diagId}
 		  AND	A.DIAG_TYPE_ID = B.HOST_ID
 	</select>
-	
-	<!--  -->
-	<delete id="deleteHost" parameterType="paramMap">
-		/* portal.infra.dao.DiagMapper.xml deleteHost */
-		DELETE
-		FROM	T_HOST
-		WHERE	HOST_ID IN 
-			<foreach collection="hostList" item="item" index="index" separator="," open="(" close=")">
-				#{item}
-			</foreach>
-	</delete>
-	
 	
 </mapper>

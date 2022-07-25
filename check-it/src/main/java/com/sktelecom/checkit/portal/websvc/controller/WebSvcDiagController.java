@@ -22,9 +22,7 @@ import com.sktelecom.checkit.core.util.ExcelUtils;
 import com.sktelecom.checkit.portal.websvc.service.WebSvcDiagService;
 
 /**
- * 업무지원시스템 > 공지/게시판
- * @author gh.baek
- * @since 2018.12.17
+ * 
  */
 @Controller
 @RequestMapping("/websvc")
@@ -47,21 +45,21 @@ public class WebSvcDiagController{
 	 */
 	@Paging(value=true)
 	@Api
-	@RequestMapping({"/webSvcDiagList.ajax"})
+	@RequestMapping({"/selWebSvcDiagList.ajax"})
 	@ResponseBody
-	public Map<String, Object> webSvcDiagList(@RequestParam HashMap<String, Object> param) throws Exception {
-		return webSvcDiagService.webSvcDiagList(param);
+	public Map<String, Object> selWebSvcDiagList(@RequestParam HashMap<String, Object> param) throws Exception {
+		return webSvcDiagService.selWebSvcDiagList(param);
 	}
 
 	/**
 	 * 
 	 */
 	@Api
-	@RequestMapping({"/webSvcDiagListExcel.ajax"})
+	@RequestMapping({"/selWebSvcDiagExcel.ajax"})
 	@ResponseBody
 	@SuppressWarnings({"unchecked","rawtypes"})
-	public void webSvcDiagListExcel(HttpServletResponse res, @RequestParam HashMap<String, Object> param) throws Exception {
-		List<Map<String, Object>> list = (List)webSvcDiagService.webSvcDiagList(param).get("list");
+	public void selWebSvcDiagExcel(HttpServletResponse res, @RequestParam HashMap<String, Object> param) throws Exception {
+		List<Map<String, Object>> list = (List)webSvcDiagService.selWebSvcDiagList(param).get("list");
 		
 		String fileName = "웹서비스_진단목록";
 		String[] columnNames = {"테스트"};
@@ -81,9 +79,10 @@ public class WebSvcDiagController{
 	 * 
 	 */
 	@RequestMapping({"/webSvcDiagDetail.do"})
-	public ModelAndView webSvcDiagDetail(ModelAndView modelAndView, @RequestParam HashMap<String, Object> param) throws Exception {
-		HashMap<String, Object> rtn = webSvcDiagService.webSvcDiagDetail(param);
+	public ModelAndView selWebSvcDiagDetail(ModelAndView modelAndView, @RequestParam HashMap<String, Object> param) throws Exception {
+		HashMap<String, Object> rtn = webSvcDiagService.selWebSvcDiagDetail(param);
 		if(!"00".equals(rtn.get("errorCode").toString())) throw new Exception();
+		
 		rtn.put("param", param.get("param"));
 		modelAndView.addObject("result", rtn);
 		return modelAndView;

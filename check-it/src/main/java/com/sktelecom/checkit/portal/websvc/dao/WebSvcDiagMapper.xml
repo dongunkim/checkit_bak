@@ -3,8 +3,8 @@
 <mapper namespace="portal.websvc.dao">
 
 	<!--  -->
-	<select id="selectWebSvcDiagList" parameterType="paramMap" resultType="commMap">
-		/* portal.websvc.dao.WebSvcDiagMapper.xml selectWebSvcDiagList */
+	<select id="selWebSvcDiagList" parameterType="paramMap" resultType="commMap">
+		/* portal.websvc.dao.WebSvcDiagMapper.xml selWebSvcDiagList */
 		SELECT	<if test="isPaging == true">
 				COUNT(*) OVER () RNUM_CNT,
 				</if>
@@ -40,8 +40,8 @@
 	</select>	
 	
 	<!--  -->
-	<select id="selectWebSvcDiagDetail" parameterType="paramMap" resultType="commMap">
-		/* portal.websvc.dao.WebSvcDiagMapper.xml selectWebSvcDiagDetail */
+	<select id="selWebSvcDiagDetail" parameterType="paramMap" resultType="commMap">
+		/* portal.websvc.dao.WebSvcDiagMapper.xml selWebSvcDiagDetail */
 		SELECT	DIAG_ID,
 				DIAG_NAME,
 				PROD_ID,

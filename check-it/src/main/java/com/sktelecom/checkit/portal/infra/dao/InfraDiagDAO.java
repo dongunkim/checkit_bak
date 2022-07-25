@@ -22,38 +22,31 @@ public class InfraDiagDAO extends AbstractMapper {
 	 * 
 	 */
 	@SuppressWarnings("unchecked")
-	public HashMap<String, Object> selectInfraDiagList(HashMap<String, Object> param) throws Exception{
-		return (HashMap<String, Object>)super.selectList("portal.infra.dao.selectInfraDiagList", param);
+	public HashMap<String, Object> selInfraDiagList(HashMap<String, Object> param) throws Exception{
+		return (HashMap<String, Object>)super.selectList("portal.infra.dao.selInfraDiagList", param);
 	}
 
 	/**
 	 * 
 	 */
 	@SuppressWarnings("unchecked")
-	public HashMap<String, Object> selectInfraDiagDetail(HashMap<String, Object> param) throws Exception{
-		return (HashMap<String, Object>)super.selectOne("portal.infra.dao.selectInfraDiagDetail", param);
+	public HashMap<String, Object> selInfraDiagDetail(HashMap<String, Object> param) throws Exception{
+		return (HashMap<String, Object>)super.selectOne("portal.infra.dao.selInfraDiagDetail", param);
+	}
+
+	/**
+	 * 진단 인프라 카테고리 Insert
+	 */
+	public int insDiagInfraCategory(HashMap<String, Object> param) throws Exception{
+		return super.insert("portal.infra.dao.insDiagInfraCategory", param);
 	}
 
 	/**
 	 * 
 	 */
 	@SuppressWarnings("unchecked")
-	public HashMap<String, Object> selectInfraDiagHostList(HashMap<String, Object> param) throws Exception{
-		return (HashMap<String, Object>)super.selectList("portal.infra.dao.selectInfraDiagHostList", param);
+	public HashMap<String, Object> selInfraDiagObjList(HashMap<String, Object> param) throws Exception{
+		return (HashMap<String, Object>)super.selectList("portal.infra.dao.selInfraDiagObjList", param);
 	}
 
-	/**
-	 * 
-	 */
-	@SuppressWarnings("unchecked")
-	public HashMap<String, Object> selectInfraDiagObjList(HashMap<String, Object> param) throws Exception{
-		return (HashMap<String, Object>)super.selectList("portal.infra.dao.selectInfraDiagObjList", param);
-	}
-
-	/**
-	 * 
-	 */
-	public int deleteHost(HashMap<String, Object> param) throws Exception{
-		return super.delete("portal.infra.dao.deleteHost", param);
-	}
 }

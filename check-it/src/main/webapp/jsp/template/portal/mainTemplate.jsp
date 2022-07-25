@@ -88,7 +88,7 @@ $(document).ready(function(){
 	if( url.lastIndexOf(".") > 0 ) {
 		String jsPath = url.substring(0, url.lastIndexOf("/"));
 		if(jsPath.indexOf("jsp/") == -1){
-			jsPath = "/jsp" + url.substring(0, url.lastIndexOf("/"));
+			jsPath = "/jsp/portal" + url.substring(0, url.lastIndexOf("/"));
 		}
 		String screenId = url.substring(url.lastIndexOf("/"), url.lastIndexOf("."));
 		String jsFileNm = screenId + ".js";

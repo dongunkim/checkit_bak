@@ -28,10 +28,10 @@ public class WebSvcDiagService {
 	/**
 	 * 진단 목록
 	 */
-	public HashMap<String, Object> webSvcDiagList(HashMap<String, Object> param) throws Exception{
+	public HashMap<String, Object> selWebSvcDiagList(HashMap<String, Object> param) throws Exception{
 		HashMap<String, Object> rtn = new HashMap<String, Object>();
 		try{
-			rtn = webSvcDiagDAO.selectWebSvcDiagList(param);
+			rtn = webSvcDiagDAO.selWebSvcDiagList(param);
 			rtn.put("errorCode", "00");
 		}catch(Exception e){
 			log.error(e.getMessage());
@@ -43,10 +43,10 @@ public class WebSvcDiagService {
 	/**
 	 * 진단 상세
 	 */
-	public HashMap<String, Object> webSvcDiagDetail(HashMap<String, Object> param) throws Exception{
+	public HashMap<String, Object> selWebSvcDiagDetail(HashMap<String, Object> param) throws Exception{
 		HashMap<String, Object> rtn = new HashMap<String, Object>();
 		try{
-			rtn = webSvcDiagDAO.selectWebSvcDiagDetail(param);
+			rtn = webSvcDiagDAO.selWebSvcDiagDetail(param);
 			rtn.put("errorCode", "00");
 		}catch(Exception e){
 			log.error(e.getMessage());

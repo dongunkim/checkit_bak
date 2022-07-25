@@ -4,8 +4,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -17,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.sktelecom.checkit.core.annotation.Paging;
 import com.sktelecom.checkit.portal.infra.service.InfraDiagService;
+import com.sktelecom.checkit.portal.infra.service.InfraHostService;
 
 /**
  * 
@@ -28,6 +27,9 @@ public class InfraDiagController{
 
 	@Resource
 	private InfraDiagService infraDiagService;
+
+	@Resource
+	private InfraHostService infraHostService;
 
 	/**
 	 * 
@@ -62,29 +64,29 @@ public class InfraDiagController{
 	/**
 	 * 
 	 */
-	@RequestMapping({"/infraDiagHostList.ajax"})
+	@RequestMapping({"/selInfraDiagObjList.ajax"})
 	@ResponseBody
-	public Map<String, Object> infraDiagHostList(@RequestParam HashMap<String, Object> param) throws Exception {
-		return infraDiagService.infraDiagHostList(param);
+	public Map<String, Object> selInfraDiagObjList(@RequestParam HashMap<String, Object> param) throws Exception {
+		return infraDiagService.selInfraDiagObjList(param);
+	}
+
+	/**
+	 * 
+	 */
+	@RequestMapping({"/delHost.ajax"})
+	@ResponseBody
+	public Map<String, Object> delHost(@RequestParam HashMap<String, Object> param) throws Exception {
+		return infraHostService.delHost(param);
+	}
+
+	/**
+	 * 
+	 */
+	@RequestMapping({"/selDiagHostList.ajax"})
+	@ResponseBody
+	public Map<String, Object> selDiagHostList(@RequestParam HashMap<String, Object> param) throws Exception {
+		return infraHostService.selDiagHostList(param);
 	}
 	
-	/**
-	 * 
-	 */
-	@RequestMapping({"/infraDiagObjList.ajax"})
-	@ResponseBody
-	public Map<String, Object> infraDiagObjList(@RequestParam HashMap<String, Object> param) throws Exception {
-		return infraDiagService.infraDiagObjList(param);
-	}
-
-	/**
-	 * 
-	 */
-	@RequestMapping({"/deleteHost.ajax"})
-	@ResponseBody
-	public Map<String, Object> deleteHost(@RequestParam HashMap<String, Object> param) throws Exception {
-		return infraDiagService.deleteHost(param);
-	}
-
 
 }
