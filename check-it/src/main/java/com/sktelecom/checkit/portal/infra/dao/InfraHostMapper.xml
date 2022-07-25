@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="portal.infra.dao">
+
+	<!-- Host 기본 정보 Insert -->
+	<insert id="insHost" parameterType="paramMap">
+		/* portal.infra.dao.InfraHostMapper.xml insHost */
+		INSERT INTO T_HOST 
+			(
+				HOST_ID,
+				HOST_NAME,
+				REG_PATH_TYPE,
+				SVC_ID,
+				IP_ADDR,
+				EQUIP_TYPE,
+				EQUIP_LOC_CODE,
+				OPER_TYPE,
+				REG_ID,
+				REG_DT,
+				UPD_ID,
+				UPD_DT
+			) VALUES ( 
+				#{hostId},
+				#{hostName},
+				#{regPathType},
+				#{svcId},
+				#{ipAddr},
+				#{equipType},
+				#{equipLocCode},
+				#{operType},
+				#{userId},
+				DATE_FORMAT(NOW(), '%Y%m%d%h%m%s'),
+				#{userId},
+				DATE_FORMAT(NOW(), '%Y%m%d%h%m%s')
+			) 
+	</insert>
+
+	<!--  -->
+	<delete id="delHost" parameterType="paramMap">
+		/* portal.infra.dao.InfraHostMapper.xml delHost */
+		DELETE	FROM T_HOST
+		WHERE	HOST_ID IN 
+			<foreach collection="hostList" item="item" index="index" separator="," open="(" close=")">
+				#{item}
+			</foreach>
+	</delete>
+	
+	<!-- Host 계정 정보 Insert -->
+	<insert id="insHostAccount" parameterType="paramMap">
+		/* portal.infra.dao.InfraHostMapper.xml insHostAccount */
+		INSERT INTO T_HOST_ACCOUNT 
+			(
+				HOST_ID,
+				ACCOUNT_CODE,
+				ACCOUNT_ID,
+				ACCOUNT_PASSWORD,
+				REG_ID,
+				REG_DT,
+				UPD_ID,
+				UPD_DT
+			) VALUES ( 
+				#{hostId},
+				#{accountCode},
+				#{accountId},
+				#{accountPassword},
+				#{userId},
+				DATE_FORMAT(NOW(), '%Y%m%d%h%m%s'),
+				#{userId},
+				DATE_FORMAT(NOW(), '%Y%m%d%h%m%s')
+			) 
+	</insert>
+
+	<!-- 진단 신청 호스트 Insert -->
+	<insert id="insDiagHost" parameterType="paramMap">
+		/* portal.infra.dao.InfraHostMapper.xml insDiagHost */
+		INSERT INTO T_DIAG_HOST 
+			(
+				DIAG_ID,
+				HOST_ID,
+				REG_ID,
+				REG_DT
+			) VALUES ( 
+				#{diagId},
+				#{hostId},
+				#{userId},
+				DATE_FORMAT(NOW(), '%Y%m%d%h%m%s')
+			) 
+	</insert>
+
+	<!--  -->
+	<select id="selDiagHostList" parameterType="paramMap" resultType="commMap">
+		/* portal.infra.dao.InfraHostMapper.xml selDiagHostList */
+		SELECT	B.HOST_ID
+				,B.HOST_NAME
+				,B.IP_ADDR
+				,B.EQUIP_TYPE
+				,'Y' IS_OS
+				,'Y' IS_DBMS
+				,'N' IS_WEB_SERVER
+				,'N' IS_WAS
+				,'N' IS_WEB_SERVICE
+		FROM	T_DIAG_HOST A, T_HOST B
+		WHERE	DIAG_ID = #{diagId}
+		  AND	A.HOST_ID = B.HOST_ID                                                                  
+	</select>
+
+</mapper>

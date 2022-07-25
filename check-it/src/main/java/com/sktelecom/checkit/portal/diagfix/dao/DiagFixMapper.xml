@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="portal.diagfix.dao">
+
+	<!-- 서비스별 조치 현황 -->
+	<select id="selSvcDiagFixList" parameterType="paramMap" resultType="commMap">
+		/* portal.diagfix.dao.DiagFixMapper.xml selSvcDiagFixList */
+		SELECT	<if test="isPaging == true">
+				COUNT(*) OVER () RNUM_CNT,
+				</if>
+				A.SVC_ID,
+				A.SVC_NAME,
+				FN_CODE_NAME('0003',A.USE_YN) USE_YN_NAME,
+				MAX(DIAG_DT) DIAG_DT,
+				(
+					SELECT	CONCAT(X.DIAG_DT,',',FN_USER_NAME(X.DIAG_USER_ID),',',SUM(WEAK_COUNT),',',FN_USER_NAME(X.REQ_USER_ID),',',X.REQ_DT,',',FN_CODE_NAME('0001',X.STATUS_CODE))
+					FROM	T_DIAG X, T_DIAG_RESULT Y
+					WHERE	X.DIAG_ID = MAX(if(B.DIAG_TYPE='01',B.DIAG_ID,null))
+					  AND	X.DIAG_ID = Y.DIAG_ID
+					  AND	Y.LAST_SEQ_YN = 'Y'
+					GROUP BY X.DIAG_ID
+				) INFRA_DIAG_INFO,
+				(
+					SELECT	CONCAT(X.DIAG_DT,',',FN_USER_NAME(X.DIAG_USER_ID),',',SUM(WEAK_COUNT),',',FN_USER_NAME(X.REQ_USER_ID),',',X.REQ_DT,',',FN_CODE_NAME('0001',X.STATUS_CODE))
+					FROM	T_DIAG X, T_DIAG_RESULT Y
+					WHERE	X.DIAG_ID = MAX(if(B.DIAG_TYPE='03',B.DIAG_ID,null))
+					  AND	X.DIAG_ID = Y.DIAG_ID
+					  AND	Y.LAST_SEQ_YN = 'Y'
+					GROUP BY X.DIAG_ID
+				) MOBILE_DIAG_INFO,
+				(
+					SELECT	CONCAT(X.DIAG_DT,',',FN_USER_NAME(X.DIAG_USER_ID),',',SUM(WEAK_COUNT),',',FN_USER_NAME(X.REQ_USER_ID),',',X.REQ_DT,',',FN_CODE_NAME('0001',X.STATUS_CODE))
+					FROM	T_DIAG X, T_DIAG_RESULT Y
+					WHERE	X.DIAG_ID = MAX(if(B.DIAG_TYPE='04',B.DIAG_ID,null))
+					  AND	X.DIAG_ID = Y.DIAG_ID
+					  AND	Y.LAST_SEQ_YN = 'Y'
+					GROUP BY X.DIAG_ID
+				) SRC_DIAG_INFO,
+				(
+					SELECT	CONCAT(X.DIAG_DT,',',FN_USER_NAME(X.DIAG_USER_ID),',',SUM(WEAK_COUNT),',',FN_USER_NAME(X.REQ_USER_ID),',',X.REQ_DT,',',FN_CODE_NAME('0001',X.STATUS_CODE))
+					FROM	T_DIAG X, T_DIAG_RESULT Y
+					WHERE	X.DIAG_ID = MAX(if(B.DIAG_TYPE='05',B.DIAG_ID,null))
+					  AND	X.DIAG_ID = Y.DIAG_ID
+					  AND	Y.LAST_SEQ_YN = 'Y'
+					GROUP BY X.DIAG_ID
+				) IOT_DIAG_INFO
+		FROM	T_SVC A, T_DIAG B
+		WHERE	A.SVC_ID = B.SVC_ID
+		  AND	B.STATUS_CODE >= '04'
+		  AND	A.SVC_ID IN (SELECT SVC_ID FROM T_SVC_USER WHERE USER_ID = #{userId})
+		<if test="searchSvcName != null and searchSvcName != ''">		
+		  AND	LOWER(TRIM(SVC_NAME)) LIKE CONCAT('%',LOWER(TRIM(#{searchSvcName})),'%')
+		</if>	
+		GROUP BY A.SVC_ID
+		ORDER BY DIAG_DT DESC
+		<if test="isPaging == true">
+		LIMIT #{startPageNo},#{pageSize}
+		</if>
+	</select>	
+
+	<!-- 유형별 신청 현황 -->
+	<select id="selTypeDiagFixList" parameterType="paramMap" resultType="commMap">
+		/* portal.diagfix.dao.DiagFixMapper.xml selTypeDiagFixList */
+		SELECT	<if test="isPaging == true">
+				COUNT(*) OVER () RNUM_CNT,
+				</if>
+				B.DIAG_ID,
+				B.DIAG_NAME,
+				A.SVC_ID,
+				A.SVC_NAME,
+				FN_CODE_NAME('0002',B.DIAG_TYPE) DIAG_TYPE_NAME,
+				FN_USER_NAME(B.REQ_USER_ID) REQ_USER_NAME,
+				FN_CODE_NAME('0001',B.STATUS_CODE) STATUS_CODE_NAME,
+				CASE WHEN B.STATUS_CODE>='02' THEN STR_TO_DATE(B.REQ_DT,'%Y%m%d') WHEN B.STATUS_CODE = '01' THEN '0' ELSE NULL END AS REQ_DT, -- 신청완료
+				CASE WHEN B.STATUS_CODE>='03' THEN STR_TO_DATE(B.ACCEPT_DT,'%Y%m%d') WHEN B.STATUS_CODE = '02' THEN '0' ELSE NULL END AS ACCEPT_DT, -- 접수
+				CASE WHEN B.STATUS_CODE>='04' THEN STR_TO_DATE(B.PLAN_DT,'%Y%m%d') WHEN B.STATUS_CODE = '03' THEN '0' ELSE NULL END AS PLAN_DT, -- 계획
+				CASE WHEN B.STATUS_CODE>='05' THEN STR_TO_DATE(B.DIAG_DT,'%Y%m%d') WHEN B.STATUS_CODE = '04' THEN '0' ELSE NULL END AS DIAG_DT, -- 진단
+				CASE WHEN B.STATUS_CODE>='06' THEN STR_TO_DATE(B.REDIAG_DT,'%Y%m%d') WHEN B.STATUS_CODE = '05' THEN '0' ELSE NULL END AS REDIAG_DT, -- 취약점 조치
+				(select SUM(WEAK_COUNT) from T_DIAG_RESULT where DIAG_ID = B.DIAG_ID and LAST_SEQ_YN = 'Y') as WEAK_COUNT, -- 조치 대상(취약점 건수)
+				(select SUM(WEAK_COUNT-FIX_COUNT) from T_DIAG_RESULT where DIAG_ID = B.DIAG_ID and LAST_SEQ_YN = 'Y') as FIX_COUNT -- 미등록(조치 등록 건수)
+		FROM	T_SVC A, T_DIAG B 
+		WHERE	A.SVC_ID = B.SVC_ID
+		  AND	B.STATUS_CODE >= '04'
+		  AND	A.SVC_ID IN (SELECT SVC_ID FROM T_SVC_USER WHERE USER_ID = #{userId})
+		<if test="searchSvcName != null and searchSvcName != ''">		
+		  AND	LOWER(TRIM(A.SVC_NAME)) LIKE CONCAT('%',LOWER(TRIM(#{searchSvcName})),'%')
+		</if>	
+		<if test="searchDiagName != null and searchDiagName != ''">		
+		  AND	LOWER(TRIM(B.DIAG_NAME)) LIKE CONCAT('%',LOWER(TRIM(#{searchDiagName})),'%')
+		</if>	
+		<if test="searchDiagType != null and searchDiagType != ''">		
+		  AND	B.DIAG_TYPE = #{searchDiagType}
+		</if>	
+		<if test="searchStatusCode != null and searchStatusCode != ''">		
+		  AND	B.STATUS_CODE = #{searchStatusCode}
+		</if>	
+		<if test="searchStatusCode != null and searchStatusCode != ''">		
+		  AND	FN_USER_NAME(B.REQ_USER_ID) = #{searchReqUserName}
+		</if>	
+		<if test="searchStartDate != null and searchStartDate != ''">		
+		  AND	B.REQ_DT >= CONCAT(#{searchStartDate},'000000')
+		</if>	
+		<if test="searchEndDate != null and searchEndDate != ''">
+		<![CDATA[		
+		  AND	B.REQ_DT <= CONCAT(#{searchEndDate},'000000')
+		]]>
+		</if>	
+		<if test="isPaging == true">
+		LIMIT #{startPageNo},#{pageSize}
+		</if>
+	</select>
+
+	<!--  -->
+	<select id="selInfraDiagFixList" parameterType="paramMap" resultType="commMap">
+		/* portal.diagfix.dao.DiagFixMapper.xml selInfraDiagFixList */
+		SELECT	<if test="isPaging == true">
+				COUNT(*) OVER () RNUM_CNT,
+				</if>
+				B.DIAG_ID,
+				B.DIAG_NAME,
+				A.SVC_ID,
+				A.SVC_NAME,
+				(SELECT HOST_NAME FROM T_HOST WHERE HOST_ID = B.DIAG_TYPE_ID) HOST_NAME,
+				FN_CODE_NAME('0005',LEVEL1_CATEGORY) LEVEL1_CATEGORY,
+				FN_CODE_NAME('0005',LEVEL2_CATEGORY) LEVEL2_CATEGORY,
+				VER_URL,
+				D.WEAK_COUNT,
+				(D.WEAK_COUNT - D.FIX_COUNT - D.EXC_REQ_COUNT - D.TIME_EXT_REQ_COUNT) NO_FIX_COUNT,
+				D.FIX_COUNT,
+				D.EXC_REQ_COUNT,
+				D.EXC_APPR_COUNT,
+				D.TIME_EXT_REQ_COUNT,
+				D.TIME_EXT_APPR_COUNT
+		FROM	T_SVC A, T_DIAG B, T_DIAG_OBJ C, T_DIAG_RESULT D
+		WHERE	A.SVC_ID = B.SVC_ID
+		  AND	A.SVC_ID IN (SELECT SVC_ID FROM T_SVC_USER WHERE USER_ID = #{userId})
+		  AND	B.DIAG_TYPE = '01'
+		  AND	B.DIAG_ID = C.DIAG_ID
+		  AND	C.DIAG_OBJ_ID = D.DIAG_OBJ_ID
+		  AND	D.LAST_SEQ_YN = 'Y'
+		ORDER BY B.DIAG_ID DESC
+		<if test="isPaging == true">
+		LIMIT #{startPageNo},#{pageSize}
+		</if>
+	</select>
+
+</mapper>
