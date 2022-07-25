@@ -29,11 +29,20 @@ public class DiagReqController{
 	private DiagReqService diagReqService;
 
 	/**
-	 * 
+	 * 진단 신청 페이지 이동
 	 */
 	@NoLogin
 	@RequestMapping({"/diagReq.do"})
 	public ModelAndView diagReq(ModelAndView modelAndView) throws Exception {
+		return modelAndView;
+	}
+
+	/**
+	 * 인프라 진단 신청 페이지 이동
+	 */
+	@NoLogin
+	@RequestMapping({"/infraDiagReq.do"})
+	public ModelAndView infraDiagReq(ModelAndView modelAndView) throws Exception {
 		return modelAndView;
 	}
 
@@ -45,6 +54,24 @@ public class DiagReqController{
 	@ResponseBody
 	public Map<String, Object> insDiag(@RequestParam HashMap<String, Object> param) throws Exception {
 		return diagReqService.insDiag(param);
+	}
+
+	/**
+	 * 서비스별 진단 신청 현황 
+	 */
+	@NoLogin
+	@RequestMapping({"/svcDiagList.do"})
+	public ModelAndView svcDiagList(ModelAndView modelAndView) throws Exception {
+		return modelAndView;
+	}
+
+	/**
+	 * 유형별 진단 신청 현황 
+	 */
+	@NoLogin
+	@RequestMapping({"/typeDiagList.do"})
+	public ModelAndView typeDiagList(ModelAndView modelAndView) throws Exception {
+		return modelAndView;
 	}
 
 }
