@@ -183,6 +183,9 @@ public class CommInterceptor<T extends Message> implements HandlerInterceptor {
 					modelAndView.addObject("menuId", String.valueOf(StringUtils.defaultString(session.getMenuId(), "1")));
 					modelAndView.addObject("rid", String.valueOf(session.getRid()));
 					modelAndView.addObject("menuList", objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(adMenuList));
+
+					// TODO
+					modelAndView.addObject("result", objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(modelAndView.getModelMap().get("result")));
 				}
 			}
 		}

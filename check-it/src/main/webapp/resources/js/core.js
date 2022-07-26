@@ -1469,6 +1469,7 @@ var popupCloseCallback = {
 					multiple: true,
 					dropZone: {
 						target: $(document.body),
+						//target: $('[data-ax5grid="fileuploadGrid"]'),
 						onclick: function () {
 							// 사용을 원하는 경우 구현
 							return;
@@ -1522,6 +1523,7 @@ var popupCloseCallback = {
 						}
 					},
 					onuploaderror: function () {
+						console.log("***********")
 						DIALOG.alert("파일업로드중 오류가 발생하였습니다.");
 						return false;
 					},
@@ -1535,7 +1537,7 @@ var popupCloseCallback = {
 
 						$.each(ckUploadFiles, function(idx, data){
 							if(data.result.errorCode != "00"){
-								DIALOG.alert("파일업로드중 오류가 발생하였습니다.");
+								DIALOG.alert("파일업로드중 오류가 발생하였습니다.)"+data.result.errorCode);
 								_this.self.removeFileAll();
 								isUpload = false;
 								return false;
@@ -1668,7 +1670,7 @@ var popupCloseCallback = {
 
 			if(__type__ === "attachList" || __type__ === "attachUpdate"){
 
-				let url = "/common/commFileList.do";
+				let url = "/common/commFileList.ajax";
 				let params = {};
 					params.attachId = uploadOption.attachId;
 

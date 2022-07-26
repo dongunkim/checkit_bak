@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="admin.board.dao">
+	
+	<!-- 게시판 상세 조회 -->
+	<select id="selBoardList" parameterType="paramMap" resultType="commMap">
+		/* admin.board.dao.BoardMapper.xml selBoardList */
+		SELECT	<if test="isPaging == true">
+				COUNT(*) OVER () AS RNUM_CNT,
+				</if>
+				BOARD_TYPE,
+				BOARD_ID,
+				BOARD_TITLE,
+				BOARD_DESC,
+				ATTACH_ID,
+				VIEW_COUNT,
+				BP_DISP_YN,
+				USE_YN,                             
+				FN_USER_NAME(REG_ID) REG_USER_NAME,
+				REG_DT
+		FROM	T_BOARD                                                                
+		WHERE	BOARD_TYPE = #{boardType}
+		<if test="searchGbn != null and searchGbn != '' and searchGbn.equals('bbs_title') ">		
+		  AND	UPPER(TRIM(BOARD_TITLE)) LIKE CONCAT('%',UPPER(TRIM(#{searchText})),'%')
+		</if>	
+		<if test="searchGbn != null and searchGbn != '' and searchGbn.equals('reg_id') ">				
+		  AND	REG_ID IN(SELECT USER_ID FROM T_USER WHERE UPPER(REPLACE(USER_NAME, ' ','')) LIKE CONCAT('%',UPPER(#{searchText}),'%'))
+		</if>
+		<if test="calFrom != null and calFrom != ''">
+		  AND	(REG_DT BETWEEN CONCAT(REPLACE(#{calFrom},'-',''), '000000') AND CONCAT(REPLACE(#{calTo},'-',''), '235959') 	)
+		</if>
+		ORDER BY BOARD_ID DESC
+		<if test="isPaging == true">
+		LIMIT #{startPageNo},#{pageSize}
+		</if>
+	</select>	
+	
+	<!-- 게시판 상세 조회 -->
+	<select id="selBoardDetail" parameterType="paramMap" resultType="commMap">
+		/* admin.board.dao.BoardMapper.xml selBoardDetail */
+		SELECT	BOARD_ID,
+				BOARD_TYPE,
+				BOARD_TITLE,
+				BOARD_DESC,
+				ATTACH_ID,
+				VIEW_COUNT,
+				BP_DISP_YN,
+				USE_YN,                        
+				REG_ID,
+				REG_DT,
+				UPD_ID,
+				UPD_DT
+		FROM	T_BOARD                                                                
+		WHERE	BOARD_TYPE = #{boardType}
+		  AND	BOARD_ID = #{boardId}		
+	</select>
+	
+	<!-- 조회수 증가 -->
+	<update id="updBoardViewCnt" parameterType="paramMap">
+		/* admin.board.dao.BoardMapper.xml updBoardViewCnt */
+		UPDATE	T_BOARD
+		SET		VIEW_COUNT = VIEW_COUNT + 1
+		WHERE 	BOARD_TYPE = #{boardType}
+		  AND	BOARD_ID = #{boardId}
+	</update>
+	
+	<!-- 게시판 등록 -->
+	<insert id="insBoard" parameterType="paramMap">
+		/* admin.board.dao.BoardMapper.xml insBoard */
+		INSERT INTO T_BOARD 
+			(
+				BOARD_TYPE,
+				BOARD_ID,
+				BOARD_TITLE,
+				BOARD_DESC,
+				VIEW_COUNT,
+				BP_DISP_YN,
+				ATTACH_ID,
+				USE_YN,	
+				REG_ID,
+				REG_DT,
+				UPD_ID,		
+				UPD_DT
+			)
+		SELECT	#{boardType},
+				IFNULL(MAX(BOARD_ID),0)+1,
+				#{boardTitle},
+				#{boardDesc},
+				0,
+				#{bpDispYn},
+				#{attachId},
+				#{useYn},
+				#{regId},
+				DATE_FORMAT(NOW(), '%Y%m%d%H%i%s'),
+				#{regId},
+				DATE_FORMAT(NOW(), '%Y%m%d%H%i%s')
+		FROM	T_BOARD
+		WHERE	BOARD_TYPE = #{boardType}
+	</insert>
+	
+	<!-- 게시판 수정 -->
+	<update id="updBoard" parameterType="paramMap">
+		/* admin.board.dao.BoardMapper.xml updBoard */		
+		UPDATE	T_BOARD  
+		SET		UPD_DT = DATE_FORMAT(NOW(), '%Y%m%d%H%i%s'),
+				<if test="boardTitle != null and boardTitle != ''">
+				BOARD_TITLE = #{boardTitle},
+				</if>
+				<if test="boardDesc != null and boardDesc != ''">
+				BOARD_DESC = #{boardDesc},
+				</if>
+				<if test="viewCount != null and viewCount != ''">
+				VIEW_COUNT = #{viewCount},
+				</if>
+				<if test="bpDispYn != null and bpDispYn != ''">
+				BP_DISP_YN = #{bpDispYn},
+				</if>
+				<if test="attachId != null and attachId != ''">
+				ATTACH_ID = #{attachId},
+				</if>
+				<if test="useYn != null and useYn != ''">
+				USE_YN = #{useYn},
+				</if>
+				UPD_ID = #{updId}
+		WHERE	BOARD_TYPE = #{boardType}
+		  AND	BOARD_ID = #{boardId}		
+	</update>
+	
+	<!-- 게시판 삭제 -->
+	<update id="delBoard" parameterType="paramMap">
+		/* admin.board.dao.BoardMapper.xml delBoard */		
+		DELETE	FROM T_BOARD  
+		WHERE	BOARD_TYPE = #{boardType}
+		  AND	BOARD_ID = #{boardId}		
+	</update>
+</mapper>

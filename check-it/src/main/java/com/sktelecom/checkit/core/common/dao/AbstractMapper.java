@@ -28,7 +28,7 @@ public abstract class AbstractMapper{
 
 	public int lastIndex(){
 		int lastIndex = 0;
-		lastIndex = ((Integer)this.sqlSession.selectOne("common.mapper.lastIndex")).intValue();
+		lastIndex = ((Integer)this.sqlSession.selectOne("common.dao.lastIndex")).intValue();
 		return lastIndex;
 	}
 

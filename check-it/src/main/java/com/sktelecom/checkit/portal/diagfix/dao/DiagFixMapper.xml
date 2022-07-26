@@ -49,7 +49,7 @@
 		  AND	B.STATUS_CODE >= '04'
 		  AND	A.SVC_ID IN (SELECT SVC_ID FROM T_SVC_USER WHERE USER_ID = #{userId})
 		<if test="searchSvcName != null and searchSvcName != ''">		
-		  AND	LOWER(TRIM(SVC_NAME)) LIKE CONCAT('%',LOWER(TRIM(#{searchSvcName})),'%')
+		  AND	UPPER(TRIM(SVC_NAME)) LIKE CONCAT('%',UPPER(TRIM(#{searchSvcName})),'%')
 		</if>	
 		GROUP BY A.SVC_ID
 		ORDER BY DIAG_DT DESC
@@ -83,10 +83,10 @@
 		  AND	B.STATUS_CODE >= '04'
 		  AND	A.SVC_ID IN (SELECT SVC_ID FROM T_SVC_USER WHERE USER_ID = #{userId})
 		<if test="searchSvcName != null and searchSvcName != ''">		
-		  AND	LOWER(TRIM(A.SVC_NAME)) LIKE CONCAT('%',LOWER(TRIM(#{searchSvcName})),'%')
+		  AND	UPPER(TRIM(A.SVC_NAME)) LIKE CONCAT('%',UPPER(TRIM(#{searchSvcName})),'%')
 		</if>	
 		<if test="searchDiagName != null and searchDiagName != ''">		
-		  AND	LOWER(TRIM(B.DIAG_NAME)) LIKE CONCAT('%',LOWER(TRIM(#{searchDiagName})),'%')
+		  AND	UPPER(TRIM(B.DIAG_NAME)) LIKE CONCAT('%',UPPER(TRIM(#{searchDiagName})),'%')
 		</if>	
 		<if test="searchDiagType != null and searchDiagType != ''">		
 		  AND	B.DIAG_TYPE = #{searchDiagType}

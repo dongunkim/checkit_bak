@@ -12,189 +12,50 @@
 	<!-- 메뉴조회 정보 -->
 	<select id="selAdMenuList" parameterType="paramMap" resultType="commMap">
 		/* common.dao.CommonMapper.xml selAdMenuList */
-		WITH RECURSIVE CTE AS 
+		WITH RECURSIVE CTE AS
 		(
-			SELECT	AA.MENU_ID,
-					AA.UP_MENU_ID,
-					AA.MENU_NAME,
-					AA.MENU_URL,
-					AA.SYS_TYPE,
-					AA.MENU_TYPE,
-					AA.USE_YN,
-					AA.SORT_SEQ,
-					AA.METHOD_R,
-					AA.METHOD_W,
-					'Y' AS IS_DOWN,
-					1 AS LV
-			FROM
-				(
-					SELECT	SM.MENU_ID,
-							SM.UP_MENU_ID,
-							SM.MENU_NAME,
-							SM.MENU_URL,
-							SM.SYS_TYPE,
-							SM.MENU_TYPE,
-							SM.USE_YN,
-							SM.SORT_SEQ,
-							VIEW1.METHOD_R,
-							VIEW2.METHOD_W
-					FROM	T_MENU AS SM LEFT OUTER JOIN
-						(
-							SELECT	T_MENU.MENU_ID,
-									T_ROLE_PGM.RID AS RID_R,
-									T_PGM.PID AS PID_R,
-									T_PGM.METHOD_TYPE AS METHOD_R,
-									'' AS METHOD_W
-							FROM	T_MENU, T_PGM, T_ROLE_PGM
-							WHERE	T_MENU.MENU_ID = T_PGM.MID
-							  AND	T_PGM.METHOD_TYPE = 'R' 
-							  AND	T_PGM.PID = T_ROLE_PGM.PID
-							  AND	T_ROLE_PGM.RID = #{rid}
-						) AS VIEW1 
-					   ON	SM.MENU_ID = VIEW1.MENU_ID
-						LEFT OUTER JOIN
-						(
-							SELECT	T_MENU.MENU_ID,
-									T_ROLE_PGM.RID AS RID_W,
-									T_PGM.PID AS PID_W,
-									'' AS METHOD_R,
-									T_PGM.METHOD_TYPE    AS METHOD_W
-							FROM	T_MENU, T_PGM, T_ROLE_PGM  
-							WHERE	T_MENU.MENU_ID = T_PGM.MID
-							  AND	T_PGM.METHOD_TYPE = 'W'
-							  AND	T_PGM.PID = T_ROLE_PGM.PID
-							  AND	T_ROLE_PGM.RID  = #{rid}
-						) AS VIEW2 
-					   ON SM.MENU_ID = VIEW2.MENU_ID
-					WHERE	SM.SYS_TYPE = '1'
-					  AND	SM.UP_MENU_ID = '0'
-					GROUP BY SM.MENU_ID, SM.MENU_NAME, SM.MENU_URL, SM.MENU_TYPE
-				) AS AA
+			SELECT	MENU_NAME,
+					MENU_URL,
+					B.MENU_ID,
+					UP_MENU_ID,
+					SORT_SEQ,
+					A.RW_TYPE,
+					DEPTH
+			FROM	T_ROLE_MENU A, T_MENU B
+			WHERE	A.RID = '0'
+			  AND	A.MENU_ID = B.MENU_ID
+			  AND	ADMIN_YN = 'Y'
+			  AND	USE_YN = 'Y'
 			UNION ALL
-			SELECT	BB.MENU_ID,
-					BB.UP_MENU_ID,
-					BB.MENU_NAME,
-					BB.MENU_URL,
-					BB.SYS_TYPE,
-					BB.MENU_TYPE,
-					BB.USE_YN,
-					BB.SORT_SEQ,
-					BB.METHOD_R,
-					BB.METHOD_W,
-					(
-						SELECT	IF(COUNT(1) > 0, 'Y', 'N')
-						FROM
-							(
-								SELECT	SM.MENU_ID,
-										SM.UP_MENU_ID,
-										SM.MENU_NAME,
-										SM.MENU_URL,
-										SM.SYS_TYPE,
-										SM.MENU_TYPE,
-										SM.SORT_SEQ,
-										VIEW1.RID_R,
-										VIEW1.PID_R,
-										VIEW2.RID_W,
-										VIEW2.PID_W,
-										VIEW1.METHOD_R,
-										VIEW2.METHOD_W
-								FROM T_MENU AS SM LEFT OUTER JOIN
-									(
-										SELECT	T_MENU.MENU_ID,
-												T_MENU.MENU_URL,
-												T_ROLE_PGM.RID AS RID_R,
-												T_PGM.PID AS PID_R,
-												T_PGM.METHOD_TYPE AS METHOD_R,
-												'' AS METHOD_W
-										FROM	T_MENU, T_PGM, T_ROLE_PGM
-										WHERE	T_MENU.MENU_ID  = T_PGM.MID
-										  AND   T_PGM.METHOD_TYPE = 'R' 
-										  AND	T_PGM.PID = T_ROLE_PGM.PID
-										  AND	T_ROLE_PGM.RID = #{rid}
-									) AS VIEW1
-								   ON	SM.MENU_ID = VIEW1.MENU_ID
-									LEFT OUTER JOIN
-									(
-										SELECT	T_MENU.MENU_ID,
-												T_ROLE_PGM.RID AS RID_W,
-												T_PGM.PID AS PID_W,
-												'' AS METHOD_R,
-												T_PGM.METHOD_TYPE AS METHOD_W
-										FROM	T_MENU, T_PGM, T_ROLE_PGM
-										WHERE	T_MENU.MENU_ID = T_PGM.MID
-										  AND	T_PGM.METHOD_TYPE = 'W'
-										  AND	T_PGM.PID = T_ROLE_PGM.PID
-										  AND	T_ROLE_PGM.RID  = #{rid}
-									) AS VIEW2
-								   ON	SM.MENU_ID = VIEW2.MENU_ID
-								WHERE	SM.USE_YN   = 'Y'
-								  AND	SM.SYS_TYPE = '1'
-								GROUP BY SM.MENU_ID, SM.MENU_NAME, SM.MENU_URL, SM.MENU_TYPE
-							) AS CC
-						WHERE	BB.MENU_ID = CC.UP_MENU_ID
-						  AND	(IFNULL(CC.METHOD_R, 'N') != 'N' OR IFNULL(CC.METHOD_W, 'N') != 'N')
-					) AS IS_DOWN,
-					B.LV + 1 AS LV
-			FROM
-				(
-					SELECT	SM.MENU_ID,
-							SM.UP_MENU_ID,
-							SM.MENU_NAME,
-							SM.MENU_URL,
-							SM.SYS_TYPE,
-							SM.MENU_TYPE,
-							SM.USE_YN,
-							SM.SORT_SEQ,
-							VIEW1.METHOD_R,
-							VIEW2.METHOD_W
-					FROM	T_MENU AS SM LEFT OUTER JOIN
-						(
-							SELECT	T_MENU.MENU_ID,
-									T_ROLE_PGM.RID AS RID_R,
-									T_PGM.PID AS PID_R,
-									T_PGM.METHOD_TYPE	AS METHOD_R,
-									''	AS METHOD_W
-							FROM	T_MENU, T_PGM, T_ROLE_PGM
-							WHERE	T_MENU.MENU_ID = T_PGM.MID
-							  AND	T_PGM.METHOD_TYPE = 'R' 
-							  AND	T_PGM.PID = T_ROLE_PGM.PID
-							  AND	T_ROLE_PGM.RID = #{rid}
-						) AS VIEW1
-					   ON SM.MENU_ID = VIEW1.MENU_ID
-						LEFT OUTER JOIN
-						(
-							SELECT	T_MENU.MENU_ID,
-									T_ROLE_PGM.RID AS RID_W,
-									T_PGM.PID AS PID_W,
-									'' AS METHOD_R,
-									T_PGM.METHOD_TYPE AS METHOD_W
-							FROM	T_MENU, T_PGM, T_ROLE_PGM
-							WHERE	T_MENU.MENU_ID = T_PGM.MID
-							  AND	T_PGM.METHOD_TYPE = 'W'
-							  AND	T_PGM.PID = T_ROLE_PGM.PID
-							  AND	T_ROLE_PGM.RID  = #{rid}
-						) AS VIEW2
-					   ON SM.MENU_ID = VIEW2.MENU_ID
-					WHERE	SM.SYS_TYPE = '1'
-					GROUP BY SM.MENU_ID, SM.MENU_NAME, SM.MENU_URL, SM.MENU_TYPE
-				) AS BB, CTE AS B
-			WHERE	BB.UP_MENU_ID = B.MENU_ID
+			SELECT	A.MENU_NAME,
+					A.MENU_URL,
+					A.MENU_ID,
+					A.UP_MENU_ID,
+					A.SORT_SEQ,
+					'' RW_TYPE,
+					A.DEPTH
+			FROM	T_MENU A, CTE B
+			WHERE	A.ADMIN_YN = 'Y'
+			  AND	A.USE_YN = 'Y'
+			  AND	A.MENU_ID = B.UP_MENU_ID
+			  AND   A.UP_MENU_ID != '0'
 		)
-		SELECT	MENU_NAME,
-				MENU_URL,
-				MENU_ID,
-				UP_MENU_ID,
+		SELECT	DISTINCT MENU_ID,
 				MENU_NAME,
-				SYS_TYPE,
-				MENU_TYPE,
-				USE_YN,
-				SORT_SEQ,
-				METHOD_R,
-				METHOD_W,
-				IS_DOWN,
-				LV
-		FROM	CTE AS A
-		ORDER BY UP_MENU_ID, SORT_SEQ
+				MENU_URL,
+				UP_MENU_ID,
+				RW_TYPE,
+				(DEPTH+1) AS LV,
+				'R' METHOD_R,
+				'W' METHOD_W,
+				CASE DEPTH WHEN 1 THEN CONCAT(LPAD(SORT_SEQ,2,'0'),'0000') 
+				WHEN 2 THEN CONCAT(LPAD((SELECT SORT_SEQ FROM T_MENU WHERE MENU_ID = A.UP_MENU_ID),2,'0'),
+								   LPAD(SORT_SEQ,2,'0'),'00')
+				WHEN 3 THEN CONCAT(LPAD((SELECT SORT_SEQ FROM T_MENU WHERE MENU_ID IN (SELECT UP_MENU_ID FROM T_MENU WHERE MENU_ID = A.UP_MENU_ID)),2,'0'),
+				                   LPAD((SELECT SORT_SEQ FROM T_MENU WHERE MENU_ID = A.UP_MENU_ID),2,'0'),
+				                   LPAD(SORT_SEQ,2,'0')) END AS SORT_SEQ
+		FROM	CTE A
+		ORDER BY SORT_SEQ
 	</select>
 
 	<!-- 메뉴조회 정보 -->
@@ -341,7 +202,7 @@
 	<select id="selAttachFileList" parameterType="paramMap" resultType="commMap">
 		/* common.dao.CommonMapper.xml selAttachFileList */
 		SELECT	ATTACH_ID,
-				ATTACH_SEQ
+				ATTACH_SEQ,
 				FILE_ORIGIN_NAME,
 				FILE_NAME,
 				FILE_SIZE,
@@ -359,7 +220,7 @@
 	<select id="selAttachFileDetail" parameterType="paramMap" resultType="commMap">
 		/* common.dao.CommonMapper.xml selAttachFileDetail */
 		SELECT	ATTACH_ID,
-				ATTACH_SEQ
+				ATTACH_SEQ,
 				FILE_ORIGIN_NAME,
 				FILE_NAME,
 				FILE_SIZE,

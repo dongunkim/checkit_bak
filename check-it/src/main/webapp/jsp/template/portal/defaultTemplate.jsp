@@ -39,7 +39,7 @@
 	<script type="text/javascript" src="<c:url value="/resources/lib/ax5/js/ax5dialog.js"/>"></script>
 	<script type="text/javascript" src="<c:url value="/resources/js/core.js"/>"></script>
 	<script type="text/javascript" src="<c:url value="/resources/js/utils.js"/>"></script>
-	<script type="text/javascript" src="<c:url value="/resources/js/common.js"/>"></script>
+	<script type="text/javascript" src="<c:url value="/resources/portal/js/common.js"/>"></script>
 	<!-- 개발용 js end -->
 
 <script type="text/javascript">
@@ -92,6 +92,6 @@
 	<a href="javascript:void(0)" class="btn_top"><img src="/resources/images/icon/btn_top.png"></a>
 	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}" />
 
-	<script type="text/javascript" src="<c:url value="/resources/js/script.js"/>"></script>
+	<script type="text/javascript" src="<c:url value="/resources/portal/js/script.js"/>"></script>
 </body>
 </html>

@@ -68,8 +68,8 @@
 		FROM T_USER_ROLE A,T_ROLE  B
 		WHERE A.USER_ID = #{userId}
 		  AND A.RID = B.RID
-		  AND B.SYS_TYPE = '1'
-		  AND B.USED_YN   = 'Y'
+		  AND B.ADMIN_YN = 'Y'
+		  AND B.USE_YN   = 'Y'
 	</select>
 	
 	<!-- 신규ID 체크 -->

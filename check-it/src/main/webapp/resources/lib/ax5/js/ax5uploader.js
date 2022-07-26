@@ -423,6 +423,7 @@
                         //서버로 전송해야 할 추가 파라미터 정보 설정
 
                         this.$target.find("input").each(function () {
+							conosole.log(this.name+":"+this.value);
                             formData.append(this.name, this.value);
                         });
                         // 파일 아이템 추가
@@ -470,6 +471,7 @@
                             }
                         };
 
+						console.log(formData);
                         this.xhr.send(formData); // multipart/form-data
                     },
                     "form": function form() {

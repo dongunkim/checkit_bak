@@ -84,17 +84,19 @@ class Poppers {
 
   init() {
     SUB_MENU_ELS.forEach(element => {
+      /*
       this.subMenuPoppers.push(
       new PopperObject(element, element.lastElementChild));
 
       this.closePoppers();
+      */
     });
   }
 
   togglePopper(target) {
-    if (window.getComputedStyle(target).visibility === "hidden")
-    target.style.visibility = "visible";else
-    target.style.visibility = "hidden";
+    if (window.getComputedStyle(target).display === "none")
+    target.style.display = "block";else
+    target.style.display = "none";
   }
 
   updatePoppers() {
@@ -110,7 +112,7 @@ class Poppers {
     });
   }}
 
-
+/*
 const slideUp = (target, duration = ANIMATION_DURATION) => {
   const { parentElement } = target;
   parentElement.classList.remove("open");
@@ -167,7 +169,8 @@ const slideDown = (target, duration = ANIMATION_DURATION) => {
     target.style.removeProperty("transition-property");
   }, duration);
 };
-
+*/
+/*
 const slideToggle = (target, duration = ANIMATION_DURATION) => {
   if (window.getComputedStyle(target).display === "none")
   return slideDown(target, duration);
@@ -175,22 +178,24 @@ const slideToggle = (target, duration = ANIMATION_DURATION) => {
 };
 
 const PoppersInstance = new Poppers();
+*/
 
 /**
  * wait for the current animation to finish and update poppers position
  */
 const updatePoppersTimeout = () => {
   setTimeout(() => {
-    PoppersInstance.updatePoppers();
+    //PoppersInstance.updatePoppers();
+      $('#list').setGridWidth($(".tbl-item-wrap").width(), false);
   }, ANIMATION_DURATION);
 };
-
+jQuery("#list").jqGrid( 'setGridWidth', $(".tbl-item-wrap").width() );
 /**
  * sidebar collapse handler
  */
 document.getElementById("btn-collapse").addEventListener("click", () => {
   SIDEBAR_EL.classList.toggle("collapsed");
-  PoppersInstance.closePoppers();
+  //PoppersInstance.closePoppers();
   if (SIDEBAR_EL.classList.contains("collapsed"))
   FIRST_SUB_MENUS_BTN.forEach(element => {
     element.parentElement.classList.remove("open");
@@ -204,7 +209,6 @@ document.getElementById("btn-collapse").addEventListener("click", () => {
  */
 document.getElementById("btn-toggle").addEventListener("click", () => {
   SIDEBAR_EL.classList.toggle("toggled");
-
   updatePoppersTimeout();
 });
 
@@ -223,7 +227,7 @@ defaultOpenMenus.forEach(element => {
 
 /**
  * handle top level submenu click
- */
+
 FIRST_SUB_MENUS_BTN.forEach(element => {
   element.addEventListener("click", () => {
     if (SIDEBAR_EL.classList.contains("collapsed"))
@@ -241,13 +245,14 @@ FIRST_SUB_MENUS_BTN.forEach(element => {
       slideToggle(element.nextElementSibling);
     }
   });
-});
+}); */
 
 /**
  * handle inner submenu click
  */
 INNER_SUB_MENUS_BTN.forEach(element => {
   element.addEventListener("click", () => {
-    slideToggle(element.nextElementSibling);
+    //slideToggle(element.nextElementSibling);
+
   });
 });

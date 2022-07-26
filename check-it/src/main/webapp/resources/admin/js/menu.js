@@ -455,7 +455,7 @@ setMenu = function(){
 			menuLink["menu" + menudata.menuId] = utils.defaultString(menudata.menuUrl);
 		}
 	});
-
+	
 	// 메뉴 1레벨 이벤트 처리
 	$("#menuArea, #menuArea > li").unbind().bind({
 		mouseover : function(){
@@ -672,15 +672,15 @@ setAdMenu = function(checkMenuId){
 	// 메뉴 만들기
 	$.each(menuList, function(index, menudata){
 		// 1레벨
-		if(menudata.lv === 2 && menudata.useYn === "Y" && menudata.isDown === "Y"){
+		if(menudata.lv === 2){
 			$("#menuArea").append("<li id=\"menu" + menudata.menuId + "\"><a href=\"javascript:void(0)\">" + menudata.menuName + "</a><ul id=\"submenu" + menudata.menuId + "\" style=\"display:none\"></ul></li>");
 		}
 		// 2레벨
-		if(menudata.lv === 3 && menudata.useYn === "Y"  && (menudata.methodR === "R" || menudata.methodW === "W")){
+		if(menudata.lv === 3){
 			$("#submenu" + menudata.upMenuId).append("<li id=\"submenu" + menudata.menuId + "\" ><a href=\"javascript:void(0)\" data-link=\"menu" + menudata.menuId + "\">" + menudata.menuName + "</a></li>");
 		}
 		// 3레벨
-		if(menudata.lv === 4 && menudata.useYn === "Y"  && (menudata.methodR === "R" || menudata.methodW === "W")){
+		if(menudata.lv === 4){
 			if($("#submenu" + menudata.upMenuId).find("ul").length == 0){
 				$("#submenu" + menudata.upMenuId).find("a").addClass("rightarrow").after("<ul style=\"display:none\"></ul>");
 			}
@@ -694,7 +694,7 @@ setAdMenu = function(checkMenuId){
 
 		menuLink["menu" + menudata.menuId] = utils.defaultString(menudata.menuUrl);
 	});
-
+	
 	// 메뉴 1레벨 이벤트 처리
 	$("#menuArea, #menuArea > li").unbind().bind({
 		mouseover : function(){

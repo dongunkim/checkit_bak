@@ -205,22 +205,13 @@ public class CommonController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping({"/commFileList.do"})
-	public ModelAndView commFileList(ModelAndView modelAndView, HttpServletRequest req, HttpServletResponse res, @RequestParam HashMap<String, Object> param) throws Exception {
-
+	@RequestMapping({"/commFileList.ajax"})
+	@Api
+	@ResponseBody
+	public Map<String, Object> commFileList(ModelAndView modelAndView, HttpServletRequest req, HttpServletResponse res, @RequestParam HashMap<String, Object> param) throws Exception {
 		HashMap<String, Object> rtn = new HashMap<String, Object>();
-
-		try{
-
-			rtn = commonService.selAttachFileList(param);
-
-			modelAndView.addObject("result", rtn);
-
-		}catch(Exception e){
-			log.error(e.getMessage());
-		}
-
-		return modelAndView;
+		rtn.put("result", commonService.selAttachFileList(param));
+		return rtn;
 
 	}
 
@@ -234,8 +225,10 @@ public class CommonController {
 	 * @throws Exception
 	 */
 	@SuppressWarnings({ "unchecked", "unused" })
+	@Api
 	@RequestMapping({"/fileupload.do"})
-	public ModelAndView fileupload(ModelAndView modelAndView, HttpServletRequest req, HttpServletResponse res) throws Exception {
+	@ResponseBody
+	public Map<String, Object> fileupload(ModelAndView modelAndView, HttpServletRequest req, HttpServletResponse res) throws Exception {
 
 		HashMap<String, Object> rtn = new HashMap<String, Object>();
 		HashMap<String, Object> result = new HashMap<String, Object>();
@@ -249,19 +242,17 @@ public class CommonController {
 			attachId = String.valueOf(req.getParameter("attachId"));
 
 			String keyStr = "filePath.upload.tmp";     // context-properties 파일에 설정된 파일경로
-			result = fileUpload.tmpUpload(req, keyStr, uuid, attachId);
+			result.put("result",fileUpload.tmpUpload(req, keyStr, uuid, attachId));
 			fileList = (List<HashMap<String, Object>>)result.get("fileList");
-
 		}catch(Exception e){
-			//log.debug(e.getCode());
-			log.debug(e.getMessage());
+			log.error("File Upload Fail",e);
 			//result.put("errorCode", e.getCode());
 			//result.put("errorMessage", e.getMessage());
 		}
 
-		modelAndView.addObject("result", result);
+		//modelAndView.addObject("result", result);
 
-		return modelAndView;
+		return result;
 
 	}
 

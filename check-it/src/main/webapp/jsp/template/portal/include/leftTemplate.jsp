@@ -11,7 +11,7 @@
                 letter-spacing: 3px;
                 font-weight: bold;
               ">
-                    <a href="javascript:void(0)" style="color: #b3b8d4">
+                    <a href="/main/main.do" style="color: #b3b8d4">
                         <img src="/resources/portal/img/etc/etc-site-logo.svg" />
                         <img src="/resources/portal/img/etc/etc-site-logo-txt.png" />
                     </a>
@@ -22,56 +22,26 @@
                     <ul>
                         <li class="menu-item sub-menu">
                             <a href="#">
-                <span class="menu-icon">
-                  <i class="ri-vip-diamond-fill"></i>
-                </span>
-                                <span class="menu-title">진단신청</span>
+				                <span class="menu-icon">
+				                  <i class="ri-vip-diamond-fill"></i>
+				                </span>
+                                <span class="menu-title">진단신청관리</span>
                             </a>
                             <div class="sub-menu-list">
                                 <ul>
-                                    <li class="menu-item sub-menu">
-                                        <a href="#">
-                                            <span class="menu-title">현황</span>
+                                    <li class="menu-item">
+                                        <a href="/diagreq/diagReq.do">
+                                            <span class="menu-title">진단신청</span>
                                         </a>
-                                        <div class="sub-menu-list">
-                                            <ul>
-                                                <li class="menu-item">
-                                                    <a href="#">
-                                                        <span class="menu-title">현황</span>
-                                                    </a>
-                                                </li>
-                                                <li class="menu-item">
-                                                    <a href="#">
-                                                        <span class="menu-title">현황</span>
-                                                    </a>
-                                                </li>
-
-                                            </ul>
-                                        </div>
-                                    </li>
-                                    <li class="menu-item sub-menu">
-                                        <a href="#">
-                                            <span class="menu-title">현황</span>
-                                        </a>
-                                        <div class="sub-menu-list">
-                                            <ul>
-                                                <li class="menu-item">
-                                                    <a href="#">
-                                                        <span class="menu-title">현황</span>
-                                                    </a>
-                                                </li>
-                                                <li class="menu-item">
-                                                    <a href="#">
-                                                        <span class="menu-title">현황</span>
-                                                    </a>
-                                                </li>
-
-                                            </ul>
-                                        </div>
                                     </li>
                                     <li class="menu-item">
-                                        <a href="#">
-                                            <span class="menu-title">정보</span>
+                                        <a href="/diagreq/svcDiagList.do">
+                                            <span class="menu-title">서비스별 신청현황</span>
+                                        </a>
+                                    </li>
+                                    <li class="menu-item">
+                                        <a href="/diagreq/typeDiagList.do">
+                                            <span class="menu-title">유형별 신청현황</span>
                                         </a>
                                     </li>
                                 </ul>
@@ -79,10 +49,10 @@
                         </li>
                         <li class="menu-item sub-menu">
                             <a href="#">
-                <span class="menu-icon">
-					<i class="ri-file-list-3-line"></i>
-                </span>
-                                <span class="menu-title">진행현황</span>
+				                <span class="menu-icon">
+									<i class="ri-file-list-3-line"></i>
+				                </span>
+                                <span class="menu-title">진단조치관리</span>
                             </a>
                             <div class="sub-menu-list">
                                 <ul>
@@ -91,10 +61,25 @@
                                             <span class="menu-title">전체진행형황</span>
                                         </a>
                                     </li>
-                                    <li class="menu-item">
+                                    <li class="menu-item sub-menu">
                                         <a href="#">
                                             <span class="menu-title">인프라</span>
                                         </a>
+                                        <div class="sub-menu-list">
+                                            <ul>
+                                                <li class="menu-item">
+                                                    <a href="#">
+                                                        <span class="menu-title">현황</span>
+                                                    </a>
+                                                </li>
+                                                <li class="menu-item">
+                                                    <a href="#">
+                                                        <span class="menu-title">현황</span>
+                                                    </a>
+                                                </li>
+
+                                            </ul>
+                                        </div>
                                     </li>
 
                                 </ul>

@@ -17,15 +17,15 @@ setSiteMenu = function(){
 	//	// 메뉴 만들기
 	$.each(menuList, function(index, menudata){
 		// 1레벨
-		if(menudata.lv === 2 && menudata.useYn === "Y" && menudata.isDown === "Y"){
+		if(menudata.lv === 2){
 			$("#siteMapArea").append("<li id=\"menu" + menudata.menuId + "\"><div id=\"depth_1\">  <a href=\"javascript:void(0)\" class=\"depth_1_link number_"+num+"\">" + menudata.menuName + "</a><ul id=\"siteSubMenu" + menudata.menuId + "\" class=\"depth_2_wrap\"></ul></li>");
 		}
 		// 2레벨
-		if(menudata.lv === 3 && menudata.useYn === "Y"  && (menudata.methodR === "R" || menudata.methodW === "W")){
+		if(menudata.lv === 3){
 			$("#siteSubMenu" + menudata.upMenuId).append("<li id=\"siteSubMenu" + menudata.menuId + "\" ><a href=\"javascript:void(0)\" data-site-link=\"menu" + menudata.menuId + "\">" + menudata.menuName + "</a></li>");
 		}
 		// 3레벨
-		if(menudata.lv === 4 && menudata.useYn === "Y"  && (menudata.methodR === "R" || menudata.methodW === "W")){
+		if(menudata.lv === 4){
 			if($("#siteSubMenu" + menudata.upMenuId).find("ul").length == 0){
 				$("#siteSubMenu" + menudata.upMenuId).find("a").addClass("rightarrow").after("<ul style=\"display:none\"></ul>");
 			}

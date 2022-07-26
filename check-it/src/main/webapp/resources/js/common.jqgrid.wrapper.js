@@ -35,7 +35,7 @@
 				},
 				loadComplete: function(obj) {
 		    		// 페이징
-					if(obj.total.cnt!=undefined)$(".pagecount > em").text(core.defaultString(obj.total.cnt, "0").money());
+					if(obj.total!=undefined)$(".pagecount > em").text(core.defaultString(obj.total, "0").money());
 				},
 				loadError: function(xhr, status, error) {
 					console.log(xhr);
@@ -46,13 +46,13 @@
 					*/
 					
 					console.log("xhr : ");
-					console.log(xhr);					
+					console.log(xhr);
 				},
 				jsonReader: {
 					root   : function(obj) {return obj.list;},
-				    records: function(obj) {return obj.total.cnt;},
+				    records: function(obj) {return obj.total;},
 				    page   : function(obj) {return obj.paging.pageNo;},
-				    total  : function(obj) {return Math.ceil(obj.total.cnt / obj.paging.pageSize);},
+				    total  : function(obj) {return Math.ceil(obj.total / obj.paging.pageSize);},
 				    repeatitems: false,
 				    repeat: false
 				},
