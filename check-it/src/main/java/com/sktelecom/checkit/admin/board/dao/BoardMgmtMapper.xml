@@ -17,10 +17,10 @@
 				BP_DISP_YN,
 				USE_YN,                             
 				FN_USER_NAME(REG_ID) REG_USER_NAME,
-				REG_DT
+				DATE_FORMAT(STR_TO_DATE(REG_DT,'%Y%m%d%H%i%s'),'%Y-%m-%d %H:%i') AS REG_DT
 		FROM	T_BOARD                                                                
 		WHERE	BOARD_TYPE = #{boardType}
-		<if test="searchGbn != null and searchGbn != '' and searchGbn.equals('bbs_title') ">		
+		<if test="searchGbn != null and searchGbn != '' and searchGbn.equals('board_title') ">		
 		  AND	UPPER(TRIM(BOARD_TITLE)) LIKE CONCAT('%',UPPER(TRIM(#{searchText})),'%')
 		</if>	
 		<if test="searchGbn != null and searchGbn != '' and searchGbn.equals('reg_id') ">				
@@ -29,7 +29,9 @@
 		<if test="calFrom != null and calFrom != ''">
 		  AND	(REG_DT BETWEEN CONCAT(REPLACE(#{calFrom},'-',''), '000000') AND CONCAT(REPLACE(#{calTo},'-',''), '235959') 	)
 		</if>
-		ORDER BY BOARD_ID DESC
+		<if test="sidx != null and sidx != ''">
+		ORDER BY ${sidx} ${sord}
+		</if>
 		<if test="isPaging == true">
 		LIMIT #{startPageNo},#{pageSize}
 		</if>

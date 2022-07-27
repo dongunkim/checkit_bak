@@ -1,17 +1,17 @@
 initFunction = function(){
 	utils.inputData(result);
-	$("#bbsDesc").html(result.bbsDesc);
+	
     eventFunction(result);
 }
 
 eventFunction = function(data){
-	// 수정 버튼 클릭 이벤트
+	// 수정 버튼 클릭
 	$("#editBtn").unbind().on("click", function(){
 		var url = "/admin/boardmgmt/boardMgmtEdit.do";
-		data.bbsDesc = encodeURIComponent(data.bbsDesc);
 		utils.movePage(url,data);
 	});
 
+	// 삭제 버튼 클릭
 	$("#delBtn").unbind().on("click", function(){
 		/*기본값 세팅*/
 		let validator = [];
@@ -23,9 +23,15 @@ eventFunction = function(data){
 		options.msg = "삭제하시겠습니까?";
 		$("#boardForm").formSubmit(options, validator, function(result){
 			if(result.errorCode == "00"){
-				let param = {};
-				var url = "/admin/boardmgmt/boardMgmtList.do";
-				utils.movePage(url , param);
+				DIALOG.alert({
+					title: "알림",
+					msg: "정상적으로 삭제되었습니다."
+				}, function(){
+					let url = "/admin/boardmgmt/boardMgmtList.do";
+					var params = {};
+					params.searchParam = data.searchParam;
+					utils.movePage(url, params);
+				});
 			}else{
 				DIALOG.alert({
 					title: "알림",
@@ -35,9 +41,11 @@ eventFunction = function(data){
 		});
 	});
 
+	// 목록 버튼 클릭
 	$("#backBtn").unbind().on("click", function(){
-//		history.go(-1);
 		var url = "/admin/boardmgmt/boardMgmtList.do";
-		utils.movePage(url, JSON.parse(result.param));
+		var params = {};
+		params.searchParam = result.searchParam;
+		utils.movePage(url, params);
 	});
 }

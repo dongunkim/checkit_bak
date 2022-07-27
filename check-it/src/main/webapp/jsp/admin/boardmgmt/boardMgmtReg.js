@@ -5,7 +5,11 @@ options.params = {};
 
 initFunction = function(){
 
-	var editor = $.editorWrapper('#boardDesc');
+	var editor = Jodit.make('#boardDesc', {
+		"uploader": {
+			"insertImageAsBase64URI": true
+		}
+	});
 
 	eventFunction(result);
 }
@@ -27,7 +31,10 @@ eventFunction = function(data){
 					title: "알림",
 					msg: "정상 등록되었습니다."
 				}, function(){
-					utils.movePage("/admin/boardmgmt/boardMgmtList.do");
+					var url = "/admin/boardmgmt/boardMgmtList.do";
+					var params = {};
+					params.searchParam = data.searchParam;
+					utils.movePage(url, params);
 				});
 			}else{
 				DIALOG.alert({

@@ -1,12 +1,8 @@
-var searchData = {};
-
 initFunction = function(){
-	searchData.boardType = "01";
-	
-	$.jqGridWrapper({
+	$.jqGridWrapper('#jqGrid',{
 		url: "/admin/boardmgmt/selBoardMgmtList.ajax",
 		colNames: [
-				"No",
+				"Id",
 				"작성자",
 				"제목",
 				"등록일시",
@@ -14,32 +10,30 @@ initFunction = function(){
 				"내용"
 			],
 		colModel: [
-				{ name:'boardId'    ,index:'boardId'    ,width: 5, align:"left" },
-				{ name:'regUserName',index:'regUserName',width: 10, align:"left" },
-				{ name:'boardTitle' ,index:'boardTitle' ,width: 50, align:"left" },
-				{ name:'regDt'      ,index:'regDt'      ,width: 10, align:"center"},
-				{ name:'viewCount'  ,index:'viewCount'  ,width: 10, align:"center"},
-				{ name:'boardDesc'  ,index:'viewCount'  ,hidden:true}
+				{ name:'boardId'    ,index:'BOARD_ID'    ,width: 5, align:"left" },
+				{ name:'regUserName',index:'REG_USER_NAME',width: 10, align:"left", sortable:false },
+				{ name:'boardTitle' ,index:'BOARD_TITLE' ,width: 50, align:"left", sortable:false },
+				{ name:'regDt'      ,index:'REG_DT'      ,width: 10, align:"center"},
+				{ name:'viewCount'  ,index:'VIEW_COUNT'  ,width: 10, align:"center", sortable:false},
+				{ name:'boardDesc'  ,index:'BOARD_DESC'  ,hidden:true}
 			],
+		sortorder: "desc",
+		sortname: 'BOARD_ID',
 		onSelectRow: function(rowid) {
-			var param = $("#jqGrid").getRowData(rowid);
-			param.boardType = "01";
-			var url = "/admin/boardmgmt/boardMgmtDetail.do";
-			utils.movePage(url, param);
+			var param = {};
+			param.boardId = $("#jqGrid").getRowData(rowid).boardId;
+			param.boardType = $("#boardType").val();
+			movePage("/admin/boardmgmt/boardMgmtDetail.do",param);
 		}
 	});
 
-	search();
-	
     eventFunction(result);
-}
 
-function search() {
-	var nowPage = 1;
-	$("#nowPage").val(nowPage);
+	// 검색 조건 유지를 위한 파라미터 설정.
+	initSearchParam();
 
-	var formData = $("#frm").serializeObject();		
-	$("#jqGrid").setGridParam({'datatype': 'json'}).setGridParam({'page': nowPage}).setGridParam({'postData': formData}).trigger('reloadGrid');
+	// 데이터 검색
+	search();
 }
 
 eventFunction = function(data){
@@ -50,12 +44,47 @@ eventFunction = function(data){
 
 	// 등록 버튼
 	$("#regBtn").unbind().bind("click",function(){
-		let params = {};
-		//params = result.param;
-		utils.movePage("/admin/boardmgmt/boardMgmtReg.do", params);
+		var param = {};
+		movePage("/admin/boardmgmt/boardMgmtReg.do",param);
+	});
+
+	// Excel 다운로드 버튼
+	$("#excelDownBtn").unbind().bind("click", function(){
+		downloadExcel("/admin/boardmgmt/selBoardMgmtExcel.ajax",$("#frm").serialize());
 	});
 
 	// Enter Key 이벤트
 	utils.enter("#searchText","#searchBtn");
+}
 
+// 상세 페이지 이동후 돌아온 경우 기존 검색 조건 설정.
+initSearchParam = function(){
+	if(result.searchParam != null && result.searchParam != undefined){
+		// 검색 조건 설정
+		utils.inputData(result.searchParam);
+		// Grid 파라미터 설정
+		$("#jqGrid").setGridParam({'page': result.searchParam.page});
+		$("#jqGrid").setGridParam({'sortname': result.searchParam.sortname});
+		$("#jqGrid").setGridParam({'sortorder': result.searchParam.sortorder});
+		$("#jqGrid").setGridParam({'rowNum': result.searchParam.rowNum});
+		$(".ui-pg-selbox").val(result.searchParam.rowNum).prop("selected", true); // 페이지당 건수 Selectbox 설정
+	}
+}
+
+// 데이터 검색
+search = function (){
+	var params = $('#frm').serializeObject();
+	$('#jqGrid').setGridParam({'datatype': 'json'}).setGridParam({'postData': params}).trigger('reloadGrid');
+}
+
+//페이지 이동
+movePage = function(url,param){
+	// 검색 파라미터 유지를 위한 파라미터 추가
+	param.searchParam = $('#frm').serializeObject();
+	param.searchParam.page = $("#jqGrid").getGridParam("page");
+	param.searchParam.sortname = $("#jqGrid").getGridParam("sortname");
+	param.searchParam.sortorder = $("#jqGrid").getGridParam("sortorder");
+	param.searchParam.rowNum = $("#jqGrid").getGridParam("rowNum");
+
+	utils.movePage(url, param);
 }

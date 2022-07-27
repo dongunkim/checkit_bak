@@ -97,6 +97,7 @@ pageContext.setAttribute("LF", "\n");
 <script type="text/javascript">
 //<![CDATA[
 var result   = ${(result == null || result == "")? "{}" : result};
+if(result.searchParam != null) result.searchParam = JSON.parse(result.searchParam);
 const menuList = ${(menuList == null || menuList == "")? "{}" : menuList};
 const menuId   = ${(menuId == null || menuId == "")? "" : menuId};
 const rid      = ${(rid == null || rid == "")? "" : rid};
@@ -146,8 +147,6 @@ $(document).ready(function(){
 			<!-- 컨텐츠 start -->
 			<decorator:body/>
 			<!-- 컨텐츠 end-->
-			<input type="hidden" name="sort" id="sort">
-			<input type="hidden" name="sortType" id="sortType">
 		</div>
 		<!-- body -->
 		<!-- footer start -->

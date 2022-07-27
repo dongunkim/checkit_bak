@@ -1,5 +1,6 @@
 (function($){
 
+	/*
 	$.extend({
 		editorWrapper: function (id) {
 			var editor = Jodit.make(id, {
@@ -10,5 +11,6 @@
 			return editor;
 		},
 	});
+	*/
 
 })(jQuery);

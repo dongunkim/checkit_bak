@@ -2,16 +2,21 @@ var options = {};
 options.params = {};
 
 initFunction = function(){
-	var editor = $.editorWrapper('#boardDesc');
+
+	utils.inputData(result);
+	
+	var editor = Jodit.make('#boardDesc', {
+		"uploader": {
+			"insertImageAsBase64URI": true
+		}
+	});
 	editor.value = result.boardDesc;
 	
 	// 파일리스트
 	$("#boardFileupload").fileUploadForm({
-		type : "attachUpdate"
-		,attachId : result.attachId
+		type : "attachUpdate",
+		attachId : result.attachId
 	});
-
-	utils.inputData(result);
 
 	eventFunction(result);
 }
@@ -33,8 +38,7 @@ eventFunction = function(data){
 					title: "알림",
 					msg: "정상적으로 수정되었습니다."
 				}, function(){
-					let url = "/admin/boardmgmt/boardMgmtDetail.do";
-					utils.movePage(url, data);
+					movePage("/admin/boardmgmt/boardMgmtDetail.do");
 				});
 			}else{
 				DIALOG.alert({
@@ -43,12 +47,19 @@ eventFunction = function(data){
 				});
 			}
 		});
-
 	});
 
-	// 이전 페이지 클릭 이벤트
+	// 이전 버튼 클릭
 	$("#backBtn").unbind().on("click", function(){
-		let url = "/admin/boardmgmt/boardMgmtDetail.do";
-		utils.movePage(url, data);
+		movePage("/admin/boardmgmt/boardMgmtDetail.do");
 	});
+}
+
+// 상세 화면으로 이동
+movePage = function(url){
+	var param = {};
+	param.boardType = result.boardType;
+	param.boardId = result.boardId;
+	param.searchParam = result.searchParam;
+	utils.movePage(url, param);
 }

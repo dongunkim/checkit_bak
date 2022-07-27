@@ -8,21 +8,23 @@
 (function($){
 
 	$.extend({
-		jqGridWrapper: function (options) {
+		jqGridWrapper: function (id,options) {
 			
 			var settings = $.extend({				
 				mtype: "POST",				
 				datatype: "local",
-				postData: searchData,
-				page: (isNull(searchData.pageNo) ? 1 : searchData.pageNo),
+				postData: "",
+//				page: (isNull(searchData.pageNo) ? 1 : searchData.pageNo),
+				page: 1,
 				autowidth: true,
 				height: 350,
-				rowNum: (isNull(searchData.rowNum) ? 15 : searchData.rowNum),
+//				rowNum: (isNull(searchData.rowNum) ? 15 : searchData.rowNum),
+				rowNum: 15,
 				rowList: [5, 10, 15, 20, 30],				
 				pager: "#jqGridPager",				
 				rownumbers: true,
 				caption: false,
-				cmTemplate: { sortable: false },
+//				cmTemplate: { sortable: false },
 				loadonce: false,
 				//styleUI : 'Bootstrap',
 				colNames:  [],
@@ -79,7 +81,7 @@
 				}
 			}, options);
 			
-			$("#jqGrid").jqGrid(settings);
+			$(id).jqGrid(settings);
 		},
 		
 		jqGridNoPagingWrapper: function (id,options) {
@@ -87,10 +89,11 @@
 			var settings = $.extend({				
 				mtype: "POST",				
 				datatype: "json",
+//				postData: searchData,
 				postData: searchData,
 				autowidth: true,
 				caption: false,
-				cmTemplate: { sortable: false },
+//				cmTemplate: { sortable: false },
 				loadonce: false,
 				//styleUI : 'Bootstrap',
 				colNames:  [],

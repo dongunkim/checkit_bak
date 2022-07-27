@@ -13,7 +13,7 @@
 					<div class="twobox">
 						<span>
 							<select class="select_txt" id="searchGbn" name="searchGbn">
-								<option value="bbs_title">제목</option>
+								<option value="board_title">제목</option>
 								<option value="reg_id">작성자</option>
 							</select>
 						</span>
@@ -49,9 +49,8 @@
 	<div class="list_button_area" id="input_area2">
 		<div class="pagecount l30">전체<em>0</em></div>
 		<div class="flr">
-			<button class="button_sh w110 oreage" id="regBtn" data-write>
-				<span>등록</span>
-			</button>
+			<button class="button_sh w110 m1_button_3 gray" id="excelDownBtn"><span>XLS저장</span></button>
+			<button class="button_sh w110 oreage" id="regBtn" data-write><span>등록</span></button>
 		</div>
 	</div>
     <div class="border_box">

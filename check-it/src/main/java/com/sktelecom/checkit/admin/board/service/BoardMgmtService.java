@@ -58,7 +58,6 @@ public class BoardMgmtService {
 		HashMap<String, Object> rtn = new HashMap<String, Object>();
 		try{
 			// 게시판 정보 조회
-			rtn.put("param", param.get("param"));
 			rtn = boardMgmtDAO.selBoardDetail(param);
 			
 			// 첨부 파일 정보 조회
