@@ -18,14 +18,13 @@ eventFunction = function(data){
 	// 등록 버튼 이벤트
 	$("#regBtn").unbind().on("click", function(){
 		// Validation
-		let validator = [
+		var validator = [
 			{ key : "boardTitle", label : "제목" },
 			{ key : "boardDesc", label : "내용" }
 		];
 
 		options.url = "/admin/boardmgmt/insBoardMgmt.ajax";
 		$("#boardReg").formSubmit(options, validator, function(result){
-			console.log(result);
 			if(result.errorCode == "00"){
 				DIALOG.alert({
 					title: "알림",

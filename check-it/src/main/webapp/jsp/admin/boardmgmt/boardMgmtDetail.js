@@ -14,8 +14,8 @@ eventFunction = function(data){
 	// 삭제 버튼 클릭
 	$("#delBtn").unbind().on("click", function(){
 		/*기본값 세팅*/
-		let validator = [];
-		let options = {};
+		var validator = [];
+		var options = {};
 		options.url = "/admin/boardmgmt/delBoardMgmt.ajax";
 		options.params = {};
 		options.params.boardId = data.boardId;
@@ -27,7 +27,7 @@ eventFunction = function(data){
 					title: "알림",
 					msg: "정상적으로 삭제되었습니다."
 				}, function(){
-					let url = "/admin/boardmgmt/boardMgmtList.do";
+					var url = "/admin/boardmgmt/boardMgmtList.do";
 					var params = {};
 					params.searchParam = data.searchParam;
 					utils.movePage(url, params);

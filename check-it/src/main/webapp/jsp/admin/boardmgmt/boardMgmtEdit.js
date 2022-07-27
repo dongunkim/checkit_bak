@@ -24,7 +24,7 @@ initFunction = function(){
 eventFunction = function(data){
 	// 저장 버튼 이벤트
 	$("#regBtn").unbind().on("click", function(){
-		let validator = [
+		var validator = [
 			{ key : "boardTitle", label : "제목" },
 			{ key : "boardDesc", label : "내용" }
 		];
